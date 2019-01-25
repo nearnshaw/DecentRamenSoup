@@ -4,15 +4,26 @@ export class GrabableObjectComponent {
   // lifter: Entity ?
 }
 
+// component group grabbable all liftable entities
+const grabableStuff = engine.getComponentGroup(GrabableObjectComponent);
+
+
 @Component("objectGrabberComponent")
 export class ObjectGrabberComponent {
   grabbedObject: Entity = null;
   // lifter: Entity ?
 }
 
+@Component("gridPosition")
+export class GridPosition {
+  object: Entity = null
+  //height: number = 0
+}
 
-// component group listing all liftable entities
-const liftableStuff = engine.getComponentGroup(GrabableObjectComponent);
+// component group grid positions
+const gridPositions = engine.getComponentGroup(GridPosition);
+
+
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance;
@@ -38,7 +49,7 @@ export class ObjectGrabberSystem implements ISystem {
 
   constructor() {
     input.subscribe("BUTTON_A_DOWN", e => {
-       for (let thing of liftableStuff.entities) {
+       for (let thing of grabableStuff.entities) {
         let picked = thing.get(GrabableObjectComponent);
         if (picked.grabbed) {
           picked.grabbed = false;
@@ -116,3 +127,31 @@ box2.add(
   })
 );
 engine.addEntity(box2);
+
+// create grid
+
+let shelves: number[][] = [
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 2, 2, 2, 2, 2, 0],
+  [0, 2, 0, 0, 0, 2, 0],
+  [0, 2, 0, 0, 0, 2, 0],
+  [0, 2, 0, 0, 0, 2, 0],
+  [0, 2, 0, 0, 0, 2, 0],
+  [0, 2, 0, 0, 0, 2, 0]
+]
+
+let xMax = 7
+let zMax = 7
+let xPos = 0
+let zPos = 0
+for (let x = 0; x ++; x < xMax){
+  for (let z = 0; z ++; z < zMax){
+    let gridPos = new Entity() 
+    let y = shelves[x][z]
+    gridPos.add(new Transform({
+      position: new Vector3(x, y, z)
+    }))
+    gridPos.add(new GridPosition())
+    engine.addEntity(gridPos)
+  }
+}
