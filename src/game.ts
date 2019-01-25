@@ -8,8 +8,6 @@ import {
   IngredientType
 } from "./grabableObjects"
 
-// component group grid positions
-const progressBars = engine.getComponentGroup(ProgressBar)
 // object to get buttonUp and buttonDown events
 const input = Input.instance
 
@@ -102,16 +100,17 @@ engine.addEntity(progressBar1)
 let noodlesExpendingMachine = new Entity()
 noodlesExpendingMachine.set(
   new Transform({
-    position: new Vector3(5, 1, 5)
+    position: new Vector3(10, 1, 10)
   })
 )
 noodlesExpendingMachine.set(new BoxShape())
 
 let noodleExpendingComponent = new IngredientExpendingMachineComponent(
   1,
-  new Vector3(5, 2, 5),
+  new Vector3(0, 1, 0),
   objectGrabberSystem,
-  objectGrabber
+  objectGrabber,
+  noodlesExpendingMachine
 )
 noodlesExpendingMachine.set(noodleExpendingComponent)
 

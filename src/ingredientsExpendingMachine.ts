@@ -11,48 +11,53 @@ export class IngredientExpendingMachineComponent {
   spawningPosition: Vector3
   objectGrabberSystemReference: ObjectGrabberSystem
   objectGrabberEntityReference: Entity
+  parentEntity: Entity
 
   constructor(
     type: IngredientType,
     expendingPosition: Vector3,
     objectGrabberSystem: ObjectGrabberSystem,
-    objectGrabberEntity: Entity
+    objectGrabberEntity: Entity,
+    parentEntity: Entity
   ) {
     this.ingredientType = type
     this.spawningPosition = expendingPosition
 
     this.objectGrabberSystemReference = objectGrabberSystem
     this.objectGrabberEntityReference = objectGrabberEntity
+    this.parentEntity = parentEntity
   }
 
   public createIngredient() {
     if (this.lastCreatedIngredient) return
 
-    this.lastCreatedIngredient = new Entity()
+    let ent = new Entity()
 
-    this.lastCreatedIngredient.add(
+    ent.add(
       new GrabableObjectComponent(this.ingredientType)
     )
 
-    this.lastCreatedIngredient.set(
+    ent.set(
       new Transform({
         position: new Vector3().copyFrom(this.spawningPosition)
       })
     )
 
-    this.lastCreatedIngredient.add(new SphereShape())
+    ent.add(new SphereShape())
 
-    engine.addEntity(this.lastCreatedIngredient)
+    ent.setParent(this.parentEntity)
 
-    this.lastCreatedIngredient.add(
+    engine.addEntity(ent)
+
+    ent.add(
       new OnClick(e => {
         this.objectGrabberSystemReference.grabObject(
-          this.lastCreatedIngredient,
+          ent,
           this.objectGrabberEntityReference
         )
-
         this.lastCreatedIngredient = null
       })
     )
+    this.lastCreatedIngredient = ent
   }
 }
