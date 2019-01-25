@@ -5,7 +5,7 @@ import {
   GrabableObjectComponent,
   ObjectGrabberComponent,
   ObjectGrabberSystem
-} from "./grabableObjects"
+} from "./GrabableObjects"
 
 // component group grid positions
 const progressBars = engine.getComponentGroup(ProgressBar)
@@ -105,7 +105,7 @@ engine.addEntity(progressBar1)
 let noodlesExpendingMachine = new Entity()
 noodlesExpendingMachine.set(
   new Transform({
-    position: new Vector3(5, 1, 5)
+    position: new Vector3(10, 1, 10)
   })
 )
 noodlesExpendingMachine.set(new BoxShape())
