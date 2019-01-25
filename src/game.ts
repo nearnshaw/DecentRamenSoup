@@ -202,7 +202,7 @@ function distance(pos1: Vector3, pos2: Vector3): number {
 export class IngredientExpendingMachineComponent {
   ingredientType: number
   lastCreatedIngredient: Entity
-  expendingPosition: Vector3
+  spawningPosition: Vector3
 
   constructor(type, expendingPosition) {
     if (type < 0 || type > 2) {
@@ -210,7 +210,7 @@ export class IngredientExpendingMachineComponent {
     }
 
     this.ingredientType = type
-    this.expendingPosition = expendingPosition
+    this.spawningPosition = expendingPosition
   }
 
   public createIngredient() {
@@ -222,11 +222,11 @@ export class IngredientExpendingMachineComponent {
       new GrabableObjectComponent(this.ingredientType)
     )
 
-    log("expending position used: " + this.expendingPosition)
+    log("expending position used: " + this.spawningPosition)
 
     this.lastCreatedIngredient.set(
       new Transform({
-        position: this.expendingPosition
+        position: new Vector3().copyFrom(this.spawningPosition)
       })
     )
 
