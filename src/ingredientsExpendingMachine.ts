@@ -1,4 +1,4 @@
-import { GrabableObjectComponent, ObjectGrabberSystem } from "GrabableObjects"
+import { GrabableObjectComponent, ObjectGrabberSystem } from "./grabableObjects"
 
 @Component("ingredientExpendingMachineComponent")
 export class IngredientExpendingMachineComponent {
