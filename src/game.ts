@@ -1,3 +1,5 @@
+import { ProgressBarUpdate, ProgressBar } from "./progressBar";
+
 @Component("grabableObjectComponent")
 export class GrabableObjectComponent {
   grabbed: boolean = false
@@ -28,16 +30,7 @@ export class GridPosition {
 const gridPositions = engine.getComponentGroup(GridPosition)
 
 
-@Component("progressBar")
-export class ProgressBar {
-  ratio: number = 0
-  fullLength: number = 0.5
-  movesUp: boolean = true
-  color: Material = greenMaterial
-}
 
-// component group grid positions
-const progressBars = engine.getComponentGroup(ProgressBar);
 
 
 
@@ -107,36 +100,9 @@ const objectGrabberSystem = new ObjectGrabberSystem()
 engine.addSystem(objectGrabberSystem)
 
 
-export class ProgressBarUpdate implements ISystem {
-  update(dt: number) {
-    for (let bar of progressBars.entities){
-      let transform = bar.get(Transform)
-      let data = bar.get(ProgressBar)
-      if(data.ratio < 1){
-        data.ratio += dt/10
-      }
-      log(data.ratio)
-      let width = Scalar.Lerp(0, data.fullLength, data.ratio)
-      transform.scale.x = width
-      transform.position.x = - data.fullLength/2 + width/2
-      if (data.ratio > 0.5){
-        bar.remove(Material)
-        bar.set(greenMaterial)
-      } 
-      else if (data.ratio > 0.5){
-        bar.remove(Material)
-        bar.set(yellowMaterial)
-      } else if (data.ratio > 0.8){
-        bar.remove(Material)
-        bar.set(redMaterial)
-      } else if (data.ratio > 1){
-        engine.removeEntity(bar)
-      }
-    }
-  }
-}
 
-engine.addSystem(new ProgressBarUpdate())
+
+
 
 // ----------------------------
 // colors for progress bars
@@ -150,7 +116,7 @@ greenMaterial.albedoColor = new Color3(1, 1, 0.25)
 let redMaterial = new Material()
 greenMaterial.albedoColor = Color3.Red()
 
-
+engine.addSystem(new ProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial))
 
 // ----------------------------
 let box = new Entity()
@@ -192,7 +158,7 @@ engine.addEntity(box2)
 
 let progressBar1 = new Entity()
 progressBar1.add(new PlaneShape())
-progressBar1.setParent(box)
+progressBar1.setParent(box2)
 progressBar1.set(new Transform({
   position: new Vector3(0, 1, 0),
   scale: new Vector3(0.8, 0.1, 1)
