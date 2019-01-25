@@ -23,22 +23,19 @@ export class ObjectGrabberComponent {
 export class ObjectGrabberSystem implements ISystem {
   transform: Transform
   objectGrabberComponent: ObjectGrabberComponent
-  cameraReference: Camera
 
-  constructor(objectGrabber: Entity, input: Input, camera: Camera) {
+  constructor(objectGrabber: Entity) {
     this.transform = objectGrabber.get(Transform)
     this.objectGrabberComponent = objectGrabber.get(ObjectGrabberComponent)
 
-    input.subscribe("BUTTON_A_DOWN", e => {
+    Input.instance.subscribe("BUTTON_A_DOWN", e => {
       this.dropObject()
     })
-
-    this.cameraReference = camera
   }
 
   update() {
-    this.transform.position = this.cameraReference.position
-    this.transform.rotation = this.cameraReference.rotation
+    this.transform.position = Camera.instance.position
+    this.transform.rotation = Camera.instance.rotation
   }
 
   public grabObject(grabbedObject: Entity, objectGrabber: Entity) {
@@ -62,7 +59,7 @@ export class ObjectGrabberSystem implements ISystem {
 
     // TODO: Re-add this when the grid has been moved into a new file
     this.objectGrabberComponent.grabbedObject.setParent(
-      getClosestPos(this.cameraReference)
+      getClosestPos(Camera.instance)
     )
 
     this.objectGrabberComponent.grabbedObject.get(
