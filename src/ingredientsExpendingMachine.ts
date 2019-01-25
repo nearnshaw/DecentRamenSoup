@@ -1,23 +1,23 @@
-import { GrabableObjectComponent, ObjectGrabberSystem } from "./grabableObjects"
+import {
+  GrabableObjectComponent,
+  ObjectGrabberSystem,
+  IngredientType
+} from "./grabableObjects"
 
 @Component("ingredientExpendingMachineComponent")
 export class IngredientExpendingMachineComponent {
-  ingredientType: number
+  ingredientType: IngredientType
   lastCreatedIngredient: Entity
   spawningPosition: Vector3
   objectGrabberSystemReference: ObjectGrabberSystem
   objectGrabberEntityReference: Entity
 
   constructor(
-    type,
-    expendingPosition,
+    type: IngredientType,
+    expendingPosition: Vector3,
     objectGrabberSystem: ObjectGrabberSystem,
     objectGrabberEntity: Entity
   ) {
-    if (type < 0 || type > 2) {
-      type = 1
-    }
-
     this.ingredientType = type
     this.spawningPosition = expendingPosition
 

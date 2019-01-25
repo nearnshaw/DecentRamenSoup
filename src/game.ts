@@ -4,7 +4,8 @@ import { IngredientExpendingMachineComponent } from "./ingredientsExpendingMachi
 import {
   GrabableObjectComponent,
   ObjectGrabberComponent,
-  ObjectGrabberSystem
+  ObjectGrabberSystem,
+  IngredientType
 } from "./grabableObjects"
 
 // component group grid positions
@@ -54,7 +55,7 @@ engine.addSystem(
 let box = new Entity()
 box.add(new BoxShape())
 box.get(BoxShape).withCollisions = true
-box.add(new GrabableObjectComponent())
+box.add(new GrabableObjectComponent(IngredientType.Noodles))
 box.add(redMaterial)
 box.set(
   new Transform({
@@ -72,7 +73,7 @@ engine.addEntity(box)
 let box2 = new Entity()
 box2.add(new BoxShape())
 box2.get(BoxShape).withCollisions = true
-box2.add(new GrabableObjectComponent())
+box2.add(new GrabableObjectComponent(IngredientType.Sushi))
 box2.add(greenMaterial)
 box2.set(
   new Transform({

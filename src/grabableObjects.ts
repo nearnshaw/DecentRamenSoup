@@ -1,15 +1,16 @@
 import { GridPosition, gridPositions, getClosestPos } from "./grid"
 
+export const enum IngredientType {
+  Noodles,
+  Sushi
+}
+
 @Component("grabableObjectComponent")
 export class GrabableObjectComponent {
   grabbed: boolean = false
-  type: number = 1 // 1 = Noodles | 2 = Sushi
+  type: IngredientType = IngredientType.Noodles
 
-  constructor(type = 1) {
-    if (type < 0 || type > 2) {
-      type = 1
-    }
-
+  constructor(type: IngredientType) {
     this.type = type
   }
 }
