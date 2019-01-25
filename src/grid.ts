@@ -10,7 +10,7 @@ export const gridPositions = engine.getComponentGroup(GridPosition)
 
 // create grid
 let shelves: number[][] = [
-    [0, 0, 0, 0, 0, 0, 0 ,0, 0],
+    [0, 0, 0, 0, 0, 0, 0 ,0],
     [0, 0, 1, 1, 1, 1, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 1],
@@ -20,7 +20,7 @@ let shelves: number[][] = [
   ]
   let xOffset = 12.5
   let zOffset = 6.5
-  let yOffset = 0.2
+  let yOffset = 0.1
   
   let xMax = 7
   let zMax = 9
@@ -42,7 +42,7 @@ let shelves: number[][] = [
       testEnt.add(new BoxShape())
       testEnt.add(
         new Transform({
-          scale: new Vector3(0.5, 0.1, 0.5)
+          scale: new Vector3(0.1, 0.05, 0.1)
         })
       )
       engine.addEntity(testEnt)

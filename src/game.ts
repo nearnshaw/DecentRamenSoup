@@ -7,12 +7,16 @@ import {
   ObjectGrabberSystem,
   IngredientType
 } from "./grabableObjects"
+import { ButtonData, PushButton, buttons } from "./button";
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
 
 // object to get user position and rotation
 const camera = Camera.instance
+
+// System to push button up and down
+engine.addSystem(new PushButton())
 
 // ----------------------------
 
@@ -125,6 +129,33 @@ noodlesExpendingMachine.add(
 )
 
 engine.addEntity(noodlesExpendingMachine)
+
+
+const button = new Entity()
+button.add(new Transform({
+  position: new Vector3(8, 1, 4),
+  rotation: Quaternion.Euler(90, 90, 0),
+  scale: new Vector3(.05, .2, .05)
+}))
+button.add(new CylinderShape())
+button.set(redMaterial)
+button.add(new ButtonData(-0.3, -0.2))
+button.add(
+  new OnClick(e => {
+    noodleExpendingComponent.createIngredient()
+  })
+)
+button.add(new IngredientExpendingMachineComponent(
+  1,
+  new Vector3(1, 1, 0),
+  objectGrabberSystem,
+  objectGrabber,
+  button
+))
+engine.addEntity(button)
+
+
+
 
 // scenery 3D model
 let environment = new Entity()

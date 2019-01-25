@@ -20,7 +20,7 @@ export class ProgressBarUpdate implements ISystem {
         if(data.ratio < 1){
           data.ratio += dt/10
         }
-        log(data.ratio)
+        //log(data.ratio)
         let width = Scalar.Lerp(0, data.fullLength, data.ratio)
         transform.scale.x = width
         transform.position.x = - data.fullLength/2 + width/2
