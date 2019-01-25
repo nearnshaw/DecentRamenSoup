@@ -132,26 +132,36 @@ engine.addEntity(box2);
 
 let shelves: number[][] = [
   [0, 0, 0, 0, 0, 0, 0],
-  [0, 2, 2, 2, 2, 2, 0],
-  [0, 2, 0, 0, 0, 2, 0],
-  [0, 2, 0, 0, 0, 2, 0],
-  [0, 2, 0, 0, 0, 2, 0],
-  [0, 2, 0, 0, 0, 2, 0],
-  [0, 2, 0, 0, 0, 2, 0]
+  [0, 1, 1, 1, 1, 1, 0],
+  [0, 1, 0, 0, 0, 1, 0],
+  [0, 1, 0, 0, 0, 1, 0],
+  [0, 1, 0, 0, 0, 1, 0],
+  [0, 1, 0, 0, 0, 1, 0],
+  [0, 1, 0, 0, 0, 1, 0]
 ]
+let xOffset = 10
+let zOffset = 5
 
 let xMax = 7
 let zMax = 7
 let xPos = 0
 let zPos = 0
-for (let x = 0; x ++; x < xMax){
-  for (let z = 0; z ++; z < zMax){
+for (let x = 0; x < xMax; x ++){
+  for (let z = 0; z < zMax; z ++){
     let gridPos = new Entity() 
     let y = shelves[x][z]
     gridPos.add(new Transform({
-      position: new Vector3(x, y, z)
+      position: new Vector3(x+ xOffset, y, z + zOffset)
     }))
     gridPos.add(new GridPosition())
     engine.addEntity(gridPos)
+
+    let testEnt = new Entity()
+    testEnt.setParent(gridPos)
+    testEnt.add(new BoxShape())
+    testEnt.add(new Transform({
+      scale: new Vector3(0.5, 0.1, 0.5)
+    }))
+    engine.addEntity(testEnt)
   }
 }
