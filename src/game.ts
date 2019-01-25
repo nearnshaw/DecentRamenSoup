@@ -152,3 +152,17 @@ box2.add(
 engine.addEntity(box2);
 
 // ----------------------------
+
+let text = new Entity()
+text.add(new TextShape('Te volvés a MuleSoft!'))
+text.get(TextShape).billboard = 7
+text.get(TextShape).color = Color3.Blue()
+text.get(TextShape).fontSize = 180
+text.get(TextShape).width = 8
+text.get(TextShape).fontWeight = "b"
+text.add(
+  new Transform({
+    position: new Vector3(5, 2.5, 5)
+  })
+)
+engine.addEntity(text)
