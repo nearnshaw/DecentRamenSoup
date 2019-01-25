@@ -10,13 +10,9 @@ export class ObjectGrabberComponent {
   // lifter: Entity ?
 }
 
-/* @Component("option")
-export class Option {
-  visible: boolean = false;
-} */
 
 // component group listing all liftable entities
-// const liftableStuff = engine.getComponentGroup(GrabableObjectComponent);
+const liftableStuff = engine.getComponentGroup(GrabableObjectComponent);
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance;
@@ -42,7 +38,7 @@ export class ObjectGrabberSystem implements ISystem {
 
   constructor() {
     input.subscribe("BUTTON_A_DOWN", e => {
-      /* for (let thing of liftableStuff.entities) {
+       for (let thing of liftableStuff.entities) {
         let picked = thing.get(GrabableObjectComponent);
         if (picked.grabbed) {
           picked.grabbed = false;
@@ -53,19 +49,13 @@ export class ObjectGrabberSystem implements ISystem {
           newPos.y = 0.5;
           thing.get(Transform).position = newPos;
         }
-      } */
+      } 
     });
   }
 
   update() {
     this.transform.position = camera.position;
     this.transform.rotation = camera.rotation;
-    // for (let thing of liftableStuff.entities) {
-    //   let picked = thing.get(Liftable)
-    //   if (picked.pickedUp){
-
-    //   }
-    // }
   }
 
   public grabObject(grabbedObject: Entity) {
@@ -110,33 +100,9 @@ box.add(
 );
 engine.addEntity(box);
 
-// ----------------------------
-
-/* let cutOption = new Entity();
-cutOption.set(new PlaneShape());
-cutOption.get(PlaneShape).billboard = BillboardMode.BILLBOARDMODE_ALL;
-cutOption.add(
-  new Transform({
-    position: new Vector3(0, 1, 0),
-    scale: new Vector3(0.25, 0.25, 0.25)
-  })
-);
-cutOption.setParent(box);
-cutOption.add(
-  new OnClick(e => {
-    log("cutting");
-    let parent = cutOption.getParent();
-    //cutAnimation(parent)
-  })
-);
-engine.addEntity(cutOption); */
-
-// ----------------------------
-
 let box2 = new Entity();
 box2.add(new BoxShape());
 box2.get(BoxShape).withCollisions = true;
-box2.get(BoxShape).billboard = BillboardMode.BILLBOARDMODE_ALL;
 box2.add(new GrabableObjectComponent());
 box2.set(
   new Transform({
@@ -150,19 +116,3 @@ box2.add(
   })
 );
 engine.addEntity(box2);
-
-// ----------------------------
-
-let text = new Entity()
-text.add(new TextShape('Te volvés a MuleSoft!'))
-text.get(TextShape).billboard = 7
-text.get(TextShape).color = Color3.Blue()
-text.get(TextShape).fontSize = 180
-text.get(TextShape).width = 8
-text.get(TextShape).fontWeight = "b"
-text.add(
-  new Transform({
-    position: new Vector3(5, 2.5, 5)
-  })
-)
-engine.addEntity(text)
