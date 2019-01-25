@@ -1,3 +1,5 @@
+import { GridPosition, gridPositions, getClosestPos } from "./grid"
+
 @Component("grabableObjectComponent")
 export class GrabableObjectComponent {
   grabbed: boolean = false
@@ -58,9 +60,9 @@ export class ObjectGrabberSystem implements ISystem {
     ).grabbed = false
 
     // TODO: Re-add this when the grid has been moved into a new file
-    /* this.objectGrabberComponent.grabbedObject.setParent(
-      getClosestPos(cameraReference.position)
-    ) */
+    this.objectGrabberComponent.grabbedObject.setParent(
+      getClosestPos(this.cameraReference)
+    )
 
     this.objectGrabberComponent.grabbedObject.get(
       Transform
