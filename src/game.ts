@@ -109,6 +109,33 @@ noodlesExpendingMachine.set(
 )
 noodlesExpendingMachine.set(new BoxShape())
 
+// let noodleExpendingComponent = new IngredientExpendingMachineComponent(
+//   1,
+//   new Vector3(0, 1, 0),
+//   objectGrabberSystem,
+//   objectGrabber,
+//   noodlesExpendingMachine
+// )
+// noodlesExpendingMachine.set(noodleExpendingComponent)
+
+// noodlesExpendingMachine.add(
+//   new OnClick(e => {
+//     noodleExpendingComponent.createIngredient()
+//   })
+// )
+
+engine.addEntity(noodlesExpendingMachine)
+
+
+const button = new Entity()
+button.add(new Transform({
+  position: new Vector3(10, 1, 9.5),
+  rotation: Quaternion.Euler(90, 0, 0),
+  scale: new Vector3(.05, .2, .05)
+}))
+button.add(new CylinderShape())
+button.set(redMaterial)
+button.add(new ButtonData(9.5, 9.6))
 let noodleExpendingComponent = new IngredientExpendingMachineComponent(
   1,
   new Vector3(0, 1, 0),
@@ -116,38 +143,15 @@ let noodleExpendingComponent = new IngredientExpendingMachineComponent(
   objectGrabber,
   noodlesExpendingMachine
 )
-noodlesExpendingMachine.set(noodleExpendingComponent)
-
-noodlesExpendingMachine.add(
-  new OnClick(e => {
-    noodleExpendingComponent.createIngredient()
-  })
-)
-
-engine.addEntity(noodlesExpendingMachine)
-
-
-const button = new Entity()
-button.add(new Transform({
-  position: new Vector3(8, 1, 4),
-  rotation: Quaternion.Euler(90, 90, 0),
-  scale: new Vector3(.05, .2, .05)
-}))
-button.add(new CylinderShape())
-button.set(redMaterial)
-button.add(new ButtonData(-0.3, -0.2))
+button.add(noodleExpendingComponent)
 button.add(
   new OnClick(e => {
     noodleExpendingComponent.createIngredient()
+    button.get(ButtonData).pressed = true
   })
 )
-button.add(new IngredientExpendingMachineComponent(
-  1,
-  new Vector3(1, 1, 0),
-  objectGrabberSystem,
-  objectGrabber,
-  button
-))
+
+
 engine.addEntity(button)
 
 
@@ -161,4 +165,4 @@ environment.add(
     position: new Vector3(10, 0, 10)
   })
 )
-// engine.addEntity(environment)
+engine.addEntity(environment)

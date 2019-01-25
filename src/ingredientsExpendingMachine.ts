@@ -39,12 +39,12 @@ export class IngredientExpendingMachineComponent {
 
     ent.set(
       new Transform({
-        position: new Vector3().copyFrom(this.spawningPosition),
-        scale: new Vector3(0.5, 0.5, 0.5)
+        position: new Vector3().copyFrom(this.spawningPosition)
+        //,scale: new Vector3(0.5, 0.5, 0.5)
       })
     )
 
-    ent.add(new BoxShape())
+    ent.add(new GLTFShape("models/CookingPot.glb"))
 
     ent.setParent(this.parentEntity)
 
