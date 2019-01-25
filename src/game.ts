@@ -30,11 +30,7 @@ objectGrabber.add(
 objectGrabber.add(new ObjectGrabberComponent())
 engine.addEntity(objectGrabber)
 
-const objectGrabberSystem = new ObjectGrabberSystem(
-  objectGrabber,
-  input,
-  camera
-)
+const objectGrabberSystem = new ObjectGrabberSystem(objectGrabber)
 
 engine.addSystem(objectGrabberSystem)
 
@@ -165,4 +161,4 @@ environment.add(
     position: new Vector3(10, 0, 10)
   })
 )
-engine.addEntity(environment)
+// engine.addEntity(environment)
