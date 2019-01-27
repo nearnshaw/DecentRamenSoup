@@ -42,11 +42,17 @@ export class ObjectGrabberSystem implements ISystem {
   public grabObject(grabbedObject: Entity, objectGrabber: Entity) {
     if (!this.objectGrabberComponent.grabbedObject) {
       log("grabbed object")
+      if (grabbedObject.getParent().has(GridPosition)){
+        let gridPosition = grabbedObject.getParent()
+        gridPosition.get(GridPosition).object = null
+      }
+    
       grabbedObject.get(GrabableObjectComponent).grabbed = true
       grabbedObject.setParent(objectGrabber)
       grabbedObject.get(Transform).position.set(0, 1, 1)
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
+
     } else {
       log("already holding")
     }
@@ -55,24 +61,28 @@ export class ObjectGrabberSystem implements ISystem {
   dropObject() {
     if (!this.objectGrabberComponent.grabbedObject) return
 
-    this.objectGrabberComponent.grabbedObject.get(
-      GrabableObjectComponent
-    ).grabbed = false
-
-    this.objectGrabberComponent.grabbedObject.setParent(
-      getClosestShelf(
-        Camera.instance.position,
-        this.calculateDirectionBasedOnYRotation(
-          Camera.instance.rotation.eulerAngles.y
-        )
+    let gridPosition = getClosestShelf(
+      Camera.instance.position,
+      this.calculateDirectionBasedOnYRotation(
+        Camera.instance.rotation.eulerAngles.y
       )
     )
-
-    this.objectGrabberComponent.grabbedObject.get(
-      Transform
-    ).position = Vector3.Zero()
-
-    this.objectGrabberComponent.grabbedObject = null
+    
+    if (gridPosition){
+      gridPosition.get(GridPosition).object = this.objectGrabberComponent.grabbedObject
+      this.objectGrabberComponent.grabbedObject.setParent(
+          gridPosition
+        )
+      this.objectGrabberComponent.grabbedObject.get(
+          Transform
+        ).position = Vector3.Zero()
+      this.objectGrabberComponent.grabbedObject.get(
+          GrabableObjectComponent
+        ).grabbed = false
+      this.objectGrabberComponent.grabbedObject = null 
+    } else {
+      log("not possible to drop here")
+    }  
   }
 
   calculateDirectionBasedOnYRotation(yRotation: number) {

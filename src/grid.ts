@@ -72,6 +72,11 @@ export function getClosestShelf(position: Vector3, direction: Vector3) {
   let gridPosition: Vector2 = GetGridPosition(finalPositionToCheck)
   // log("grid position: " + gridPosition)
 
+  if (shelves[gridPosition.x][gridPosition.y].get(GridPosition).object){
+    log("position already occupied")
+    return null
+  }
+
   return shelves[gridPosition.x][gridPosition.y]
 }
 
