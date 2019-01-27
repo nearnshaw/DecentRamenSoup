@@ -37,6 +37,7 @@ export class ObjectGrabberSystem implements ISystem {
     // log("camera rotation: " + Camera.instance.rotation.eulerAngles)
     this.transform.position = Camera.instance.position
     this.transform.rotation = Camera.instance.rotation
+    testCube.get(Transform).position = getDropLocation()
   }
 
   public grabObject(grabbedObject: Entity, objectGrabber: Entity) {
@@ -59,12 +60,11 @@ export class ObjectGrabberSystem implements ISystem {
       GrabableObjectComponent
     ).grabbed = false
 
+    let dropLocation = getDropLocation()
+
     this.objectGrabberComponent.grabbedObject.setParent(
       getClosestShelf(
-        Camera.instance.position,
-        this.calculateDirectionBasedOnYRotation(
-          Camera.instance.rotation.eulerAngles.y
-        )
+        dropLocation
       )
     )
 
@@ -117,3 +117,19 @@ export class ObjectGrabberSystem implements ISystem {
     return direction
   }
 }
+
+function getDropLocation(){
+  let zeroVector = Vector3.Up()
+  let relativeDropLocation = zeroVector.scale(1.5).rotate(Camera.instance.rotation)
+  let dropLocation = Camera.instance.position.add(relativeDropLocation)
+  return dropLocation
+}
+
+
+
+let testCube = new Entity()
+testCube.add(new Transform({
+  scale: new Vector3(0.2, 0.2, 0.2)
+}))
+testCube.add(new BoxShape())
+engine.addEntity(testCube)

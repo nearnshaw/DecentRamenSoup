@@ -53,8 +53,8 @@ for (let x = 0; x < xMax; x++) {
   }
 }
 
-export function getClosestShelf(position: Vector3, direction: Vector3) {
-  direction.y = 0
+export function getClosestShelf(position: Vector3) {
+  //direction.y = 0
 
   /*log(
     "incoming position: " +
@@ -62,14 +62,14 @@ export function getClosestShelf(position: Vector3, direction: Vector3) {
   )
   log("incoming direction: " + direction)*/
 
-  let finalPositionToCheck: Vector3 = new Vector3()
-    .copyFrom(position)
-    .scale(1.025) // to cope with the camera's offset position
-    .add(direction)
+  // let finalPositionToCheck: Vector3 = new Vector3()
+  //   .copyFrom(position)
+  //   .scale(1.025) // to cope with the camera's offset position
+  //   .add(direction)
 
   // log("final position to check: " + finalPositionToCheck)
 
-  let gridPosition: Vector2 = GetGridPosition(finalPositionToCheck)
+  let gridPosition: Vector2 = GetGridPosition(position)
   // log("grid position: " + gridPosition)
 
   return shelves[gridPosition.x][gridPosition.y]
