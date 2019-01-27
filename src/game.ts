@@ -1,5 +1,5 @@
 import { ProgressBarUpdate, ProgressBar } from "./progressBar"
-import { GridPosition, gridPositions, getClosestPos } from "./grid"
+import { GridPosition, gridPositions, getClosestShelf } from "./grid"
 import { IngredientExpendingMachineComponent } from "./ingredientsExpendingMachine"
 import {
   GrabableObjectComponent,
@@ -7,7 +7,7 @@ import {
   ObjectGrabberSystem,
   IngredientType
 } from "./grabableObjects"
-import { ButtonData, PushButton, buttons } from "./button";
+import { ButtonData, PushButton, buttons } from "./button"
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -126,13 +126,14 @@ noodlesExpendingMachine.set(new BoxShape())
 
 engine.addEntity(noodlesExpendingMachine)
 
-
 const button = new Entity()
-button.add(new Transform({
-  position: new Vector3(10, 1, 9.5),
-  rotation: Quaternion.Euler(90, 0, 0),
-  scale: new Vector3(.05, .2, .05)
-}))
+button.add(
+  new Transform({
+    position: new Vector3(10, 1, 9.5),
+    rotation: Quaternion.Euler(90, 0, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
 button.add(new CylinderShape())
 button.set(redMaterial)
 button.add(new ButtonData(9.5, 9.6))
@@ -151,11 +152,7 @@ button.add(
   })
 )
 
-
 engine.addEntity(button)
-
-
-
 
 // scenery 3D model
 let environment = new Entity()
