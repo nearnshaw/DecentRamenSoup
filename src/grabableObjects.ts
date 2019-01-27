@@ -1,4 +1,4 @@
-import { GridPosition, gridPositions, getClosestShelf } from "./grid"
+import { GridPosition, gridPositions, getClosestShelf, gridObject } from "./grid"
 
 export const enum IngredientType {
   Noodles,
@@ -23,9 +23,10 @@ export class ObjectGrabberComponent {
 export class ObjectGrabberSystem implements ISystem {
   transform: Transform
   objectGrabberComponent: ObjectGrabberComponent
-
-  constructor(objectGrabber: Entity) {
+  gridObject: gridObject
+  constructor(objectGrabber: Entity, gridObject: gridObject) {
     this.transform = objectGrabber.get(Transform)
+    this.gridObject = gridObject
     this.objectGrabberComponent = objectGrabber.get(ObjectGrabberComponent)
 
     Input.instance.subscribe("BUTTON_A_DOWN", e => {
@@ -65,7 +66,8 @@ export class ObjectGrabberSystem implements ISystem {
       Camera.instance.position,
       this.calculateDirectionBasedOnYRotation(
         Camera.instance.rotation.eulerAngles.y
-      )
+      ),
+      this.gridObject
     )
     
     if (gridPosition){

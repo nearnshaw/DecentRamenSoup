@@ -1,13 +1,13 @@
 @Component('buttonData')
 export class ButtonData {
   pressed: boolean
-  zUp: number = 0
-  zDown: number = 0
+  xUp: number = 0
+  xDown: number = 0
   fraction: number
   timeDown: number
-  constructor(zUp: number, zDown: number){
-    this.zUp = zUp
-    this.zDown = zDown
+  constructor(xUp: number, xDown: number){
+    this.xUp = xUp
+    this.xDown = xDown
     this.pressed = false
     this.fraction = 0
     this.timeDown = 2
@@ -24,9 +24,9 @@ export class PushButton implements ISystem {
         let state = button.get(ButtonData)
         if (state.pressed == true) {
           if (state.fraction < 1) {
-            transform.position.z = Scalar.Lerp(
-              state.zUp,
-              state.zDown,
+            transform.position.x = Scalar.Lerp(
+              state.xUp,
+              state.xDown,
               state.fraction
             )
             state.fraction += 1/8
@@ -37,9 +37,9 @@ export class PushButton implements ISystem {
             state.timeDown = 2
           }
         } else if (state.pressed == false && state.fraction > 0) {
-          transform.position.z = Scalar.Lerp(
-            state.zUp,
-            state.zDown,
+          transform.position.x = Scalar.Lerp(
+            state.xUp,
+            state.xDown,
             state.fraction
           )
           state.fraction -= 1/8

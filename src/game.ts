@@ -1,5 +1,5 @@
 import { ProgressBarUpdate, ProgressBar } from "./progressBar"
-import { GridPosition, gridPositions, getClosestShelf } from "./grid"
+import { GridPosition, gridPositions, getClosestShelf, instanceGrid, gridObject } from "./grid"
 import { IngredientExpendingMachineComponent } from "./ingredientsExpendingMachine"
 import {
   GrabableObjectComponent,
@@ -15,8 +15,29 @@ const input = Input.instance
 // object to get user position and rotation
 const camera = Camera.instance
 
-// System to push button up and down
-engine.addSystem(new PushButton())
+
+// instance grid
+
+// 
+let shelvesHeight: number[][] = [
+  [0, 0, 1, 1, 1, 1, 1, 1],
+  [0, 0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1]
+]
+
+let gridStartingPosition = new Vector3(13.5, 0.1, 6.5)
+let xMax = 6
+let zMax = 9
+
+
+//let shelves = instanceGrid(gridStartingPosition, xMax, zMax, shelvesHeight)
+
+let shelves = new gridObject(gridStartingPosition, xMax, zMax, shelvesHeight)
+
+
 
 // ----------------------------
 
@@ -30,9 +51,15 @@ objectGrabber.add(
 objectGrabber.add(new ObjectGrabberComponent())
 engine.addEntity(objectGrabber)
 
-const objectGrabberSystem = new ObjectGrabberSystem(objectGrabber)
-
+// start object grabber system
+let objectGrabberSystem = new ObjectGrabberSystem(objectGrabber, shelves)
 engine.addSystem(objectGrabberSystem)
+
+
+// System to push button up and down
+engine.addSystem(new PushButton())
+
+
 
 // ----------------------------
 // colors for progress bars
@@ -163,3 +190,49 @@ environment.add(
   })
 )
 engine.addEntity(environment)
+
+
+// fixed pots
+
+let potModel = new GLTFShape("models/CookingPot.glb")
+
+let pot1 = new Entity()
+pot1.add(potModel)
+pot1.setParent(shelves.grid[4][7])
+engine.addEntity(pot1)
+
+let pot2 = new Entity()
+pot2.add(potModel)
+pot2.setParent(shelves.grid[2][7])
+engine.addEntity(pot2)
+
+
+
+const noodlesButton = new Entity()
+noodlesButton.setParent(shelves.grid[5][3])
+noodlesButton.add(
+  new Transform({
+    position: new Vector3(-0.3, -0.5, 0),
+    rotation: Quaternion.Euler(90, 90, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+noodlesButton.add(new CylinderShape())
+noodlesButton.set(redMaterial)
+noodlesButton.add(new ButtonData(-0.3, -0.2))
+let noodleExpendingComp = new IngredientExpendingMachineComponent(
+  1,
+  new Vector3(0, 0, 0),
+  objectGrabberSystem,
+  objectGrabber,
+  shelves.grid[5][3]
+)
+noodlesButton.add(noodleExpendingComp)
+noodlesButton.add(
+  new OnClick(e => {
+    noodleExpendingComp.createIngredient()
+    noodlesButton.get(ButtonData).pressed = true
+  })
+)
+
+engine.addEntity(noodlesButton)
