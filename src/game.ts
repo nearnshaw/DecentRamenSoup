@@ -65,13 +65,13 @@ engine.addSystem(new PushButton())
 // colors for progress bars
 
 let greenMaterial = new Material()
-greenMaterial.albedoColor = new Color3(0.67, 1, 0.75)
+greenMaterial.albedoColor = Color3.Green()
 
 let yellowMaterial = new Material()
-greenMaterial.albedoColor = new Color3(1, 1, 0.25)
+yellowMaterial.albedoColor = Color3.Yellow()
 
 let redMaterial = new Material()
-greenMaterial.albedoColor = Color3.Red()
+redMaterial.albedoColor = Color3.Red()
 
 engine.addSystem(
   new ProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial)
@@ -81,7 +81,7 @@ let box = new Entity()
 box.add(new BoxShape())
 box.get(BoxShape).withCollisions = true
 box.add(new GrabableObjectComponent(IngredientType.Noodles))
-box.add(redMaterial)
+box.add(greenMaterial)
 box.set(
   new Transform({
     position: new Vector3(10, 0.5, 7),
@@ -99,7 +99,7 @@ let box2 = new Entity()
 box2.add(new BoxShape())
 box2.get(BoxShape).withCollisions = true
 box2.add(new GrabableObjectComponent(IngredientType.Sushi))
-box2.add(greenMaterial)
+box2.add(yellowMaterial)
 box2.set(
   new Transform({
     position: new Vector3(10, 0.5, 5),

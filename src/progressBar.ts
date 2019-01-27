@@ -24,14 +24,14 @@ export class ProgressBarUpdate implements ISystem {
         let width = Scalar.Lerp(0, data.fullLength, data.ratio)
         transform.scale.x = width
         transform.position.x = - data.fullLength/2 + width/2
-        if (data.ratio > 0.5){
+        if (data.ratio < 0.5){
           bar.remove(Material)
           bar.set(this.green)
         } 
-        else if (data.ratio > 0.5){
+        else if (data.ratio < 0.7){
           bar.remove(Material)
           bar.set(this.yellow)
-        } else if (data.ratio > 0.8){
+        } else if (data.ratio < 1){
           bar.remove(Material)
           bar.set(this.red)
         } else if (data.ratio > 1){
