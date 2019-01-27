@@ -1,5 +1,5 @@
 import { ProgressBarUpdate, ProgressBar } from "./progressBar"
-import { GridPosition, gridPositions, getClosestShelf, instanceGrid, gridObject } from "./grid"
+import { GridPosition, gridPositions, getClosestShelf, gridObject } from "./grid"
 import { IngredientExpendingMachineComponent } from "./ingredientsExpendingMachine"
 import {
   GrabableObjectComponent,
@@ -113,73 +113,10 @@ box2.add(
 )
 engine.addEntity(box2)
 
-let progressBar1 = new Entity()
-progressBar1.add(new PlaneShape())
-progressBar1.setParent(box2)
-progressBar1.set(
-  new Transform({
-    position: new Vector3(0, 1, 0),
-    scale: new Vector3(0.8, 0.1, 1)
-  })
-)
-progressBar1.set(greenMaterial)
-progressBar1.add(new ProgressBar())
-engine.addEntity(progressBar1)
+
 
 // --------------------------------
 
-let noodlesExpendingMachine = new Entity()
-noodlesExpendingMachine.set(
-  new Transform({
-    position: new Vector3(10, 1, 10)
-  })
-)
-noodlesExpendingMachine.set(new BoxShape())
-
-// let noodleExpendingComponent = new IngredientExpendingMachineComponent(
-//   1,
-//   new Vector3(0, 1, 0),
-//   objectGrabberSystem,
-//   objectGrabber,
-//   noodlesExpendingMachine
-// )
-// noodlesExpendingMachine.set(noodleExpendingComponent)
-
-// noodlesExpendingMachine.add(
-//   new OnClick(e => {
-//     noodleExpendingComponent.createIngredient()
-//   })
-// )
-
-engine.addEntity(noodlesExpendingMachine)
-
-const button = new Entity()
-button.add(
-  new Transform({
-    position: new Vector3(10, 1, 9.5),
-    rotation: Quaternion.Euler(90, 0, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
-  })
-)
-button.add(new CylinderShape())
-button.set(redMaterial)
-button.add(new ButtonData(9.5, 9.6))
-let noodleExpendingComponent = new IngredientExpendingMachineComponent(
-  1,
-  new Vector3(0, 1, 0),
-  objectGrabberSystem,
-  objectGrabber,
-  noodlesExpendingMachine
-)
-button.add(noodleExpendingComponent)
-button.add(
-  new OnClick(e => {
-    noodleExpendingComponent.createIngredient()
-    button.get(ButtonData).pressed = true
-  })
-)
-
-engine.addEntity(button)
 
 // scenery 3D model
 let environment = new Entity()
@@ -206,6 +143,19 @@ pot2.add(potModel)
 pot2.setParent(shelves.grid[2][7])
 engine.addEntity(pot2)
 
+
+let progressBar1 = new Entity()
+progressBar1.add(new PlaneShape())
+progressBar1.setParent(pot1)
+progressBar1.set(
+  new Transform({
+    position: new Vector3(0, 1, 0),
+    scale: new Vector3(0.8, 0.1, 1)
+  })
+)
+progressBar1.set(greenMaterial)
+progressBar1.add(new ProgressBar())
+engine.addEntity(progressBar1)
 
 
 const noodlesButton = new Entity()
