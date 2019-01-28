@@ -18,9 +18,9 @@ export class CustomerData {
   waiting: boolean = false
   dish: DishType
   idleTimer: number
-  constructor(dish: DishType, idleTime: number){
+  constructor(dish: DishType, idleTimer: number){
     this.dish = dish
-    this.idleTimer = idleTime
+    this.idleTimer = idleTimer
   }
 }
 
@@ -35,9 +35,9 @@ export class OrderFood implements ISystem {
         let state = customer.get(CustomerData)
         if (state.waiting){return}
         state.idleTimer -= dt
-        if (state.idleTimer< 0){
+        if (state.idleTimer < 0){
             state.waiting = true
-            createProgressBar(customer)
+            createProgressBar(customer, true, 0.25, 1.2)
             let messageIndex = Math.floor(Scalar.RandomRange(0,customerMessages.length) )
             createSpeechBubble(customer, customerMessages[messageIndex], 4, 2)
             

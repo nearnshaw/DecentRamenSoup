@@ -53,7 +53,7 @@ export class ProgressBarUpdate implements ISystem {
   }
 
 
-export function createProgressBar(parent: Entity, height: number = 1, speed: number = 1){
+export function createProgressBar(parent: Entity, flipped: boolean = false, speed: number = 1, height: number = 1){
   
 
   let background = new Entity()
@@ -66,6 +66,10 @@ export function createProgressBar(parent: Entity, height: number = 1, speed: num
     })
   )
   engine.addEntity(background)
+
+  if (flipped){
+    background.get(Transform).rotation.setEuler(0,180, 0)
+  }
 
   let progressBar = new Entity()
   progressBar.add(new PlaneShape())

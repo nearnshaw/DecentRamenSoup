@@ -32,7 +32,8 @@ export class ShowSpeechBubbles implements ISystem {
     background.set(
       new Transform({
         position: new Vector3(0.5, height, 0),
-        scale: new Vector3(2, 1, 1)
+        scale: new Vector3(2, 1, 1),
+        rotation: Quaternion.Euler(0, 180, 0)
       })
     )
     background.add(new Bubble(timeUp))

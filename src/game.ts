@@ -10,6 +10,7 @@ import {
 import { ButtonData, PushButton, buttons } from "./button"
 import { CustomerData, DishType, OrderFood } from "./customer";
 import { ShowSpeechBubbles } from "./speechBubble";
+import { LerpData, createWalker, Walk } from "./walkers";
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -65,6 +66,7 @@ engine.addSystem(new OrderFood())
 
 engine.addSystem(new ShowSpeechBubbles())
 
+engine.addSystem(new Walk())
 // ----------------------------
 // colors for progress bars
 
@@ -149,6 +151,7 @@ engine.addEntity(pot2)
 
 createProgressBar(pot1)
 
+// buttons
 
 const noodlesButton = new Entity()
 noodlesButton.setParent(shelves.grid[5][3])
@@ -179,14 +182,42 @@ noodlesButton.add(
 
 engine.addEntity(noodlesButton)
 
+// customers
+
+const sit = new AnimationClip("Sitting",{loop:false})
+sit.play()
 
 let customer1 = new Entity()
-customer1.add(new Transform({
-  position: new Vector3(12.5, 1, 9.5),
-  scale: new Vector3(0.5, 0.5, 0.5),
-  rotation: Quaternion.Euler(0, 270, 0)
-}))
-customer1.add(new BoxShape)
-customer1.add(greenMaterial)
 customer1.add(new CustomerData(DishType.Noodles, 1))
+customer1.add(new Transform({
+  position: new Vector3(12.5, 0.75, 9.5),
+  scale: new Vector3(0.75, 0.75, 0.75),
+  rotation: Quaternion.Euler(0, 90, 0)
+}))
+customer1.add(new GLTFShape("models/walkers/BlockDog.gltf"))
+
+customer1.get(GLTFShape).addClip(sit)
+
+
 engine.addEntity(customer1)
+
+let customer2 = new Entity()
+customer2.add(new CustomerData(DishType.Sushi, 1))
+customer2.add(new Transform({
+  position: new Vector3(12.5, 0.75, 11.5),
+  scale: new Vector3(0.75, 0.75, 0.75),
+  rotation: Quaternion.Euler(0, 90, 0)
+}))
+customer2.add(new GLTFShape("models/walkers/BlockDog.gltf"))
+customer2.get(GLTFShape).addClip(sit)
+engine.addEntity(customer2)
+
+
+
+// passers by
+
+//createWalker('models/walkers/gnark.gltf', "walk", true, 0.5)
+
+createWalker('models/walkers/Creep.gltf', "Armature_Walking", true, 0.25)
+
+createWalker('models/walkers/BlockDog.gltf', "Walking", false, 0.25)
