@@ -1,7 +1,7 @@
 @Component("progressBar")
 export class ProgressBar {
   ratio: number = 0
-  fullLength: number = 0.5
+  fullLength: number = 0.9
   movesUp: boolean = true
   color: Material
   speed: number = 1
@@ -73,7 +73,7 @@ export function createProgressBar(parent: Entity, height: number = 1, speed: num
   progressBar.set(
     new Transform({
       position: new Vector3(0, 0, -0.05),
-      scale: new Vector3(0.95, 0.95, 1)
+      scale: new Vector3(0.95, 0.8, 1)
     })
   )
   progressBar.add(new ProgressBar())

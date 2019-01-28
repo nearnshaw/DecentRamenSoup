@@ -9,6 +9,7 @@ import {
 } from "./grabableObjects"
 import { ButtonData, PushButton, buttons } from "./button"
 import { CustomerData, DishType, OrderFood } from "./customer";
+import { ShowSpeechBubbles } from "./speechBubble";
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -61,6 +62,8 @@ engine.addSystem(objectGrabberSystem)
 engine.addSystem(new PushButton())
 
 engine.addSystem(new OrderFood())
+
+engine.addSystem(new ShowSpeechBubbles())
 
 // ----------------------------
 // colors for progress bars

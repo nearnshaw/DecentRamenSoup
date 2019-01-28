@@ -1,4 +1,5 @@
 import { createProgressBar } from "./progressBar";
+import { createSpeechBubble } from "./speechBubble";
 
 export const enum DishType {
     Noodles,
@@ -37,7 +38,9 @@ export class OrderFood implements ISystem {
         if (state.idleTimer< 0){
             state.waiting = true
             createProgressBar(customer)
-            // show message from customerMessages[x]
+            let messageIndex = Math.floor(Scalar.RandomRange(0,customerMessages.length) )
+            createSpeechBubble(customer, customerMessages[messageIndex], 4, 2)
+            
         }
       }
     }
