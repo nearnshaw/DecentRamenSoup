@@ -143,11 +143,13 @@ let potModel = new GLTFShape("models/CookingPot.glb")
 let pot1 = shelves.grid[4][7]
 pot1.add(potModel)
 pot1.add(new Pot())
+pot1.get(Transform).rotation.setEuler(0, 90, 0)
 pot1.add(new OnClick(
   e => {
     ClickPot(objectGrabber, pot1.get(Pot))
   })
 )
+
 // pot1.get(Pot).hasNoodles = true
 // pot1.get(Pot).state = SoupState.Burned
 
@@ -186,12 +188,34 @@ let noodleExpendingComp = new IngredientExpendingMachineComponent(
 noodlesButton.add(noodleExpendingComp)
 noodlesButton.add(
   new OnClick(e => {
-    noodleExpendingComp.createIngredient()
     noodlesButton.get(ButtonData).pressed = true
+    noodleExpendingComp.createIngredient()
   })
 )
 
 engine.addEntity(noodlesButton)
+
+
+const potButton1 = new Entity()
+potButton1.setParent(pot1)
+potButton1.add(
+  new Transform({
+    position: new Vector3(0.3, -0.5, 0),
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+potButton1.add(new CylinderShape())
+potButton1.set(redMaterial)
+potButton1.add(new ButtonData(-0.3, -0.2))
+potButton1.add(
+  new OnClick(e => {
+    potButton1.get(ButtonData).pressed = true
+    createProgressBar(pot1, false, 0.3, 0.2)
+  })
+)
+
+engine.addEntity(potButton1)
 
 // customers
 

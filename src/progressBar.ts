@@ -5,6 +5,8 @@ export class ProgressBar {
   movesUp: boolean = true
   color: Material
   speed: number = 1
+  // parent
+  // parent type (pot / customer)
   constructor(speed: number = 1, movesUp: boolean = true){
     this.speed = speed
     this.movesUp = movesUp
