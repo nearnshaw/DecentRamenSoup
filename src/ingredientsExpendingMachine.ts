@@ -53,8 +53,7 @@ export class IngredientExpendingMachineComponent {
     ent.add(
       new OnClick(e => {
         this.objectGrabberSystemReference.grabObject(
-          ent,
-          this.objectGrabberEntityReference
+          ent
         )
         this.lastCreatedIngredient = null
       })

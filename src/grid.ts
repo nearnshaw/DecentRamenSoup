@@ -46,7 +46,7 @@ export class gridObject{
         testEnt.add(new BoxShape())
         testEnt.add(
           new Transform({
-            scale: new Vector3(0.1, 0.05, 0.1)
+            scale: new Vector3(0.05, 0.05, 0.05)
           })
         )
         engine.addEntity(testEnt)

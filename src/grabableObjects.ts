@@ -1,8 +1,12 @@
 import { GridPosition, gridPositions, getClosestShelf, gridObject } from "./grid"
+import { Pot, AddNoodles } from "./pot";
 
 export const enum IngredientType {
   Noodles,
-  Sushi
+  Sushi,
+  CookedNoodles,
+  CookedSushi,
+  Trash
 }
 
 @Component("grabableObjectComponent")
@@ -10,8 +14,9 @@ export class GrabableObjectComponent {
   grabbed: boolean = false
   type: IngredientType = IngredientType.Noodles
 
-  constructor(type: IngredientType) {
+  constructor(type: IngredientType, grabbed: boolean = false) {
     this.type = type
+    this.grabbed = grabbed
   }
 }
 
@@ -24,9 +29,11 @@ export class ObjectGrabberSystem implements ISystem {
   transform: Transform
   objectGrabberComponent: ObjectGrabberComponent
   gridObject: gridObject
+  objectGrabber: Entity;
   constructor(objectGrabber: Entity, gridObject: gridObject) {
     this.transform = objectGrabber.get(Transform)
     this.gridObject = gridObject
+    this.objectGrabber = objectGrabber
     this.objectGrabberComponent = objectGrabber.get(ObjectGrabberComponent)
 
     Input.instance.subscribe("BUTTON_A_DOWN", e => {
@@ -40,7 +47,7 @@ export class ObjectGrabberSystem implements ISystem {
     this.transform.rotation = Camera.instance.rotation
   }
 
-  public grabObject(grabbedObject: Entity, objectGrabber: Entity) {
+  public grabObject(grabbedObject: Entity) {
     if (!this.objectGrabberComponent.grabbedObject) {
       log("grabbed object")
       if (grabbedObject.getParent().has(GridPosition)){
@@ -49,7 +56,7 @@ export class ObjectGrabberSystem implements ISystem {
       }
     
       grabbedObject.get(GrabableObjectComponent).grabbed = true
-      grabbedObject.setParent(objectGrabber)
+      grabbedObject.setParent(this.objectGrabber)
       grabbedObject.get(Transform).position.set(0, 1, 1)
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
@@ -82,6 +89,10 @@ export class ObjectGrabberSystem implements ISystem {
           GrabableObjectComponent
         ).grabbed = false
       this.objectGrabberComponent.grabbedObject = null 
+      if(gridPosition.has(Pot)){
+        log("dropped something in a pot")
+        AddNoodles(gridPosition.get(GridPosition).object, gridPosition.get(Pot))
+      }
     } else {
       log("not possible to drop here")
     }  

@@ -11,6 +11,7 @@ import { ButtonData, PushButton, buttons } from "./button"
 import { CustomerData, DishType, OrderFood } from "./customer";
 import { ShowSpeechBubbles } from "./speechBubble";
 import { LerpData, createWalker, Walk } from "./walkers";
+import { Pot, ClickPot, SoupState } from "./pot";
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -96,7 +97,7 @@ box.set(
 )
 box.add(
   new OnClick(e => {
-    objectGrabberSystem.grabObject(box, objectGrabber)
+    objectGrabberSystem.grabObject(box)
   })
 )
 engine.addEntity(box)
@@ -114,7 +115,7 @@ box2.set(
 )
 box2.add(
   new OnClick(e => {
-    objectGrabberSystem.grabObject(box2, objectGrabber)
+    objectGrabberSystem.grabObject(box2)
   })
 )
 engine.addEntity(box2)
@@ -139,15 +140,25 @@ engine.addEntity(environment)
 
 let potModel = new GLTFShape("models/CookingPot.glb")
 
-let pot1 = new Entity()
+let pot1 = shelves.grid[4][7]
 pot1.add(potModel)
-pot1.setParent(shelves.grid[4][7])
-engine.addEntity(pot1)
+pot1.add(new Pot())
+pot1.add(new OnClick(
+  e => {
+    ClickPot(objectGrabber, pot1.get(Pot))
+  })
+)
+// pot1.get(Pot).hasNoodles = true
+// pot1.get(Pot).state = SoupState.Burned
 
-let pot2 = new Entity()
+let pot2 = shelves.grid[2][7]
 pot2.add(potModel)
-pot2.setParent(shelves.grid[2][7])
-engine.addEntity(pot2)
+pot2.add(new Pot())
+pot2.add(new OnClick(
+  e => {
+    ClickPot(objectGrabber, pot2.get(Pot))
+  })
+)
 
 createProgressBar(pot1)
 
@@ -166,7 +177,7 @@ noodlesButton.add(new CylinderShape())
 noodlesButton.set(redMaterial)
 noodlesButton.add(new ButtonData(-0.3, -0.2))
 let noodleExpendingComp = new IngredientExpendingMachineComponent(
-  1,
+  IngredientType.Noodles,
   new Vector3(0, 0, 0),
   objectGrabberSystem,
   objectGrabber,
