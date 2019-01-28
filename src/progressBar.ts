@@ -40,7 +40,8 @@ export class ProgressBarUpdate implements ISystem {
           bar.remove(Material)
           bar.set(this.red)
         } else if (data.ratio > 1){
-          engine.removeEntity(bar)
+          engine.removeEntity(bar.getParent(), true)
+
         }
       }
     }
@@ -53,15 +54,29 @@ export class ProgressBarUpdate implements ISystem {
 
 
 export function createProgressBar(parent: Entity, height: number = 1, speed: number = 1){
-  let progressBar = new Entity()
-  progressBar.add(new PlaneShape())
-  progressBar.setParent(parent)
-  progressBar.set(
+  
+
+  let background = new Entity()
+  background.add(new PlaneShape())
+  background.setParent(parent)
+  background.set(
     new Transform({
       position: new Vector3(0, height, 0),
-      scale: new Vector3(0.8, 0.1, 1)
+      scale: new Vector3(0.82, 0.15, 1)
+    })
+  )
+  engine.addEntity(background)
+
+  let progressBar = new Entity()
+  progressBar.add(new PlaneShape())
+  progressBar.setParent(background)
+  progressBar.set(
+    new Transform({
+      position: new Vector3(0, 0, -0.05),
+      scale: new Vector3(0.95, 0.95, 1)
     })
   )
   progressBar.add(new ProgressBar())
   engine.addEntity(progressBar)
+
 }
