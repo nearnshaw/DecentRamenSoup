@@ -4,6 +4,11 @@ export class ProgressBar {
   fullLength: number = 0.5
   movesUp: boolean = true
   color: Material
+  speed: number = 1
+  constructor(speed: number = 1, movesUp: boolean = true){
+    this.speed = speed
+    this.movesUp = movesUp
+  }
 }
 
 // component group grid positions
@@ -18,7 +23,7 @@ export class ProgressBarUpdate implements ISystem {
         let transform = bar.get(Transform)
         let data = bar.get(ProgressBar)
         if(data.ratio < 1){
-          data.ratio += dt/10
+          data.ratio += dt/10 * data.speed
         }
         //log(data.ratio)
         let width = Scalar.Lerp(0, data.fullLength, data.ratio)
@@ -45,3 +50,18 @@ export class ProgressBarUpdate implements ISystem {
         this.green = green
     }
   }
+
+
+export function createProgressBar(parent: Entity, height: number = 1, speed: number = 1){
+  let progressBar = new Entity()
+  progressBar.add(new PlaneShape())
+  progressBar.setParent(parent)
+  progressBar.set(
+    new Transform({
+      position: new Vector3(0, height, 0),
+      scale: new Vector3(0.8, 0.1, 1)
+    })
+  )
+  progressBar.add(new ProgressBar())
+  engine.addEntity(progressBar)
+}

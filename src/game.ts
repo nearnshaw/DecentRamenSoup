@@ -1,4 +1,4 @@
-import { ProgressBarUpdate, ProgressBar } from "./progressBar"
+import { ProgressBarUpdate, ProgressBar, createProgressBar } from "./progressBar"
 import { GridPosition, gridPositions, getClosestShelf, gridObject } from "./grid"
 import { IngredientExpendingMachineComponent } from "./ingredientsExpendingMachine"
 import {
@@ -8,6 +8,7 @@ import {
   IngredientType
 } from "./grabableObjects"
 import { ButtonData, PushButton, buttons } from "./button"
+import { CustomerData, DishType, OrderFood } from "./customer";
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -59,7 +60,7 @@ engine.addSystem(objectGrabberSystem)
 // System to push button up and down
 engine.addSystem(new PushButton())
 
-
+engine.addSystem(new OrderFood())
 
 // ----------------------------
 // colors for progress bars
@@ -143,19 +144,7 @@ pot2.add(potModel)
 pot2.setParent(shelves.grid[2][7])
 engine.addEntity(pot2)
 
-
-let progressBar1 = new Entity()
-progressBar1.add(new PlaneShape())
-progressBar1.setParent(pot1)
-progressBar1.set(
-  new Transform({
-    position: new Vector3(0, 1, 0),
-    scale: new Vector3(0.8, 0.1, 1)
-  })
-)
-progressBar1.set(greenMaterial)
-progressBar1.add(new ProgressBar())
-engine.addEntity(progressBar1)
+createProgressBar(pot1)
 
 
 const noodlesButton = new Entity()
@@ -186,3 +175,15 @@ noodlesButton.add(
 )
 
 engine.addEntity(noodlesButton)
+
+
+let customer1 = new Entity()
+customer1.add(new Transform({
+  position: new Vector3(12.5, 1, 9.5),
+  scale: new Vector3(0.5, 0.5, 0.5),
+  rotation: Quaternion.Euler(0, 270, 0)
+}))
+customer1.add(new BoxShape)
+customer1.add(greenMaterial)
+customer1.add(new CustomerData(DishType.Noodles, 1))
+engine.addEntity(customer1)
