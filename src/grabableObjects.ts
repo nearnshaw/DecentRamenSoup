@@ -1,4 +1,9 @@
-import { GridPosition, gridPositions, getClosestShelf, gridObject } from "./grid"
+import {
+  GridPosition,
+  gridPositions,
+  getClosestShelf,
+  gridObject
+} from "./grid"
 
 export const enum IngredientType {
   Noodles,
@@ -24,6 +29,9 @@ export class ObjectGrabberSystem implements ISystem {
   transform: Transform
   objectGrabberComponent: ObjectGrabberComponent
   gridObject: gridObject
+  targetPosition: Vector3
+  targetRotation: Quaternion
+
   constructor(objectGrabber: Entity, gridObject: gridObject) {
     this.transform = objectGrabber.get(Transform)
     this.gridObject = gridObject
@@ -34,26 +42,37 @@ export class ObjectGrabberSystem implements ISystem {
     })
   }
 
-  update() {
-    // log("camera rotation: " + Camera.instance.rotation.eulerAngles)
-    this.transform.position = Camera.instance.position
-    this.transform.rotation = Camera.instance.rotation
+  update(deltaTime: number) {
+    this.targetPosition = Camera.instance.position
+    this.targetRotation = Camera.instance.rotation
+
+    let lerpingSpeed = 15
+    this.transform.position = Vector3.Lerp(
+      this.transform.position,
+      this.targetPosition,
+      deltaTime * lerpingSpeed
+    )
+
+    this.transform.rotation = Quaternion.Slerp(
+      this.transform.rotation,
+      this.targetRotation,
+      deltaTime * lerpingSpeed
+    )
   }
 
   public grabObject(grabbedObject: Entity, objectGrabber: Entity) {
     if (!this.objectGrabberComponent.grabbedObject) {
       log("grabbed object")
-      if (grabbedObject.getParent().has(GridPosition)){
+      if (grabbedObject.getParent().has(GridPosition)) {
         let gridPosition = grabbedObject.getParent()
         gridPosition.get(GridPosition).object = null
       }
-    
+
       grabbedObject.get(GrabableObjectComponent).grabbed = true
       grabbedObject.setParent(objectGrabber)
       grabbedObject.get(Transform).position.set(0, 1, 1)
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
-
     } else {
       log("already holding")
     }
@@ -69,22 +88,22 @@ export class ObjectGrabberSystem implements ISystem {
       ),
       this.gridObject
     )
-    
-    if (gridPosition){
-      gridPosition.get(GridPosition).object = this.objectGrabberComponent.grabbedObject
-      this.objectGrabberComponent.grabbedObject.setParent(
-          gridPosition
-        )
+
+    if (gridPosition) {
+      gridPosition.get(
+        GridPosition
+      ).object = this.objectGrabberComponent.grabbedObject
+      this.objectGrabberComponent.grabbedObject.setParent(gridPosition)
       this.objectGrabberComponent.grabbedObject.get(
-          Transform
-        ).position = Vector3.Zero()
+        Transform
+      ).position = Vector3.Zero()
       this.objectGrabberComponent.grabbedObject.get(
-          GrabableObjectComponent
-        ).grabbed = false
-      this.objectGrabberComponent.grabbedObject = null 
+        GrabableObjectComponent
+      ).grabbed = false
+      this.objectGrabberComponent.grabbedObject = null
     } else {
       log("not possible to drop here")
-    }  
+    }
   }
 
   calculateDirectionBasedOnYRotation(yRotation: number) {
