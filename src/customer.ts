@@ -37,7 +37,7 @@ export class OrderFood implements ISystem {
         state.idleTimer -= dt
         if (state.idleTimer < 0){
             state.waiting = true
-            createProgressBar(customer, true, 0.25, 1.2)
+            
             let messageIndex = Math.floor(Scalar.RandomRange(0,customerMessages.length) )
             createSpeechBubble(customer, customerMessages[messageIndex], 4, 2)
             
