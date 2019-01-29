@@ -19,7 +19,7 @@ smokeShape.billboard = BillboardMode.BILLBOARDMODE_ALL
 
 
 export const smokeSpawner = {
-    MAX_POOL_SIZE: 40,
+    MAX_POOL_SIZE: 50,
     pool: [] as Entity[],
   
     getEntityFromPool(): Entity | null {
@@ -86,11 +86,11 @@ export class SmokeSystem implements ISystem {
   
     isOutOfBounds(transform: Transform) {
       if (
-        transform.position.y > 4 ||
-        transform.position.x > 2 ||
-        transform.position.z > 2 ||
-        transform.position.x < -2 ||
-        transform.position.z < -2
+        transform.position.y > 2.5 ||
+        transform.position.x > 1.5 ||
+        transform.position.z > 1.5 ||
+        transform.position.x < -1.5 ||
+        transform.position.z < -1.5
       ) {
         return true
       }

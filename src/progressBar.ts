@@ -48,11 +48,11 @@ export class ProgressBarUpdate implements ISystem {
           bar.remove(Material)
           bar.set(this.green)
           pot.state = SoupState.Cooked
-          data.smokeInterval *= 0.98
+          data.smokeInterval *= 0.99
         } else if (data.ratio < 1){
           bar.remove(Material)
           bar.set(this.red)
-          data.smokeInterval *= 0.97
+          data.smokeInterval *= 0.98
         } else if (data.ratio > 1){
           pot.state = SoupState.Burned
           
