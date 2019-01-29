@@ -152,7 +152,7 @@ pot1.add(new Pot())
 pot1.get(Transform).rotation.setEuler(0, 90, 0)
 pot1.add(
   new OnClick(e => {
-    ClickPot(objectGrabber, pot1.get(Pot))
+    ClickPot(objectGrabber, pot1.get(Pot), objectGrabberSystem)
   })
 )
 
@@ -162,7 +162,7 @@ pot2.add(new Pot())
 pot2.get(Transform).rotation.setEuler(0, 90, 0)
 pot2.add(
   new OnClick(e => {
-    ClickPot(objectGrabber, pot2.get(Pot))
+    ClickPot(objectGrabber, pot2.get(Pot), objectGrabberSystem)
   })
 )
 
@@ -176,7 +176,7 @@ cutter1.add(new CuttingBoard())
 cutter1.get(Transform).rotation.setEuler(0, 90, 0)
 cutter1.add(
   new OnClick(e => {
-    ClickBoard(objectGrabber, cutter1.get(CuttingBoard))
+    ClickBoard(objectGrabber, cutter1.get(CuttingBoard), objectGrabberSystem)
   })
 )
 
@@ -186,7 +186,7 @@ cutter2.add(new CuttingBoard())
 cutter2.get(Transform).rotation.setEuler(0, 90, 0)
 cutter2.add(
   new OnClick(e => {
-    ClickBoard(objectGrabber, cutter2.get(CuttingBoard))
+    ClickBoard(objectGrabber, cutter2.get(CuttingBoard), objectGrabberSystem)
   })
 )
 

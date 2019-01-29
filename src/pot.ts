@@ -1,7 +1,8 @@
 import {
   ObjectGrabberComponent,
   GrabableObjectComponent,
-  IngredientType
+  IngredientType,
+  ObjectGrabberSystem
 } from './grabableObjects'
 
 export const enum SoupState {
@@ -32,7 +33,7 @@ export function AddNoodles(DroppedObject: Entity, pot: Pot) {
   engine.removeEntity(DroppedObject)
 }
 
-export function ClickPot(GrabberEntity: Entity, pot: Pot) {
+export function ClickPot(GrabberEntity: Entity, pot: Pot, objectGrabberSystem: ObjectGrabberSystem) {
   let grabberComponent = GrabberEntity.get(ObjectGrabberComponent)
   if (grabberComponent.grabbedObject) {
     log('already holding something')
@@ -52,6 +53,11 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot) {
       })
     )
     trash.add(new GrabableObjectComponent(IngredientType.Trash, true))
+    trash.add(
+        new OnClick(e => {
+          objectGrabberSystem.grabObject(trash)
+        })
+      )
     engine.addEntity(trash)
     grabberComponent.grabbedObject = trash
     pot.reset()
@@ -73,6 +79,11 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot) {
     soupBowl.add(
       new GrabableObjectComponent(IngredientType.CookedNoodles, true)
     )
+    soupBowl.add(
+        new OnClick(e => {
+          objectGrabberSystem.grabObject(soupBowl)
+        })
+      )
     engine.addEntity(soupBowl)
     grabberComponent.grabbedObject = soupBowl
     pot.reset()

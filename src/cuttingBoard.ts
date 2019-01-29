@@ -1,4 +1,4 @@
-import { GrabableObjectComponent, IngredientType, ObjectGrabberComponent } from "./grabableObjects";
+import { GrabableObjectComponent, IngredientType, ObjectGrabberComponent, ObjectGrabberSystem } from "./grabableObjects";
 
 // export const enum RollState {
 //     full,
@@ -37,7 +37,7 @@ import { GrabableObjectComponent, IngredientType, ObjectGrabberComponent } from 
 
 
 
-  export function ClickBoard(GrabberEntity: Entity, cuttingBoadrd: CuttingBoard) {
+  export function ClickBoard(GrabberEntity: Entity, cuttingBoadrd: CuttingBoard, objectGrabberSystem: ObjectGrabberSystem) {
     let grabberComponent = GrabberEntity.get(ObjectGrabberComponent)
     if (grabberComponent.grabbedObject) {
       log('already holding something')
@@ -57,6 +57,11 @@ import { GrabableObjectComponent, IngredientType, ObjectGrabberComponent } from 
         })
       )
       trash.add(new GrabableObjectComponent(IngredientType.Trash, true))
+      trash.add(
+        new OnClick(e => {
+          objectGrabberSystem.grabObject(trash)
+        })
+      )
       engine.addEntity(trash)
       grabberComponent.grabbedObject = trash
       cuttingBoadrd.reset()
@@ -77,6 +82,11 @@ import { GrabableObjectComponent, IngredientType, ObjectGrabberComponent } from 
       )
       sushiPlate.add(
         new GrabableObjectComponent(IngredientType.CookedNoodles, true)
+      )
+      sushiPlate.add(
+        new OnClick(e => {
+          objectGrabberSystem.grabObject(sushiPlate)
+        })
       )
       engine.addEntity(sushiPlate)
       grabberComponent.grabbedObject = sushiPlate
