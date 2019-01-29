@@ -43,6 +43,23 @@ export class CustomerPlate {
 
 export const customers = engine.getComponentGroup(CustomerData)
 export const plates = engine.getComponentGroup(CustomerPlate)
+let playerScore: number = 0
+
+// Player score display (has to be here where the playerScore var lives...)
+let scoreTextEntity = new Entity()
+let textShape: TextShape = new TextShape(playerScore.toString())
+textShape.textWrapping = false
+textShape.color = Color3.Teal()
+textShape.fontSize = 400
+textShape.width = 10
+scoreTextEntity.set(textShape)
+scoreTextEntity.set(
+  new Transform({
+    position: new Vector3(13.8, 0.5, 10.5),
+    rotation: Quaternion.Euler(0, 270, 0)
+  })
+)
+engine.addEntity(scoreTextEntity)
 
 export class CustomersSystem implements ISystem {
   update(dt: number) {
@@ -125,9 +142,14 @@ export function createCustomer(position: Vector3, plate: CustomerPlate) {
 export function deliverOrder(plate: CustomerPlate) {
   if (plate.dish == plate.ownerCustomer.dish) {
     log('WELL DONE!!!')
+    playerScore += 50
   } else {
     log('WRONG!!!')
+    playerScore -= 50
   }
+
+  log('score: ' + playerScore)
+  textShape.value = playerScore.toString()
 
   plate.ownerCustomer.receivedDish = true
 }

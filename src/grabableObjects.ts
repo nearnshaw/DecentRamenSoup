@@ -114,28 +114,29 @@ export class ObjectGrabberSystem implements ISystem {
 
       if (gridPosition.has(Pot)) {
         log('dropped something in a pot')
+
         AddNoodles(
           this.objectGrabberComponent.grabbedObject,
           gridPosition.get(Pot)
         )
+
         gridPosition.get(GridPosition).object = null
-      } else {
+      } else if (gridPosition.has(CustomerPlate)) {
         let plate = gridPosition.get(CustomerPlate)
 
-        if (plate) {
-          log('delivered order')
+        log('delivered order')
 
-          plate.dish = this.objectGrabberComponent.grabbedObject.get(
-            GrabableObjectComponent
-          ).type
+        plate.dish = this.objectGrabberComponent.grabbedObject.get(
+          GrabableObjectComponent
+        ).type
 
-          deliverOrder(plate)
-          engine.removeEntity(this.objectGrabberComponent.grabbedObject)
-        }
+        deliverOrder(plate)
+        engine.removeEntity(this.objectGrabberComponent.grabbedObject)
+
+        gridPosition.get(GridPosition).object = null
       }
 
       this.objectGrabberComponent.grabbedObject = null
-      gridPosition.get(GridPosition).object = null
     } else {
       log('not possible to drop here')
     }
