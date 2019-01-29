@@ -41,15 +41,15 @@ export class gridObject{
         engine.addEntity(shelf)
         this.grid[x][z] = shelf
     
-        let testEnt = new Entity()
-        testEnt.setParent(shelf)
-        testEnt.add(new BoxShape())
-        testEnt.add(
-          new Transform({
-            scale: new Vector3(0.05, 0.05, 0.05)
-          })
-        )
-        engine.addEntity(testEnt)
+        // let testEnt = new Entity()
+        // testEnt.setParent(shelf)
+        // testEnt.add(new BoxShape())
+        // testEnt.add(
+        //   new Transform({
+        //     scale: new Vector3(0.05, 0.05, 0.05)
+        //   })
+        // )
+        // engine.addEntity(testEnt)
       }
     }
 
