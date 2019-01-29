@@ -27,6 +27,7 @@ import { ShowSpeechBubbles } from './speechBubble'
 import { LerpData, createWalker, Walk } from './walkers'
 import { Pot, ClickPot, SoupState } from './pot'
 import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard';
+import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke';
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -78,6 +79,9 @@ engine.addSystem(new CustomersSystem())
 engine.addSystem(new ShowSpeechBubbles())
 
 engine.addSystem(new Walk())
+
+engine.addSystem(new SmokeSystem())
+
 // ----------------------------
 // colors for progress bars
 
@@ -129,6 +133,15 @@ box2.add(
   })
 )
 engine.addEntity(box2)
+
+
+smokeSpawner.SpawnSmokePuff(box)
+smokeSpawner.SpawnSmokePuff(box)
+smokeSpawner.SpawnSmokePuff(box)
+smokeSpawner.SpawnSmokePuff(box)
+smokeSpawner.SpawnSmokePuff(box)
+smokeSpawner.SpawnSmokePuff(box)
+
 
 // --------------------------------
 
@@ -387,3 +400,5 @@ let customer4 = createCustomer(new Vector3(12.5, 0.75, 12.5), plate4)
 createWalker('models/walkers/Creep.gltf', 'Armature_Walking', true, 0.25)
 
 createWalker('models/walkers/BlockDog.gltf', 'Walking', false, 0.25)
+
+
