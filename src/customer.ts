@@ -1,27 +1,48 @@
-import { createProgressBar } from './progressBar'
 import { createSpeechBubble } from './speechBubble'
+import { IngredientType } from './grabableObjects'
 
-export const enum DishType {
-  Noodles,
-  Sushi
-}
-
-export const customerNoodleMessages = [
-  'I want noodles, NOW!',
-  "Excuse me kind sir, if I could interrupt what you're doing for just one moment... I'd very much appreciate if you could please serve me one of those plates of noodles that your fine establishment is so famous for, if it isn't much trouble. FAST!"
+export const customerRawNoodleMessages = [
+  "Me like some noodles! me like'em RAW!",
+  'Raw noodles please, and hurry up!'
 ]
 
-export const customerSushiMessages = ['I want noodles, NOW!', 'Sushi. Tic Toc.']
+export const customerRawSushiMessages = [
+  'They say you got the best rolls, gimme!',
+  'one roll please.'
+]
+
+export const customerCookedNoodleMessages = [
+  'I want noodles, NOW!',
+  'I... need... my... noodles... ungh!'
+]
+
+export const customerSlicedSushiMessages = [
+  'I want noodles, NOW!',
+  'Sushi. Tic Toc.'
+]
+
+export const customerTrashMessages = [
+  'Gimme the stinky ones!',
+  'The burrrrrrrnt the better!'
+]
 
 @Component('customerData')
 export class CustomerData {
-  dish: DishType
+  dish: IngredientType
   message: string
   speechBubble: Entity
-  receivedDish: boolean = true // to force the 1st spawning
+  receivedDish: boolean = true // to force the 1st initialization
+  plate: CustomerPlate
+}
+
+@Component('customerPlate')
+export class CustomerPlate {
+  ownerCustomer: CustomerData
+  dish: IngredientType
 }
 
 export const customers = engine.getComponentGroup(CustomerData)
+export const plates = engine.getComponentGroup(CustomerPlate)
 
 export class CustomersSystem implements ISystem {
   update(dt: number) {
@@ -39,13 +60,34 @@ export class CustomersSystem implements ISystem {
 
     // TODO: Add shape randomization
 
-    customerData.dish = Scalar.RandomRange(0, 1)
+    customerData.dish = Math.floor(Scalar.RandomRange(0, IngredientType.COUNT))
 
-    let messages: string[] =
-      customerData.dish == 0 ? customerNoodleMessages : customerSushiMessages
+    let messages: string[]
+    switch (customerData.dish) {
+      case 0:
+        messages = customerRawNoodleMessages
+        break
+      case 1:
+        messages = customerRawSushiMessages
+        break
+      case 2:
+        messages = customerCookedNoodleMessages
+        break
+      case 3:
+        messages = customerSlicedSushiMessages
+        break
+      case 4:
+        messages = customerTrashMessages
+        break
+
+      default:
+        messages = customerCookedNoodleMessages
+        break
+    }
 
     let randomIndex = Math.floor(Scalar.RandomRange(0, messages.length))
     customerData.message = messages[randomIndex]
+
     if (customerData.speechBubble) {
       engine.removeEntity(customerData.speechBubble)
     }
@@ -55,9 +97,15 @@ export class CustomersSystem implements ISystem {
   }
 }
 
-export function createCustomer(position: Vector3) {
+export function createCustomer(position: Vector3, plate: CustomerPlate) {
   let customer = new Entity()
-  customer.add(new CustomerData())
+  let customerData = new CustomerData()
+
+  customerData.plate = plate
+  plate.ownerCustomer = customerData
+
+  customer.add(customerData)
+
   customer.add(
     new Transform({
       position: position,
@@ -72,6 +120,16 @@ export function createCustomer(position: Vector3) {
   engine.addEntity(customer)
 
   return customer
+}
+
+export function deliverOrder(plate: CustomerPlate) {
+  if (plate.dish == plate.ownerCustomer.dish) {
+    log('WELL DONE!!!')
+  } else {
+    log('WRONG!!!')
+  }
+
+  plate.ownerCustomer.receivedDish = true
 }
 
 const sit = new AnimationClip('Sitting', { loop: false })

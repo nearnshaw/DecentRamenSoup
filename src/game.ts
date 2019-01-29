@@ -19,9 +19,9 @@ import {
 import { ButtonData, PushButton, buttons } from './button'
 import {
   CustomerData,
-  DishType,
   CustomersSystem,
-  createCustomer
+  createCustomer,
+  CustomerPlate
 } from './customer'
 import { ShowSpeechBubbles } from './speechBubble'
 import { LerpData, createWalker, Walk } from './walkers'
@@ -247,11 +247,24 @@ potButton2.add(
 
 engine.addEntity(potButton2)
 
+// customer plates
+let plate1 = new CustomerPlate()
+shelves.grid[0][3].add(plate1)
+
+let plate2 = new CustomerPlate()
+shelves.grid[0][4].add(plate2)
+
+let plate3 = new CustomerPlate()
+shelves.grid[0][5].add(plate3)
+
+let plate4 = new CustomerPlate()
+shelves.grid[0][6].add(plate4)
+
 // customers
-let customer1 = createCustomer(new Vector3(12.5, 0.75, 9.5))
-let customer2 = createCustomer(new Vector3(12.5, 0.75, 10.5))
-let customer3 = createCustomer(new Vector3(12.5, 0.75, 11.5))
-let customer4 = createCustomer(new Vector3(12.5, 0.75, 12.5))
+let customer1 = createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+let customer2 = createCustomer(new Vector3(12.5, 0.75, 10.5), plate2)
+let customer3 = createCustomer(new Vector3(12.5, 0.75, 11.5), plate3)
+let customer4 = createCustomer(new Vector3(12.5, 0.75, 12.5), plate4)
 
 // passers by
 

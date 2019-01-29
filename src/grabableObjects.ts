@@ -1,15 +1,22 @@
-import { GridPosition, gridPositions, getClosestShelf, gridObject } from "./grid"
-import { Pot, AddNoodles } from "./pot"
+import {
+  GridPosition,
+  gridPositions,
+  getClosestShelf,
+  gridObject
+} from './grid'
+import { Pot, AddNoodles } from './pot'
+import { CustomerPlate, deliverOrder } from './customer'
 
 export const enum IngredientType {
   Noodles,
   Sushi,
   CookedNoodles,
-  CookedSushi,
-  Trash
+  SlicedSushi,
+  Trash,
+  COUNT
 }
 
-@Component("grabableObjectComponent")
+@Component('grabableObjectComponent')
 export class GrabableObjectComponent {
   grabbed: boolean = false
   type: IngredientType = IngredientType.Noodles
@@ -20,7 +27,7 @@ export class GrabableObjectComponent {
   }
 }
 
-@Component("objectGrabberComponent")
+@Component('objectGrabberComponent')
 export class ObjectGrabberComponent {
   grabbedObject: Entity = null
 }
@@ -38,7 +45,7 @@ export class ObjectGrabberSystem implements ISystem {
     this.objectGrabber = objectGrabber
     this.objectGrabberComponent = objectGrabber.get(ObjectGrabberComponent)
 
-    Input.instance.subscribe("BUTTON_A_DOWN", e => {
+    Input.instance.subscribe('BUTTON_A_DOWN', e => {
       this.dropObject()
     })
   }
@@ -63,7 +70,7 @@ export class ObjectGrabberSystem implements ISystem {
 
   public grabObject(grabbedObject: Entity) {
     if (!this.objectGrabberComponent.grabbedObject) {
-      log("grabbed object")
+      log('grabbed object')
       if (grabbedObject.getParent().has(GridPosition)) {
         let gridPosition = grabbedObject.getParent()
         gridPosition.get(GridPosition).object = null
@@ -75,7 +82,7 @@ export class ObjectGrabberSystem implements ISystem {
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
     } else {
-      log("already holding")
+      log('already holding')
     }
   }
 
@@ -94,21 +101,42 @@ export class ObjectGrabberSystem implements ISystem {
       gridPosition.get(
         GridPosition
       ).object = this.objectGrabberComponent.grabbedObject
+
       this.objectGrabberComponent.grabbedObject.setParent(gridPosition)
+
       this.objectGrabberComponent.grabbedObject.get(
         Transform
       ).position = Vector3.Zero()
+
       this.objectGrabberComponent.grabbedObject.get(
-          GrabableObjectComponent
-        ).grabbed = false
-      this.objectGrabberComponent.grabbedObject = null 
-      if(gridPosition.has(Pot)){
-        log("dropped something in a pot")
-        AddNoodles(gridPosition.get(GridPosition).object, gridPosition.get(Pot))
+        GrabableObjectComponent
+      ).grabbed = false
+
+      if (gridPosition.has(Pot)) {
+        log('dropped something in a pot')
+        AddNoodles(
+          this.objectGrabberComponent.grabbedObject,
+          gridPosition.get(Pot)
+        )
         gridPosition.get(GridPosition).object = null
+      } else {
+        let plate = gridPosition.get(CustomerPlate)
+
+        if (plate) {
+          log('delivered order')
+
+          plate.dish = this.objectGrabberComponent.grabbedObject.get(
+            GrabableObjectComponent
+          ).type
+
+          deliverOrder(plate)
+          engine.removeEntity(this.objectGrabberComponent.grabbedObject)
+        }
       }
+
+      this.objectGrabberComponent.grabbedObject = null
     } else {
-      log("not possible to drop here")
+      log('not possible to drop here')
     }
   }
 
