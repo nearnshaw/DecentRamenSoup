@@ -320,7 +320,7 @@ cutterButton1.add(
 )
 cutterButton1.add(new CylinderShape())
 cutterButton1.set(redMaterial)
-cutterButton1.add(new ButtonData(0.3, 0.2))
+cutterButton1.add(new ButtonData(0.3,  0.25, 0.3))
 cutterButton1.add(
   new OnClick(e => {
     cutterButton1.get(ButtonData).pressed = true
@@ -346,7 +346,7 @@ cutterButton2.add(
 )
 cutterButton2.add(new CylinderShape())
 cutterButton2.set(redMaterial)
-cutterButton2.add(new ButtonData(0.3, 0.2))
+cutterButton2.add(new ButtonData(0.3, 0.25, 0.3))
 cutterButton2.add(
   new OnClick(e => {
     cutterButton2.get(ButtonData).pressed = true

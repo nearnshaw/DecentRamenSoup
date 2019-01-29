@@ -4,13 +4,15 @@ export class ButtonData {
   xUp: number = 0
   xDown: number = 0
   fraction: number
-  timeDown: number
-  constructor(xUp: number, xDown: number){
+  timeDownLeft: number
+  totalTimeDown: number
+  constructor(xUp: number, xDown: number, timeDown: number = 2){
     this.xUp = xUp
     this.xDown = xDown
     this.pressed = false
     this.fraction = 0
-    this.timeDown = 2
+    this.timeDownLeft = timeDown
+    this.totalTimeDown = timeDown
   }
 }
 
@@ -31,10 +33,10 @@ export class PushButton implements ISystem {
             )
             state.fraction += 1/8
           }
-          state.timeDown -= dt
-          if (state.timeDown < 0) {
+          state.timeDownLeft -= dt
+          if (state.timeDownLeft < 0) {
             state.pressed = false
-            state.timeDown = 2
+            state.timeDownLeft = state.totalTimeDown
           }
         } else if (state.pressed == false && state.fraction > 0) {
           transform.position.x = Scalar.Lerp(
