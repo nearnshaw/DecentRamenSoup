@@ -135,6 +135,7 @@ export class ObjectGrabberSystem implements ISystem {
       }
 
       this.objectGrabberComponent.grabbedObject = null
+      gridPosition.get(GridPosition).object = null
     } else {
       log('not possible to drop here')
     }
