@@ -37,16 +37,6 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot) {
   if (grabberComponent.grabbedObject) {
     log('already holding something')
     return
-    // let object = grabberComponent.grabbedObject
-    // let grabbableObject = object.get(GrabableObjectComponent)
-    // if (grabbableObject.type == IngredientType.Noodles){
-    //     engine.removeEntity(object)
-    //     pot.hasNoodles = true
-    //     log("added noodles")
-    // } else {
-    //     log("holding something else")
-    //     return
-    // }
   }
   if (!pot.hasNoodles) {
     log('pot is empty')
@@ -64,6 +54,7 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot) {
     trash.add(new GrabableObjectComponent(IngredientType.Trash, true))
     engine.addEntity(trash)
     grabberComponent.grabbedObject = trash
+    pot.reset()
     return
   }
   if (pot.state == SoupState.Raw) {

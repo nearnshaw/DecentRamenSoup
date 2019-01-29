@@ -6,10 +6,11 @@ import {
 } from './grid'
 import { Pot, AddNoodles } from './pot'
 import { CustomerPlate, deliverOrder } from './customer'
+import { CuttingBoard, AddSushi } from './cuttingBoard';
 
 export const enum IngredientType {
   Noodles,
-  Sushi,
+  SushiRoll,
   CookedNoodles,
   SlicedSushi,
   Trash,
@@ -121,7 +122,17 @@ export class ObjectGrabberSystem implements ISystem {
         )
 
         gridPosition.get(GridPosition).object = null
-      } else if (gridPosition.has(CustomerPlate)) {
+      } else if (gridPosition.has(CuttingBoard)) {
+        log('dropped something in a cutting board')
+
+        AddSushi(
+          this.objectGrabberComponent.grabbedObject,
+          gridPosition.get(CuttingBoard)
+        )
+
+        gridPosition.get(GridPosition).object = null
+      }
+      else if (gridPosition.has(CustomerPlate)) {
         let plate = gridPosition.get(CustomerPlate)
 
         log('delivered order')
