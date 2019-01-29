@@ -1,4 +1,5 @@
 import { Pot, SoupState } from "./pot";
+import { smokeSpawner } from "./smoke";
 
 @Component("progressBar")
 export class ProgressBar {
@@ -8,6 +9,8 @@ export class ProgressBar {
   color: Material
   speed: number = 1
   parent: Entity
+  smokeInterval = 3
+  nextSmoke = this.smokeInterval
   // parent type (pot / customer)
   constructor(parent: Entity, speed: number = 1, movesUp: boolean = true){
     this.parent = parent
@@ -45,13 +48,21 @@ export class ProgressBarUpdate implements ISystem {
           bar.remove(Material)
           bar.set(this.green)
           pot.state = SoupState.Cooked
+          data.smokeInterval *= 0.98
         } else if (data.ratio < 1){
           bar.remove(Material)
           bar.set(this.red)
+          data.smokeInterval *= 0.97
         } else if (data.ratio > 1){
           pot.state = SoupState.Burned
+          
           engine.removeEntity(bar.getParent(), true)
 
+        }
+        data.nextSmoke -= dt
+        if (data.nextSmoke < 0){
+          data.nextSmoke = data.smokeInterval
+          smokeSpawner.SpawnSmokePuff(data.parent)
         }
       }
     }

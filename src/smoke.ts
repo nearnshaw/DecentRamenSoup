@@ -9,28 +9,17 @@ export class SmokeVelocity extends Vector3 {
 
 
 const smokeMaterial = new Material()
-smokeMaterial.albedoTexture = "textures/smoke-puff2.png"
+smokeMaterial.albedoTexture = "textures/smoke-puff3.png"
 smokeMaterial.hasAlpha = true
-//smokeMaterial.alpha = 0.5
+smokeMaterial.alpha = 0.8
 
 const smokeShape = new PlaneShape()
 smokeShape.billboard = BillboardMode.BILLBOARDMODE_ALL
 
-export function createSmokePuff(parent: Entity){
-    let smoke = new Entity()
-    smoke.add(smokeMaterial)
-    smoke.add(new Transform({
-      position: new Vector3(0, 0, 0)
-    }))
-    smoke.setParent(parent)
-    smoke.add(smokeShape)
-    engine.addEntity(smoke)
-}
-
 
 
 export const smokeSpawner = {
-    MAX_POOL_SIZE: 20,
+    MAX_POOL_SIZE: 40,
     pool: [] as Entity[],
   
     getEntityFromPool(): Entity | null {
@@ -60,6 +49,9 @@ export const smokeSpawner = {
         z: (Math.random() - Math.random()) / 6
       }
 
+      const size = Math.random() / 2 + 0.2
+
+
       ent.set(smokeShape)
       ent.set(smokeMaterial)
 
@@ -68,7 +60,7 @@ export const smokeSpawner = {
       if (!ent.getOrNull(Transform)) {
         const t = new Transform()
         ent.set(t)
-        t.scale.set(0.5, 0.5, 0.5)
+        t.scale.set(size, size, size)
         t.position.set(0, 0, 0)
       } else {
         const t = ent.get(Transform)
@@ -94,11 +86,11 @@ export class SmokeSystem implements ISystem {
   
     isOutOfBounds(transform: Transform) {
       if (
-        transform.position.y > 7 ||
-        transform.position.x > 3 ||
-        transform.position.z > 3 ||
-        transform.position.x < -3 ||
-        transform.position.z < -3
+        transform.position.y > 4 ||
+        transform.position.x > 2 ||
+        transform.position.z > 2 ||
+        transform.position.x < -2 ||
+        transform.position.z < -2
       ) {
         return true
       }
