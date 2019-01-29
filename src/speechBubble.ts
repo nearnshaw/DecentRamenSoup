@@ -24,6 +24,12 @@ export class ShowSpeechBubbles implements ISystem {
   }
 }
 
+let bubbleMaterial = new Material()
+bubbleMaterial.albedoTexture = "textures/bubble3.png"
+bubbleMaterial.hasAlpha = true
+
+let bubbleShape = new PlaneShape()
+
 export function createSpeechBubble(
   text: string,
   timeUp: number = 1,
@@ -33,12 +39,13 @@ export function createSpeechBubble(
   engine.addEntity(parentEntity)
 
   let background = new Entity()
-  background.add(new PlaneShape())
+  background.add(bubbleShape)
+  background.add(bubbleMaterial)
   background.setParent(parentEntity)
   background.set(
     new Transform({
-      position: new Vector3(0, height, 0),
-      scale: new Vector3(1.1, 0.7, 1),
+      position: new Vector3(-0.6, height - 0.2, 0),
+      scale: new Vector3(1.4, 1.4, 1),
       rotation: Quaternion.Euler(0, 180, 0)
     })
   )
@@ -48,11 +55,12 @@ export function createSpeechBubble(
   let textEntity = new Entity()
   textEntity.add(new TextShape(text))
   textEntity.get(TextShape).textWrapping = true
-  textEntity.setParent(background)
+  textEntity.setParent(parentEntity)
   textEntity.set(
     new Transform({
-      position: new Vector3(0, 0, -0.05),
-      scale: new Vector3(0.95, 0.95, 1)
+      position: new Vector3(-0.6, height, 0.05),
+      scale: new Vector3(0.85, 0.85, 1),
+      rotation: Quaternion.Euler(0, 180, 0)
     })
   )
   engine.addEntity(textEntity)

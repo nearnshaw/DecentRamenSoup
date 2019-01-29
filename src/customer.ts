@@ -2,28 +2,33 @@ import { createSpeechBubble } from './speechBubble'
 import { IngredientType } from './grabableObjects'
 
 export const customerRawNoodleMessages = [
-  "Me like some noodles! me like'em RAW!",
-  'Raw noodles please, and hurry up!'
+  "Me like some noodles! Me like'em RAW!",
+  'Raw noodles please, and hurry!',
+  'Noodles! A nice dry brick of raw ones! '
 ]
 
 export const customerRawSushiMessages = [
-  'They say you got the best rolls, gimme!',
-  'one roll please.'
+  'They say you got the best rolls, gimme! No slicing!',
+  'One roll please. In one piece!',
+  'A full sushi roll I can swallow in one gulp!'
 ]
 
 export const customerCookedNoodleMessages = [
   'I want cooked noodles, NOW!',
-  'I... need... my... hot... noodles...'
+  'I... need... my... hot... noodles...',
+  'Ramen Noodles, they better be here soon.'
 ]
 
 export const customerSlicedSushiMessages = [
   'sliced sushi! onegai shimaaasu!',
-  'Sushi. Tic Toc.'
+  'Sushi. Tic Toc.',
+  'Sushi dammit! What rya waiting for?'
 ]
 
 export const customerTrashMessages = [
-  'Gimme the stinky ones!',
-  'The burrrrrrrnt the better!'
+  'Noodles! Gimme the stinky ones!',
+  'Noodles, the burrrrrrrnt the better!',
+  'Well-cooked noodles. Burnt, as you people say.'
 ]
 
 @Component('customerData')
