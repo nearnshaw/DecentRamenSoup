@@ -105,6 +105,7 @@ export class ObjectGrabberSystem implements ISystem {
       if(gridPosition.has(Pot)){
         log("dropped something in a pot")
         AddNoodles(gridPosition.get(GridPosition).object, gridPosition.get(Pot))
+        gridPosition.get(GridPosition).object = null
       }
     } else {
       log("not possible to drop here")

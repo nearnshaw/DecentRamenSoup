@@ -11,6 +11,10 @@ export const enum SoupState {
 export class Pot {
   state: SoupState = SoupState.Raw
   hasNoodles: boolean = false
+  reset(){
+      this.state = SoupState.Raw
+      this.hasNoodles = false
+  }
 }
 
 
@@ -45,6 +49,10 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot){
         //     return
         // }
     }
+    if (!pot.hasNoodles){
+        log("pot is empty")
+        return
+    }
     if (pot.state == SoupState.Burned){
         let trash = new Entity()
         trash.add(new BoxShape())
@@ -56,10 +64,6 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot){
         engine.addEntity(trash)
         grabberComponent.grabbedObject = trash
         return      
-    }
-    if (!pot.hasNoodles){
-        log("pot is empty")
-        return
     }
     if (pot.state == SoupState.Raw){
         log("food is raw")
@@ -75,7 +79,7 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot){
         soupBowl.add(new GrabableObjectComponent(IngredientType.CookedNoodles, true))
         engine.addEntity(soupBowl)
         grabberComponent.grabbedObject = soupBowl
-           
+        pot.reset()
     }
 
 }

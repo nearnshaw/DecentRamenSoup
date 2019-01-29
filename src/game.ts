@@ -161,13 +161,12 @@ pot1.add(
 let pot2 = shelves.grid[2][7]
 pot2.add(potModel)
 pot2.add(new Pot())
+pot2.get(Transform).rotation.setEuler(0, 90, 0)
 pot2.add(
   new OnClick(e => {
     ClickPot(objectGrabber, pot2.get(Pot))
   })
 )
-
-createProgressBar(pot1)
 
 // buttons
 
@@ -211,15 +210,42 @@ potButton1.add(
 )
 potButton1.add(new CylinderShape())
 potButton1.set(redMaterial)
-potButton1.add(new ButtonData(-0.3, -0.2))
+potButton1.add(new ButtonData(0.3, 0.2))
 potButton1.add(
   new OnClick(e => {
     potButton1.get(ButtonData).pressed = true
-    createProgressBar(pot1, false, 0.3, 0.2)
+    if (!pot1.get(Pot).hasNoodles) {
+      return
+    }
+    createProgressBar(pot1, 270, 0.3, 1)
   })
 )
 
 engine.addEntity(potButton1)
+
+const potButton2 = new Entity()
+potButton2.setParent(pot2)
+potButton2.add(
+  new Transform({
+    position: new Vector3(0.3, -0.5, 0),
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+potButton2.add(new CylinderShape())
+potButton2.set(redMaterial)
+potButton2.add(new ButtonData(0.3, 0.2))
+potButton2.add(
+  new OnClick(e => {
+    potButton2.get(ButtonData).pressed = true
+    if (!pot2.get(Pot).hasNoodles) {
+      return
+    }
+    createProgressBar(pot2, 270, 0.3, 1)
+  })
+)
+
+engine.addEntity(potButton2)
 
 // customers
 let customer1 = createCustomer(new Vector3(12.5, 0.75, 9.5))

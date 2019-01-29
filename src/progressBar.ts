@@ -1,3 +1,5 @@
+import { Pot, SoupState } from "./pot";
+
 @Component("progressBar")
 export class ProgressBar {
   ratio: number = 0
@@ -5,9 +7,10 @@ export class ProgressBar {
   movesUp: boolean = true
   color: Material
   speed: number = 1
-  // parent
+  parent: Entity
   // parent type (pot / customer)
-  constructor(speed: number = 1, movesUp: boolean = true){
+  constructor(parent: Entity, speed: number = 1, movesUp: boolean = true){
+    this.parent = parent
     this.speed = speed
     this.movesUp = movesUp
   }
@@ -24,24 +27,29 @@ export class ProgressBarUpdate implements ISystem {
       for (let bar of progressBars.entities){
         let transform = bar.get(Transform)
         let data = bar.get(ProgressBar)
-        if(data.ratio < 1){
-          data.ratio += dt/10 * data.speed
+        let pot = data.parent.get(Pot)
+        if(!pot.hasNoodles){
+          engine.removeEntity(bar.getParent(), true)
         }
-        //log(data.ratio)
+        if(data.ratio < 1){
+          data.ratio += dt/20 * data.speed
+        }
         let width = Scalar.Lerp(0, data.fullLength, data.ratio)
         transform.scale.x = width
         transform.position.x = - data.fullLength/2 + width/2
         if (data.ratio < 0.5){
           bar.remove(Material)
-          bar.set(this.green)
+          bar.set(this.yellow)
         } 
         else if (data.ratio < 0.7){
           bar.remove(Material)
-          bar.set(this.yellow)
+          bar.set(this.green)
+          pot.state = SoupState.Cooked
         } else if (data.ratio < 1){
           bar.remove(Material)
           bar.set(this.red)
         } else if (data.ratio > 1){
+          pot.state = SoupState.Burned
           engine.removeEntity(bar.getParent(), true)
 
         }
@@ -55,7 +63,7 @@ export class ProgressBarUpdate implements ISystem {
   }
 
 
-export function createProgressBar(parent: Entity, flipped: boolean = false, speed: number = 1, height: number = 1){
+export function createProgressBar(parent: Entity, yRotation: number = 0, speed: number = 1, height: number = 1){
   
 
   let background = new Entity()
@@ -64,14 +72,11 @@ export function createProgressBar(parent: Entity, flipped: boolean = false, spee
   background.set(
     new Transform({
       position: new Vector3(0, height, 0),
-      scale: new Vector3(0.82, 0.15, 1)
+      scale: new Vector3(0.82, 0.15, 1),
+      rotation: Quaternion.Euler(0, yRotation, 0)
     })
   )
   engine.addEntity(background)
-
-  if (flipped){
-    background.get(Transform).rotation.setEuler(0,180, 0)
-  }
 
   let progressBar = new Entity()
   progressBar.add(new PlaneShape())
@@ -82,7 +87,7 @@ export function createProgressBar(parent: Entity, flipped: boolean = false, spee
       scale: new Vector3(0.95, 0.8, 1)
     })
   )
-  progressBar.add(new ProgressBar())
+  progressBar.add(new ProgressBar(parent))
   engine.addEntity(progressBar)
 
 }
