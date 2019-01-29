@@ -12,12 +12,12 @@ export const customerRawSushiMessages = [
 ]
 
 export const customerCookedNoodleMessages = [
-  'I want noodles, NOW!',
-  'I... need... my... noodles... ungh!'
+  'I want cooked noodles, NOW!',
+  'I... need... my... hot... noodles...'
 ]
 
 export const customerSlicedSushiMessages = [
-  'I want noodles, NOW!',
+  'sliced sushi! onegai shimaaasu!',
   'Sushi. Tic Toc.'
 ]
 
