@@ -33,6 +33,10 @@ export function AddNoodles(DroppedObject: Entity, pot: Pot) {
   engine.removeEntity(DroppedObject)
 }
 
+// reusable shape components
+const soupBowlShape = new ConeShape()
+const trashShape = new BoxShape()
+
 export function ClickPot(GrabberEntity: Entity, pot: Pot, objectGrabberSystem: ObjectGrabberSystem) {
   let grabberComponent = GrabberEntity.get(ObjectGrabberComponent)
   if (grabberComponent.grabbedObject) {
@@ -45,7 +49,7 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot, objectGrabberSystem: O
   }
   if (pot.state == SoupState.Burned) {
     let trash = new Entity()
-    trash.add(new BoxShape())
+    trash.add(trashShape)
     trash.setParent(GrabberEntity)
     trash.add(
       new Transform({
@@ -69,7 +73,7 @@ export function ClickPot(GrabberEntity: Entity, pot: Pot, objectGrabberSystem: O
   }
   if (pot.state == SoupState.Cooked) {
     let soupBowl = new Entity()
-    soupBowl.add(new ConeShape())
+    soupBowl.add(soupBowlShape)
     soupBowl.setParent(GrabberEntity)
     soupBowl.add(
       new Transform({

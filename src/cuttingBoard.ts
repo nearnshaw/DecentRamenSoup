@@ -25,6 +25,10 @@ export class CuttingBoard {
   }
 }
 
+// reusable shape components
+const sushiPlateShape = new ConeShape()
+const trashShape = new BoxShape()
+
 export function AddSushi(DroppedObject: Entity, cuttingBoadrd: CuttingBoard) {
   let grabbableObject = DroppedObject.get(GrabableObjectComponent)
   if (grabbableObject.type == IngredientType.SushiRoll) {
@@ -56,7 +60,7 @@ export function ClickBoard(
 
   if (cuttingBoadrd.cuts > cutsNeeded) {
     let trash = new Entity()
-    trash.add(new BoxShape())
+    trash.add(trashShape)
     trash.setParent(GrabberEntity)
     trash.add(
       new Transform({
@@ -78,7 +82,7 @@ export function ClickBoard(
     return
   } else if (cuttingBoadrd.cuts == cutsNeeded) {
     let sushiPlate = new Entity()
-    sushiPlate.add(new ConeShape())
+    sushiPlate.add(sushiPlateShape)
     sushiPlate.setParent(GrabberEntity)
     sushiPlate.add(
       new Transform({

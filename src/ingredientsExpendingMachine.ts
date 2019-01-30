@@ -4,6 +4,12 @@ import {
   IngredientType
 } from "./grabableObjects"
 
+
+// reusable shape components
+const noodlesShape = new GLTFShape("models/CookingPot.glb")
+const rollShape = new GLTFShape("models/CookingPot.glb")
+
+
 @Component("ingredientExpendingMachineComponent")
 export class IngredientExpendingMachineComponent {
   ingredientType: IngredientType
@@ -43,9 +49,14 @@ export class IngredientExpendingMachineComponent {
         //,scale: new Vector3(0.5, 0.5, 0.5)
       })
     )
-
-    ent.add(new GLTFShape("models/CookingPot.glb"))
-
+    switch (this.ingredientType) {
+      case IngredientType.Noodles:
+        ent.add(noodlesShape)
+        break
+      case IngredientType.SushiRoll:
+        ent.add(rollShape)
+        break
+    }
     ent.setParent(this.parentEntity)
 
     engine.addEntity(ent)
@@ -61,3 +72,5 @@ export class IngredientExpendingMachineComponent {
     this.lastCreatedIngredient = ent
   }
 }
+
+
