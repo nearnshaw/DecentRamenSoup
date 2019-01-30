@@ -44,7 +44,7 @@ export function createSpeechBubble(
   background.setParent(parentEntity)
   background.set(
     new Transform({
-      position: new Vector3(-0.6, height - 0.3, 0),
+      position: new Vector3(-0.6, height - 0.35, 0.5),
       scale: new Vector3(1.4, 1.6, 1),
       rotation: Quaternion.Euler(0, 180, 0)
     })
@@ -61,7 +61,7 @@ export function createSpeechBubble(
   textEntity.setParent(parentEntity)
   textEntity.set(
     new Transform({
-      position: new Vector3(-0.6, height - 0.08, 0.05),
+      position: new Vector3(-0.6, height - 0.1, 0.57),
       scale: new Vector3(0.85, 0.85, 1),
       rotation: Quaternion.Euler(0, 180, 0)
     })
