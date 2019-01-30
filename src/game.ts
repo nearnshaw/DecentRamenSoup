@@ -27,6 +27,7 @@ import { LerpData, createWalker, Walk } from './walkers'
 import { Pot, ClickPot, SoupState } from './pot'
 import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
 import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
+import { ThrowSmoke, SmokeHole } from './smokeHole';
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -76,6 +77,8 @@ engine.addSystem(new PushButton())
 engine.addSystem(new Walk())
 
 engine.addSystem(new SmokeSystem())
+
+engine.addSystem(new ThrowSmoke())
 
 // ----------------------------
 // colors for progress bars
@@ -129,13 +132,6 @@ box2.add(
 )
 engine.addEntity(box2)
 
-smokeSpawner.SpawnSmokePuff(box)
-smokeSpawner.SpawnSmokePuff(box)
-smokeSpawner.SpawnSmokePuff(box)
-smokeSpawner.SpawnSmokePuff(box)
-smokeSpawner.SpawnSmokePuff(box)
-smokeSpawner.SpawnSmokePuff(box)
-
 // --------------------------------
 
 // scenery 3D model
@@ -147,6 +143,16 @@ environment.add(
   })
 )
 engine.addEntity(environment)
+
+// smoke holes
+
+let smokeHole1 = new Entity()
+smokeHole1.add(new Transform({
+  position: new Vector3(11, -1, 4),
+}))
+smokeHole1.add(new SmokeHole)
+engine.addEntity(smokeHole1)
+
 
 // fixed pots
 
