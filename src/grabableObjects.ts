@@ -6,7 +6,7 @@ import {
 } from './grid'
 import { Pot, AddNoodles } from './pot'
 import { CustomerPlate, deliverOrder } from './customer'
-import { CuttingBoard, AddSushi } from './cuttingBoard';
+import { CuttingBoard, AddSushi } from './cuttingBoard'
 
 export const enum IngredientType {
   Noodles,
@@ -131,9 +131,16 @@ export class ObjectGrabberSystem implements ISystem {
         )
 
         gridPosition.get(GridPosition).object = null
-      }
-      else if (gridPosition.has(CustomerPlate)) {
+      } else if (gridPosition.has(CustomerPlate)) {
         let plate = gridPosition.get(CustomerPlate)
+
+        if (
+          plate.ownerCustomer.receivedDish ||
+          !plate.ownerCustomer.shape.visible
+        ) {
+          log('Not possible to drop here right now')
+          return
+        }
 
         log('delivered order')
 

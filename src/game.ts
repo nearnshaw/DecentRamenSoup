@@ -26,8 +26,8 @@ import {
 import { ShowSpeechBubbles } from './speechBubble'
 import { LerpData, createWalker, Walk } from './walkers'
 import { Pot, ClickPot, SoupState } from './pot'
-import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard';
-import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke';
+import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
+import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -73,8 +73,6 @@ engine.addSystem(objectGrabberSystem)
 
 // System to push button up and down
 engine.addSystem(new PushButton())
-
-engine.addSystem(new CustomersSystem())
 
 engine.addSystem(new ShowSpeechBubbles())
 
@@ -134,14 +132,12 @@ box2.add(
 )
 engine.addEntity(box2)
 
-
 smokeSpawner.SpawnSmokePuff(box)
 smokeSpawner.SpawnSmokePuff(box)
 smokeSpawner.SpawnSmokePuff(box)
 smokeSpawner.SpawnSmokePuff(box)
 smokeSpawner.SpawnSmokePuff(box)
 smokeSpawner.SpawnSmokePuff(box)
-
 
 // --------------------------------
 
@@ -234,9 +230,6 @@ noodlesButton.add(
 
 engine.addEntity(noodlesButton)
 
-
-
-
 const sushiButton = new Entity()
 sushiButton.setParent(shelves.grid[5][1])
 sushiButton.add(
@@ -266,11 +259,6 @@ sushiButton.add(
 
 engine.addEntity(sushiButton)
 
-
-
-
-
-
 const potButton1 = new Entity()
 potButton1.setParent(pot1)
 potButton1.add(
@@ -287,7 +275,7 @@ potButton1.add(
   new OnClick(e => {
     potButton1.get(ButtonData).pressed = true
     if (!pot1.get(Pot).hasNoodles) {
-      log("empty pot")
+      log('empty pot')
       return
     }
     createProgressBar(pot1, 270, 0.3, 1)
@@ -312,7 +300,7 @@ potButton2.add(
   new OnClick(e => {
     potButton2.get(ButtonData).pressed = true
     if (!pot2.get(Pot).hasNoodles) {
-      log("empty pot")
+      log('empty pot')
       return
     }
     createProgressBar(pot2, 270, 0.3, 1)
@@ -320,7 +308,6 @@ potButton2.add(
 )
 
 engine.addEntity(potButton2)
-
 
 const cutterButton1 = new Entity()
 cutterButton1.setParent(cutter1)
@@ -333,12 +320,12 @@ cutterButton1.add(
 )
 cutterButton1.add(new CylinderShape())
 cutterButton1.set(redMaterial)
-cutterButton1.add(new ButtonData(0.3,  0.25, 0.3))
+cutterButton1.add(new ButtonData(0.3, 0.25, 0.3))
 cutterButton1.add(
   new OnClick(e => {
     cutterButton1.get(ButtonData).pressed = true
     if (!cutter1.get(CuttingBoard).hasRoll) {
-      log("no roll to cut")
+      log('no roll to cut')
       return
     }
     cutRoll(cutter1.get(CuttingBoard))
@@ -346,7 +333,6 @@ cutterButton1.add(
 )
 
 engine.addEntity(cutterButton1)
-
 
 const cutterButton2 = new Entity()
 cutterButton2.setParent(cutter2)
@@ -364,7 +350,7 @@ cutterButton2.add(
   new OnClick(e => {
     cutterButton2.get(ButtonData).pressed = true
     if (!cutter2.get(CuttingBoard).hasRoll) {
-      log("no roll to cut")
+      log('no roll to cut')
       return
     }
     cutRoll(cutter2.get(CuttingBoard))
@@ -393,6 +379,8 @@ let customer2 = createCustomer(new Vector3(12.5, 0.75, 10.5), plate2)
 let customer3 = createCustomer(new Vector3(12.5, 0.75, 11.5), plate3)
 let customer4 = createCustomer(new Vector3(12.5, 0.75, 12.5), plate4)
 
+engine.addSystem(new CustomersSystem())
+
 // passers by
 
 //createWalker('models/walkers/gnark.gltf', "walk", true, 0.5)
@@ -400,5 +388,3 @@ let customer4 = createCustomer(new Vector3(12.5, 0.75, 12.5), plate4)
 createWalker('models/walkers/Creep.gltf', 'Armature_Walking', true, 0.25)
 
 createWalker('models/walkers/BlockDog.gltf', 'Walking', false, 0.25)
-
-
