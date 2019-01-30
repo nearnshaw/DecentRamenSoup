@@ -18,6 +18,8 @@ export class LerpData {
 const passersBy = engine.getComponentGroup(LerpData);
 
 
+// to rotate 180 degrees
+let yAxis = new Vector3(0, 90, 0)
 
 export class Walk {
     update(dt: number) {
@@ -30,7 +32,7 @@ export class Walk {
               lerp.fraction += dt / 6 * lerp.speed
             } else {
               lerp.downStreet = false
-              transform.rotation.setEuler(0, 90, 0)
+              transform.rotate(yAxis, 180)
             }
             
         } else {   // !downStreet
@@ -38,7 +40,7 @@ export class Walk {
             lerp.fraction -= dt / 6 * lerp.speed
            } else {
             lerp.downStreet = true
-            transform.rotation.setEuler(0, 270, 0)
+            transform.rotate(yAxis, 180)
            }
         }
         transform.position = Vector3.Lerp(lerp.origin, lerp.target, lerp.fraction)
@@ -77,6 +79,5 @@ export function createWalker(path: string, clipName: string, up: boolean, speed:
     engine.addEntity(walker)
     const walkClip = new AnimationClip(clipName)
     walker.get(GLTFShape).addClip(walkClip)
-    
     walkClip.play()
 }
