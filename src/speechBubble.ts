@@ -44,21 +44,24 @@ export function createSpeechBubble(
   background.setParent(parentEntity)
   background.set(
     new Transform({
-      position: new Vector3(-0.6, height - 0.2, 0),
-      scale: new Vector3(1.4, 1.4, 1),
+      position: new Vector3(-0.6, height - 0.3, 0),
+      scale: new Vector3(1.4, 1.6, 1),
       rotation: Quaternion.Euler(0, 180, 0)
     })
   )
   background.add(new Bubble(timeUp))
   engine.addEntity(background)
 
+
   let textEntity = new Entity()
   textEntity.add(new TextShape(text))
   textEntity.get(TextShape).textWrapping = true
+  textEntity.get(TextShape).width = 1.1
+  textEntity.get(TextShape).height = 1.1
   textEntity.setParent(parentEntity)
   textEntity.set(
     new Transform({
-      position: new Vector3(-0.6, height, 0.05),
+      position: new Vector3(-0.6, height - 0.08, 0.05),
       scale: new Vector3(0.85, 0.85, 1),
       rotation: Quaternion.Euler(0, 180, 0)
     })
