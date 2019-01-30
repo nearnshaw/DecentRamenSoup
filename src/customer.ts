@@ -191,7 +191,6 @@ function updateSpeechBubble(
 
   customerData.speechBubble = createSpeechBubble(
     customerData.message,
-    -1,
     2,
     bubbleMaterial
   )

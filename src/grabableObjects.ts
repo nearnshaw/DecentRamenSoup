@@ -99,6 +99,19 @@ export class ObjectGrabberSystem implements ISystem {
     )
 
     if (gridPosition) {
+      let plate: CustomerPlate = null
+      if (gridPosition.has(CustomerPlate)) {
+        plate = gridPosition.get(CustomerPlate)
+
+        if (
+          plate.ownerCustomer.receivedDish ||
+          !plate.ownerCustomer.shape.visible
+        ) {
+          log('Not possible to drop here right now')
+          return
+        }
+      }
+
       gridPosition.get(
         GridPosition
       ).object = this.objectGrabberComponent.grabbedObject
@@ -131,17 +144,7 @@ export class ObjectGrabberSystem implements ISystem {
         )
 
         gridPosition.get(GridPosition).object = null
-      } else if (gridPosition.has(CustomerPlate)) {
-        let plate = gridPosition.get(CustomerPlate)
-
-        if (
-          plate.ownerCustomer.receivedDish ||
-          !plate.ownerCustomer.shape.visible
-        ) {
-          log('Not possible to drop here right now')
-          return
-        }
-
+      } else if (plate) {
         log('delivered order')
 
         plate.dish = this.objectGrabberComponent.grabbedObject.get(

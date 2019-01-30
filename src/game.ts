@@ -23,7 +23,6 @@ import {
   createCustomer,
   CustomerPlate
 } from './customer'
-import { ShowSpeechBubbles } from './speechBubble'
 import { LerpData, createWalker, Walk } from './walkers'
 import { Pot, ClickPot, SoupState } from './pot'
 import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
@@ -73,8 +72,6 @@ engine.addSystem(objectGrabberSystem)
 
 // System to push button up and down
 engine.addSystem(new PushButton())
-
-engine.addSystem(new ShowSpeechBubbles())
 
 engine.addSystem(new Walk())
 

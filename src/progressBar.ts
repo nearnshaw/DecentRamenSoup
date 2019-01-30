@@ -1,7 +1,7 @@
-import { Pot, SoupState } from "./pot";
-import { smokeSpawner } from "./smoke";
+import { Pot, SoupState } from './pot'
+import { smokeSpawner } from './smoke'
 
-@Component("progressBar")
+@Component('progressBar')
 export class ProgressBar {
   ratio: number = 0
   fullLength: number = 0.9
@@ -12,7 +12,7 @@ export class ProgressBar {
   smokeInterval = 3
   nextSmoke = this.smokeInterval
   // parent type (pot / customer)
-  constructor(parent: Entity, speed: number = 1, movesUp: boolean = true){
+  constructor(parent: Entity, speed: number = 1, movesUp: boolean = true) {
     this.parent = parent
     this.speed = speed
     this.movesUp = movesUp
@@ -20,63 +20,63 @@ export class ProgressBar {
 }
 
 // component group grid positions
-const progressBars = engine.getComponentGroup(ProgressBar);
+const progressBars = engine.getComponentGroup(ProgressBar)
 
 export class ProgressBarUpdate implements ISystem {
-    red: Material
-    yellow: Material
-    green: Material
-    update(dt: number) {
-      for (let bar of progressBars.entities){
-        let transform = bar.get(Transform)
-        let data = bar.get(ProgressBar)
-        let pot = data.parent.get(Pot)
-        if(!pot.hasNoodles){
-          engine.removeEntity(bar.getParent(), true)
-        }
-        if(data.ratio < 1){
-          data.ratio += dt/20 * data.speed
-        }
-        let width = Scalar.Lerp(0, data.fullLength, data.ratio)
-        transform.scale.x = width
-        transform.position.x = - data.fullLength/2 + width/2
-        if (data.ratio < 0.5){
-          bar.remove(Material)
-          bar.set(this.yellow)
-        } 
-        else if (data.ratio < 0.7){
-          bar.remove(Material)
-          bar.set(this.green)
-          pot.state = SoupState.Cooked
-          data.smokeInterval *= 0.99
-        } else if (data.ratio < 1){
-          bar.remove(Material)
-          bar.set(this.red)
-          data.smokeInterval *= 0.98
-        } else if (data.ratio > 1){
-          pot.state = SoupState.Burned
-          
-          engine.removeEntity(bar.getParent(), true)
+  red: Material
+  yellow: Material
+  green: Material
+  update(dt: number) {
+    for (let bar of progressBars.entities) {
+      let transform = bar.get(Transform)
+      let data = bar.get(ProgressBar)
+      let pot = data.parent.get(Pot)
+      if (!pot.hasNoodles && bar.getParent()) {
+        engine.removeEntity(bar.getParent(), true)
+      }
+      if (data.ratio < 1) {
+        data.ratio += (dt / 20) * data.speed
+      }
+      let width = Scalar.Lerp(0, data.fullLength, data.ratio)
+      transform.scale.x = width
+      transform.position.x = -data.fullLength / 2 + width / 2
+      if (data.ratio < 0.5) {
+        bar.remove(Material)
+        bar.set(this.yellow)
+      } else if (data.ratio < 0.7) {
+        bar.remove(Material)
+        bar.set(this.green)
+        pot.state = SoupState.Cooked
+        data.smokeInterval *= 0.99
+      } else if (data.ratio < 1) {
+        bar.remove(Material)
+        bar.set(this.red)
+        data.smokeInterval *= 0.98
+      } else if (data.ratio > 1) {
+        pot.state = SoupState.Burned
 
-        }
-        data.nextSmoke -= dt
-        if (data.nextSmoke < 0){
-          data.nextSmoke = data.smokeInterval
-          smokeSpawner.SpawnSmokePuff(data.parent)
+        if (bar.getParent()) {
+          engine.removeEntity(bar.getParent(), true)
         }
       }
-    }
-    constructor(red: Material, yellow: Material, green: Material ){
-        this.red = red,
-        this.yellow = yellow,
-        this.green = green
+      data.nextSmoke -= dt
+      if (data.nextSmoke < 0) {
+        data.nextSmoke = data.smokeInterval
+        smokeSpawner.SpawnSmokePuff(data.parent)
+      }
     }
   }
+  constructor(red: Material, yellow: Material, green: Material) {
+    ;(this.red = red), (this.yellow = yellow), (this.green = green)
+  }
+}
 
-
-export function createProgressBar(parent: Entity, yRotation: number = 0, speed: number = 1, height: number = 1){
-  
-
+export function createProgressBar(
+  parent: Entity,
+  yRotation: number = 0,
+  speed: number = 1,
+  height: number = 1
+) {
   let background = new Entity()
   background.add(new PlaneShape())
   background.setParent(parent)
@@ -100,5 +100,4 @@ export function createProgressBar(parent: Entity, yRotation: number = 0, speed: 
   )
   progressBar.add(new ProgressBar(parent))
   engine.addEntity(progressBar)
-
 }

@@ -1,29 +1,3 @@
-@Component('bubble')
-export class Bubble {
-  timeUp: number = 1
-  constructor(timeUp: number = 2) {
-    this.timeUp = timeUp
-  }
-}
-
-// component group grid positions
-const speechBubbles = engine.getComponentGroup(Bubble)
-
-export class ShowSpeechBubbles implements ISystem {
-  update(dt: number) {
-    for (let bubble of speechBubbles.entities) {
-      let data = bubble.get(Bubble)
-
-      if (data.timeUp < 0) return
-
-      data.timeUp -= dt
-      if (data.timeUp < 0) {
-        engine.removeEntity(bubble, true)
-      }
-    }
-  }
-}
-
 export let neutralBubbleMaterial = new Material()
 neutralBubbleMaterial.albedoTexture = 'textures/bubble3.png'
 neutralBubbleMaterial.albedoColor = Color3.Gray()
@@ -43,7 +17,6 @@ let bubbleShape = new PlaneShape()
 
 export function createSpeechBubble(
   text: string,
-  timeUp: number = 1,
   height: number = 1,
   bubbleMaterial: Material = null
 ) {
@@ -64,7 +37,6 @@ export function createSpeechBubble(
       rotation: Quaternion.Euler(0, 180, 0)
     })
   )
-  background.add(new Bubble(timeUp))
   engine.addEntity(background)
 
   let textEntity = new Entity()
