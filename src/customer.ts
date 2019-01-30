@@ -137,13 +137,19 @@ export class CustomersSystem implements ISystem {
 
   initializeCustomer(customer: Entity, customerData: CustomerData) {
     customerData.receivedDish = false
-    customerData.timeBeforeEntering = Scalar.RandomRange(3, 5)
-    customerData.timeBeforeLeaving = Scalar.RandomRange(3, 5)
+    customerData.timeBeforeEntering = Scalar.RandomRange(6, 10)
+    customerData.timeBeforeLeaving = Scalar.RandomRange(3, 6)
     customerData.waitingTimer = customerData.timeBeforeEntering
 
-    customerData.dish = Math.floor(
-      Scalar.RandomRange(0, IngredientType.COUNT - 1)
-    )
+    // only-cooked or every-ingredient randomization (50%)
+    let randomValue = Math.floor(Scalar.RandomRange(0, 2))
+    if (randomValue == 0) {
+      customerData.dish = Math.floor(Scalar.RandomRange(2, 4))
+    } else {
+      customerData.dish = Math.floor(
+        Scalar.RandomRange(0, IngredientType.COUNT)
+      )
+    }
 
     let messages: string[]
     switch (customerData.dish) {
@@ -168,7 +174,7 @@ export class CustomersSystem implements ISystem {
         break
     }
 
-    let randomIndex = Math.floor(Scalar.RandomRange(0, messages.length - 1))
+    let randomIndex = Math.floor(Scalar.RandomRange(0, messages.length))
 
     updateSpeechBubble(
       customerData,
@@ -240,9 +246,7 @@ export function deliverOrder(plate: CustomerPlate) {
 
     randomizedMessage =
       customerCorrectDishMessages[
-        Math.floor(
-          Scalar.RandomRange(0, customerCorrectDishMessages.length - 1)
-        )
+        Math.floor(Scalar.RandomRange(0, customerCorrectDishMessages.length))
       ]
   } else {
     log('WRONG!!!')
@@ -252,7 +256,7 @@ export function deliverOrder(plate: CustomerPlate) {
 
     randomizedMessage =
       customerWrongDishMessages[
-        Math.floor(Scalar.RandomRange(0, customerWrongDishMessages.length - 1))
+        Math.floor(Scalar.RandomRange(0, customerWrongDishMessages.length))
       ]
   }
 
