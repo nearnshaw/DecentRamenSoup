@@ -1,6 +1,7 @@
 import { Pot, SoupState } from './pot'
 import { smokeSpawner } from './smoke'
 import { CustomerData } from './customer'
+import { finishedPlaying } from './finishedGameUI'
 
 @Component('customerProgressBar')
 export class CustomerProgressBar {
@@ -25,6 +26,8 @@ export class CustProgressBarUpdate implements ISystem {
   yellow: Material
   green: Material
   update(dt: number) {
+    if (finishedPlaying) return
+
     for (let bar of custProgressBars.entities) {
       let transform = bar.get(Transform)
       let data = bar.get(CustomerProgressBar)

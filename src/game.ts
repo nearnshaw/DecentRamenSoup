@@ -29,6 +29,7 @@ import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
 import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
 import { ThrowSmoke, SmokeHole } from './smokeHole'
 import { CustProgressBarUpdate } from './customerProgressBar'
+import { finishGame } from './finishedGameUI'
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -37,8 +38,6 @@ const input = Input.instance
 const camera = Camera.instance
 
 // instance grid
-
-//
 let shelvesHeight: number[][] = [
   [0, 0, 1, 1, 1, 1, 1, 1],
   [0, 0, 0, 0, 0, 0, 0, 1],
@@ -388,9 +387,6 @@ export let customersSystem: CustomersSystem = new CustomersSystem()
 engine.addSystem(customersSystem)
 
 createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
-/* createCustomer(new Vector3(12.5, 0.75, 10.5), plate2)
-createCustomer(new Vector3(12.5, 0.75, 11.5), plate3)
-createCustomer(new Vector3(12.5, 0.75, 12.5), plate4) */
 
 // passers by
 

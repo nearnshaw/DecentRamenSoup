@@ -7,6 +7,7 @@ import {
 import { Pot, AddNoodles } from './pot'
 import { CustomerPlate, deliverOrder } from './customer'
 import { CuttingBoard, AddSushi } from './cuttingBoard'
+import { finishedPlaying } from './finishedGameUI'
 
 export const enum IngredientType {
   Noodles,
@@ -70,6 +71,8 @@ export class ObjectGrabberSystem implements ISystem {
   }
 
   public grabObject(grabbedObject: Entity) {
+    if (finishedPlaying) return
+
     if (!this.objectGrabberComponent.grabbedObject) {
       log('grabbed object')
       if (grabbedObject.getParent().has(GridPosition)) {
@@ -88,7 +91,7 @@ export class ObjectGrabberSystem implements ISystem {
   }
 
   dropObject() {
-    if (!this.objectGrabberComponent.grabbedObject) return
+    if (finishedPlaying || !this.objectGrabberComponent.grabbedObject) return
 
     let gridPosition = getClosestShelf(
       Camera.instance.position,

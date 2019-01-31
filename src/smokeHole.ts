@@ -1,11 +1,11 @@
 import { smokeSpawner } from './smoke'
+import { finishedPlaying } from './finishedGameUI'
 
 @Component('smokeHole')
 export class SmokeHole {
   smokeInterval: number = 3
   nextSmoke: number = this.smokeInterval
-  constructor( interval: number = 3) {
-
+  constructor(interval: number = 3) {
     this.smokeInterval = interval
   }
 }
@@ -15,6 +15,8 @@ const smokeHoles = engine.getComponentGroup(SmokeHole)
 
 export class ThrowSmoke implements ISystem {
   update(dt: number) {
+    if (finishedPlaying) return
+
     for (let hole of smokeHoles.entities) {
       let data = hole.get(SmokeHole)
       data.nextSmoke -= dt

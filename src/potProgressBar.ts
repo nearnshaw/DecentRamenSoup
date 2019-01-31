@@ -1,5 +1,6 @@
 import { Pot, SoupState } from './pot'
 import { smokeSpawner } from './smoke'
+import { finishedPlaying } from './finishedGameUI'
 
 @Component('progressBar')
 export class PotProgressBar {
@@ -27,6 +28,8 @@ export class ProgressBarUpdate implements ISystem {
   yellow: Material
   green: Material
   update(dt: number) {
+    if (finishedPlaying) return
+
     for (let bar of progressBars.entities) {
       let transform = bar.get(Transform)
       let data = bar.get(PotProgressBar)

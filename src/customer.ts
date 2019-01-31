@@ -10,6 +10,7 @@ import {
   CustomerProgressBar
 } from './customerProgressBar'
 import { customersSystem } from './game'
+import { finishedPlaying, finishGame } from './finishedGameUI'
 
 const customerRawNoodleMessages = [
   "Me like some noodles! Me like'em RAW!",
@@ -112,6 +113,8 @@ export class CustomersSystem implements ISystem {
   lastInitializedCustomer: number = 0
 
   update(dt: number) {
+    if (finishedPlaying) return
+
     for (let index = 0; index < customers.entities.length; index++) {
       let customerEntity = customers.entities[index]
       let customerData = customerEntity.get(CustomerData)
@@ -311,6 +314,16 @@ export function deliverOrder(plate: CustomerPlate) {
   plate.ownerCustomer.receivedDish = true
   plate.ownerCustomer.waitingTimer = plate.ownerCustomer.timeBeforeLeaving
 
+  if (playerScore <= -200) {
+    // "YOU LOSE. RESETTING GAME IN 5...4...3..."
+    finishGame(false)
+    return
+  } else if (playerScore >= 500) {
+    // "YOU WIN. RESETTING GAME IN 5...4...3..."
+    finishGame(true)
+    return
+  }
+
   // Enable the next customer if the score is high enough
   if (customers.entities.length < 4) {
     if (playerScore >= 350) {
@@ -335,10 +348,6 @@ export function deliverOrder(plate: CustomerPlate) {
         )
       }
     }
-  } else if (playerScore >= 500) {
-    // "YOU WIN. RESETTING GAME IN 5...4...3..."
-  } else if (playerScore <= -200) {
-    // "YOU LOSE. RESETTING GAME IN 5...4...3..."
   }
 }
 
