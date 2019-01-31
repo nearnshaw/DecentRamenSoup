@@ -1,6 +1,6 @@
 import { Pot, SoupState } from './pot'
 import { smokeSpawner } from './smoke'
-import { CustomerData } from './customer';
+import { CustomerData } from './customer'
 
 @Component('customerProgressBar')
 export class CustomerProgressBar {
@@ -30,9 +30,14 @@ export class CustProgressBarUpdate implements ISystem {
       let data = bar.get(CustomerProgressBar)
       let customer = data.parent.get(CustomerData)
 
+      if (data.speed == 0) {
+        continue
+      }
+
       if (data.ratio > 0) {
         data.ratio -= (dt / 100) * data.speed
       }
+
       let width = Scalar.Lerp(0, data.fullLength, data.ratio)
       transform.scale.x = width
       transform.position.x = -data.fullLength / 2 + width / 2
@@ -47,11 +52,10 @@ export class CustProgressBarUpdate implements ISystem {
         bar.set(this.red)
       } else if (data.ratio < 0) {
         //Customer leaves
-        if (bar.getParent()) {
+        /* if (bar.getParent()) {
           engine.removeEntity(bar.getParent(), true)
-        }
+        } */
       }
-    
     }
   }
   constructor(red: Material, yellow: Material, green: Material) {
@@ -59,20 +63,15 @@ export class CustProgressBarUpdate implements ISystem {
   }
 }
 
-export function createCustProgressBar(
-  parent: Entity,
-  yRotation: number = 0,
-  speed: number = 1,
-  height: number = 1
-) {
+export function createCustProgressBar(parent: Entity, speed: number = 1) {
   let background = new Entity()
   background.add(new PlaneShape())
   background.setParent(parent)
   background.set(
     new Transform({
-      position: new Vector3(0, height, 0),
-      scale: new Vector3(0.82, 0.15, 1),
-      rotation: Quaternion.Euler(0, yRotation, 0)
+      position: new Vector3(0.11, 1.9, 0),
+      scale: new Vector3(0.82, 0.12, 1),
+      rotation: Quaternion.Euler(0, 180, 90)
     })
   )
   engine.addEntity(background)
@@ -82,10 +81,12 @@ export function createCustProgressBar(
   progressBar.setParent(background)
   progressBar.set(
     new Transform({
-      position: new Vector3(0, 0, -0.05),
-      scale: new Vector3(0.95, 0.8, 1)
+      position: new Vector3(0, 0, -0.01),
+      scale: new Vector3(1, 0.8, 1)
     })
   )
-  progressBar.add(new CustomerProgressBar(parent))
+  progressBar.add(new CustomerProgressBar(parent, speed))
   engine.addEntity(progressBar)
+
+  return progressBar
 }

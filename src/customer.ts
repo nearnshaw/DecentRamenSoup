@@ -5,7 +5,10 @@ import {
   badBubbleMaterial
 } from './speechBubble'
 import { IngredientType } from './grabableObjects'
-import { createCustProgressBar } from './customerProgressBar'
+import {
+  createCustProgressBar,
+  CustomerProgressBar
+} from './customerProgressBar'
 import { customersSystem } from './game'
 
 const customerRawNoodleMessages = [
@@ -52,11 +55,11 @@ const customerCorrectDishMessages = [
 ]
 
 const customerWrongDishMessages = [
-  'This is not what I ordered!',
+  'Customer service SUCKS here!',
   'Do you even understand my language?',
-  'YUCK!!!',
-  "NO! ME DON'T LIKE!",
-  'WRONG! WRONG! WRONG!',
+  'What a waste of time!',
+  'NO! NO! NO!',
+  "Guess who's a ramen shop critic?",
   "I'll never come back here",
   "I'll talk so bad about this place",
   'щ(ºДºщ)',
@@ -76,6 +79,7 @@ export class CustomerData {
   timeBeforeEntering: number
   waitingTimer: number
   customerEntity: Entity
+  progressBar: Entity
 }
 
 @Component('customerPlate')
@@ -112,6 +116,32 @@ export class CustomersSystem implements ISystem {
       let customerEntity = customers.entities[index]
       let customerData = customerEntity.get(CustomerData)
 
+      if (customerData.progressBar) {
+        let customerProgressBar = customerData.progressBar.get(
+          CustomerProgressBar
+        )
+
+        if (customerProgressBar.speed > 0 && customerProgressBar.ratio <= 0) {
+          // Time's up for this order so we feed a wrong dish on purpose
+          let plate: CustomerPlate = plates.entities[index].get(CustomerPlate)
+
+          let wrongDish = customerData.dish + 1
+          if (wrongDish == IngredientType.COUNT) {
+            wrongDish = 0
+          }
+
+          plate.dish = wrongDish
+
+          deliverOrder(plate)
+
+          customerProgressBar.speed = 0
+          engine.removeEntity(customerData.progressBar.getParent(), true)
+          customerData.progressBar = null
+
+          continue
+        }
+      }
+
       if (customerData.waitingTimer > 0) {
         customerData.waitingTimer -= dt
 
@@ -137,7 +167,7 @@ export class CustomersSystem implements ISystem {
   initializeCustomer(customer: Entity, customerData: CustomerData) {
     customerData.receivedDish = false
     customerData.timeBeforeEntering = Scalar.RandomRange(3, 6)
-    customerData.timeBeforeLeaving = Scalar.RandomRange(2, 4)
+    customerData.timeBeforeLeaving = Scalar.RandomRange(3, 4)
     customerData.waitingTimer = customerData.timeBeforeEntering
 
     // only-cooked or every-ingredient randomization (50%)
@@ -175,12 +205,15 @@ export class CustomersSystem implements ISystem {
 
     let randomIndex = Math.floor(Scalar.RandomRange(0, messages.length))
 
-    createCustProgressBar(customer, 180, 0.1, 1.2)
-
     updateSpeechBubble(
       customerData,
       messages[randomIndex],
       neutralBubbleMaterial
+    )
+
+    customerData.progressBar = createCustProgressBar(
+      customer,
+      Scalar.RandomRange(1, 1.25)
     )
   }
 }
@@ -301,6 +334,8 @@ export function deliverOrder(plate: CustomerPlate) {
     }
   } else if (playerScore >= 500) {
     // "YOU WIN. RESETTING GAME IN 5...4...3..."
+  } else if (playerScore <= -200) {
+    // "YOU LOSE. RESETTING GAME IN 5...4...3..."
   }
 }
 
