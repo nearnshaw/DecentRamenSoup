@@ -12,10 +12,11 @@ import {
 
 export const cutsNeeded: number = 5
 
-@Component('cutter')
+@Component('cutterBoard')
 export class CuttingBoard {
   hasRoll: boolean = false
   cuts: number = 0
+  rollChild: Entity
   //state: RollState = RollState.full
 
   reset() {
@@ -34,20 +35,23 @@ export function AddSushi(DroppedObject: Entity, cuttingBoadrd: CuttingBoard) {
   if (grabbableObject.type == IngredientType.SushiRoll) {
     cuttingBoadrd.hasRoll = true
     cuttingBoadrd.cuts = 0
+    cuttingBoadrd.rollChild = DroppedObject
     log('added roll')
   } else if (grabbableObject.type == IngredientType.SlicedSushi) {
     cuttingBoadrd.hasRoll = true
     cuttingBoadrd.cuts = cutsNeeded
+    cuttingBoadrd.rollChild = DroppedObject
     log('roll is already cut')
   }
-  engine.removeEntity(DroppedObject)
+  //engine.removeEntity(DroppedObject)
 }
 
 export function ClickBoard(
   GrabberEntity: Entity,
-  cuttingBoadrd: CuttingBoard,
+  cutter: Entity,
   objectGrabberSystem: ObjectGrabberSystem
 ) {
+  let cuttingBoadrd = cutter.get(CuttingBoard)
   let grabberComponent = GrabberEntity.get(ObjectGrabberComponent)
   if (grabberComponent.grabbedObject) {
     log('already holding something')
@@ -75,6 +79,7 @@ export function ClickBoard(
     )
     engine.addEntity(trash)
     grabberComponent.grabbedObject = trash
+    engine.removeEntity(cuttingBoadrd.rollChild)
     cuttingBoadrd.reset()
     return
   } else if (cuttingBoadrd.cuts < cutsNeeded) {
@@ -99,6 +104,7 @@ export function ClickBoard(
     )
     engine.addEntity(sushiPlate)
     grabberComponent.grabbedObject = sushiPlate
+    engine.removeEntity(cuttingBoadrd.rollChild)
     cuttingBoadrd.reset()
   }
 }

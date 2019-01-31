@@ -181,8 +181,8 @@ export class ObjectGrabberSystem implements ISystem {
         log('dropped something in a cutting board')
 
         AddSushi(shelfComponent.object, shelf.get(CuttingBoard))
-        engine.removeEntity(shelfComponent.object)
-        shelfComponent.object = null
+        //engine.removeEntity(shelfComponent.object)
+        //shelfComponent.object = null
       } else if (plate) {
         log('delivered order')
 
