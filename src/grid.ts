@@ -58,53 +58,6 @@ export class gridObject{
 
 
 
-// create grid
-// let shelvesHeight: number[][] = [
-//   [0, 0, 1, 1, 1, 1, 1, 1],
-//   [0, 0, 0, 0, 0, 0, 0, 1],
-//   [0, 0, 0, 0, 0, 0, 0, 1],
-//   [0, 0, 0, 0, 0, 0, 0, 1],
-//   [0, 0, 0, 0, 0, 0, 0, 1],
-//   [1, 1, 1, 1, 1, 1, 1, 1]
-// ]
-
-// export let shelves: Entity[][] = new Array(shelvesHeight.length)
-// for (let index = 0; index < shelvesHeight.length; index++) {
-//   shelves[index] = new Array(shelvesHeight[index].length)
-// }
-
-// let gridStartingPosition = new Vector3(13.5, 0.1, 6.5)
-// let xMax = 6
-// let zMax = 9
-// for (let x = 0; x < xMax; x++) {
-//   for (let z = 0; z < zMax; z++) {
-//     let shelf = new Entity()
-//     let y = shelvesHeight[x][z]
-//     shelf.add(
-//       new Transform({
-//         position: new Vector3(
-//           gridStartingPosition.x + x,
-//           gridStartingPosition.y + y,
-//           gridStartingPosition.z + z
-//         )
-//       })
-//     )
-//     shelf.add(new GridPosition())
-//     engine.addEntity(shelf)
-//     shelves[x][z] = shelf
-
-//     let testEnt = new Entity()
-//     testEnt.setParent(shelf)
-//     testEnt.add(new BoxShape())
-//     testEnt.add(
-//       new Transform({
-//         scale: new Vector3(0.1, 0.05, 0.1)
-//       })
-//     )
-//     engine.addEntity(testEnt)
-//   }
-// }
-
 export function getClosestShelf(position: Vector3, direction: Vector3, gridObject: gridObject) {
   direction.y = 0
 
