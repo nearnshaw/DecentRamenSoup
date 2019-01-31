@@ -5,7 +5,8 @@ import {
   badBubbleMaterial
 } from './speechBubble'
 import { IngredientType } from './grabableObjects'
-import { createCustProgressBar } from './customerProgressBar';
+import { createCustProgressBar } from './customerProgressBar'
+import { customersSystem } from './game'
 
 const customerRawNoodleMessages = [
   "Me like some noodles! Me like'em RAW!",
@@ -104,15 +105,12 @@ scoreTextEntity.set(
 engine.addEntity(scoreTextEntity)
 
 export class CustomersSystem implements ISystem {
-  constructor() {
-    for (let customer of customers.entities) {
-      this.initializeCustomer(customer, customer.get(CustomerData))
-    }
-  }
+  lastInitializedCustomer: number = 0
 
   update(dt: number) {
-    for (let customer of customers.entities) {
-      let customerData = customer.get(CustomerData)
+    for (let index = 0; index < customers.entities.length; index++) {
+      let customerEntity = customers.entities[index]
+      let customerData = customerEntity.get(CustomerData)
 
       if (customerData.waitingTimer > 0) {
         customerData.waitingTimer -= dt
@@ -129,7 +127,7 @@ export class CustomersSystem implements ISystem {
           } else if (!customerData.shape.visible) {
             customerData.shape.visible = true
 
-            this.initializeCustomer(customer, customerData)
+            this.initializeCustomer(customerEntity, customerData)
           }
         }
       }
@@ -138,8 +136,8 @@ export class CustomersSystem implements ISystem {
 
   initializeCustomer(customer: Entity, customerData: CustomerData) {
     customerData.receivedDish = false
-    customerData.timeBeforeEntering = Scalar.RandomRange(6, 10)
-    customerData.timeBeforeLeaving = Scalar.RandomRange(3, 6)
+    customerData.timeBeforeEntering = Scalar.RandomRange(3, 6)
+    customerData.timeBeforeLeaving = Scalar.RandomRange(2, 4)
     customerData.waitingTimer = customerData.timeBeforeEntering
 
     // only-cooked or every-ingredient randomization (50%)
@@ -176,14 +174,9 @@ export class CustomersSystem implements ISystem {
     }
 
     let randomIndex = Math.floor(Scalar.RandomRange(0, messages.length))
-    
-    createCustProgressBar(
-        customer,
-        180,
-        0.1,
-        1.2
-    )
-    
+
+    createCustProgressBar(customer, 180, 0.1, 1.2)
+
     updateSpeechBubble(
       customerData,
       messages[randomIndex],
@@ -238,6 +231,12 @@ export function createCustomer(position: Vector3, plate: CustomerPlate) {
 
   engine.addEntity(customer)
 
+  if (customersSystem) {
+    customersSystem.initializeCustomer(customer, customerData)
+  } else {
+    log("couldn't initialize customer")
+  }
+
   return customer
 }
 
@@ -275,6 +274,34 @@ export function deliverOrder(plate: CustomerPlate) {
 
   plate.ownerCustomer.receivedDish = true
   plate.ownerCustomer.waitingTimer = plate.ownerCustomer.timeBeforeLeaving
+
+  // Enable the next customer if the score is high enough
+  if (customers.entities.length < 4) {
+    if (playerScore >= 350) {
+      if (customers.entities.length < 4) {
+        createCustomer(
+          new Vector3(12.5, 0.75, 12.5),
+          plates.entities[3].get(CustomerPlate)
+        )
+      }
+    } else if (playerScore >= 250) {
+      if (customers.entities.length < 3) {
+        createCustomer(
+          new Vector3(12.5, 0.75, 11.5),
+          plates.entities[2].get(CustomerPlate)
+        )
+      }
+    } else if (playerScore >= 100) {
+      if (customers.entities.length < 2) {
+        createCustomer(
+          new Vector3(12.5, 0.75, 10.5),
+          plates.entities[1].get(CustomerPlate)
+        )
+      }
+    }
+  } else if (playerScore >= 500) {
+    // "YOU WIN. RESETTING GAME IN 5...4...3..."
+  }
 }
 
 const sittingAnimation = new AnimationClip('Sitting', { loop: false })

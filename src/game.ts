@@ -27,8 +27,8 @@ import { LerpData, createWalker, Walk } from './walkers'
 import { Pot, ClickPot, SoupState } from './pot'
 import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
 import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
-import { ThrowSmoke, SmokeHole } from './smokeHole';
-import { CustProgressBarUpdate } from './customerProgressBar';
+import { ThrowSmoke, SmokeHole } from './smokeHole'
+import { CustProgressBarUpdate } from './customerProgressBar'
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -153,12 +153,13 @@ engine.addEntity(environment)
 // smoke holes
 
 let smokeHole1 = new Entity()
-smokeHole1.add(new Transform({
-  position: new Vector3(11, -1, 12),
-}))
-smokeHole1.add(new SmokeHole)
+smokeHole1.add(
+  new Transform({
+    position: new Vector3(11, -1, 12)
+  })
+)
+smokeHole1.add(new SmokeHole())
 engine.addEntity(smokeHole1)
-
 
 // fixed pots
 
@@ -383,12 +384,13 @@ let plate4 = new CustomerPlate()
 shelves.grid[0][6].add(plate4)
 
 // customers
-let customer1 = createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
-let customer2 = createCustomer(new Vector3(12.5, 0.75, 10.5), plate2)
-let customer3 = createCustomer(new Vector3(12.5, 0.75, 11.5), plate3)
-let customer4 = createCustomer(new Vector3(12.5, 0.75, 12.5), plate4)
+export let customersSystem: CustomersSystem = new CustomersSystem()
+engine.addSystem(customersSystem)
 
-engine.addSystem(new CustomersSystem())
+createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+/* createCustomer(new Vector3(12.5, 0.75, 10.5), plate2)
+createCustomer(new Vector3(12.5, 0.75, 11.5), plate3)
+createCustomer(new Vector3(12.5, 0.75, 12.5), plate4) */
 
 // passers by
 
