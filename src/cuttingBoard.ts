@@ -64,7 +64,7 @@ export function ClickBoard(
     trash.setParent(GrabberEntity)
     trash.add(
       new Transform({
-        position: new Vector3(0, 1, 1)
+        position: new Vector3(0, 1.25, 1)
       })
     )
     trash.add(new GrabableObjectComponent(IngredientType.Trash, true))
@@ -86,7 +86,7 @@ export function ClickBoard(
     sushiPlate.setParent(GrabberEntity)
     sushiPlate.add(
       new Transform({
-        position: new Vector3(0, 1, 1)
+        position: new Vector3(0, 1.25, 1)
       })
     )
     sushiPlate.add(
