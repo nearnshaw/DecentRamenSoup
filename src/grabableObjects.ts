@@ -8,6 +8,7 @@ import { Pot, AddNoodles } from './pot'
 import { CustomerPlate, deliverOrder } from './customer'
 import { CuttingBoard, AddSushi } from './cuttingBoard'
 import { finishedPlaying } from './finishedGameUI'
+import { Trash } from './trashCan';
 
 export const enum IngredientType {
   Noodles,
@@ -135,12 +136,13 @@ export class ObjectGrabberSystem implements ISystem {
         log('dropped something in a pot')
 
         AddNoodles(shelfComponent.object, potComponent)
+        engine.removeEntity(shelfComponent.object)
         shelfComponent.object = null
       } else if (shelf.has(CuttingBoard)) {
         log('dropped something in a cutting board')
 
         AddSushi(shelfComponent.object, shelf.get(CuttingBoard))
-
+        engine.removeEntity(shelfComponent.object)
         shelfComponent.object = null
       } else if (plate) {
         log('delivered order')
@@ -151,6 +153,12 @@ export class ObjectGrabberSystem implements ISystem {
         engine.removeEntity(shelfComponent.object)
 
         shelfComponent.object = null
+      } else if (shelf.has(Trash)){
+        
+        log("throwing trash")
+        engine.removeEntity(shelfComponent.object)
+        shelfComponent.object = null
+
       }
     } else {
       log('not possible to drop here')
