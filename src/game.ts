@@ -121,17 +121,17 @@ smokeHole1.add(
 smokeHole1.add(new SmokeHole())
 engine.addEntity(smokeHole1)
 
-
 let easterEgg = new Entity()
 easterEgg.add(new TextShape("You don't want to know what's behind the kitchen"))
 easterEgg.get(TextShape).textWrapping = true
 easterEgg.get(TextShape).height = 2
-easterEgg.add(new Transform({
-    position: new Vector3( 19, 2, 4),
+easterEgg.add(
+  new Transform({
+    position: new Vector3(19, 2, 4),
     rotation: Quaternion.Euler(0, 90, 0)
-}))
+  })
+)
 engine.addEntity(easterEgg)
-
 
 // fixed pots
 let pot1 = shelves.grid[4][7]
