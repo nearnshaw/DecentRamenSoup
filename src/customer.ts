@@ -5,6 +5,7 @@ import {
   badBubbleMaterial
 } from './speechBubble'
 import { IngredientType } from './grabableObjects'
+import { createCustProgressBar } from './customerProgressBar';
 
 const customerRawNoodleMessages = [
   "Me like some noodles! Me like'em RAW!",
@@ -175,7 +176,14 @@ export class CustomersSystem implements ISystem {
     }
 
     let randomIndex = Math.floor(Scalar.RandomRange(0, messages.length))
-
+    
+    createCustProgressBar(
+        customer,
+        180,
+        0.1,
+        1.2
+    )
+    
     updateSpeechBubble(
       customerData,
       messages[randomIndex],

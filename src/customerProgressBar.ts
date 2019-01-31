@@ -1,17 +1,15 @@
 import { Pot, SoupState } from './pot'
 import { smokeSpawner } from './smoke'
+import { CustomerData } from './customer';
 
-@Component('progressBar')
-export class ProgressBar {
-  ratio: number = 0
+@Component('customerProgressBar')
+export class CustomerProgressBar {
+  ratio: number = 1
   fullLength: number = 0.9
   movesUp: boolean = true
   color: Material
   speed: number = 1
   parent: Entity
-  smokeInterval = 3
-  nextSmoke = this.smokeInterval
-  // parent type (pot / customer)
   constructor(parent: Entity, speed: number = 1, movesUp: boolean = true) {
     this.parent = parent
     this.speed = speed
@@ -20,50 +18,40 @@ export class ProgressBar {
 }
 
 // component group grid positions
-const progressBars = engine.getComponentGroup(ProgressBar)
+const custProgressBars = engine.getComponentGroup(CustomerProgressBar)
 
-export class ProgressBarUpdate implements ISystem {
+export class CustProgressBarUpdate implements ISystem {
   red: Material
   yellow: Material
   green: Material
   update(dt: number) {
-    for (let bar of progressBars.entities) {
+    for (let bar of custProgressBars.entities) {
       let transform = bar.get(Transform)
-      let data = bar.get(ProgressBar)
-      let pot = data.parent.get(Pot)
-      if (!pot.hasNoodles && bar.getParent()) {
-        engine.removeEntity(bar.getParent(), true)
-      }
-      if (data.ratio < 1) {
-        data.ratio += (dt / 20) * data.speed
+      let data = bar.get(CustomerProgressBar)
+      let customer = data.parent.get(CustomerData)
+
+      if (data.ratio > 0) {
+        data.ratio -= (dt / 100) * data.speed
       }
       let width = Scalar.Lerp(0, data.fullLength, data.ratio)
       transform.scale.x = width
       transform.position.x = -data.fullLength / 2 + width / 2
-      if (data.ratio < 0.5) {
-        bar.remove(Material)
-        bar.set(this.yellow)
-      } else if (data.ratio < 0.7) {
+      if (data.ratio > 0.5) {
         bar.remove(Material)
         bar.set(this.green)
-        pot.state = SoupState.Cooked
-        data.smokeInterval *= 0.99
-      } else if (data.ratio < 1) {
+      } else if (data.ratio > 0.2) {
+        bar.remove(Material)
+        bar.set(this.yellow)
+      } else if (data.ratio > 0) {
         bar.remove(Material)
         bar.set(this.red)
-        data.smokeInterval *= 0.98
-      } else if (data.ratio > 1) {
-        pot.state = SoupState.Burned
-
+      } else if (data.ratio < 0) {
+        //Customer leaves
         if (bar.getParent()) {
           engine.removeEntity(bar.getParent(), true)
         }
       }
-      data.nextSmoke -= dt
-      if (data.nextSmoke < 0) {
-        data.nextSmoke = data.smokeInterval
-        smokeSpawner.SpawnSmokePuff(data.parent)
-      }
+    
     }
   }
   constructor(red: Material, yellow: Material, green: Material) {
@@ -71,7 +59,7 @@ export class ProgressBarUpdate implements ISystem {
   }
 }
 
-export function createProgressBar(
+export function createCustProgressBar(
   parent: Entity,
   yRotation: number = 0,
   speed: number = 1,
@@ -98,6 +86,6 @@ export function createProgressBar(
       scale: new Vector3(0.95, 0.8, 1)
     })
   )
-  progressBar.add(new ProgressBar(parent))
+  progressBar.add(new CustomerProgressBar(parent))
   engine.addEntity(progressBar)
 }

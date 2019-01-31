@@ -1,8 +1,8 @@
 import {
   ProgressBarUpdate,
-  ProgressBar,
-  createProgressBar
-} from './progressBar'
+  PotProgressBar,
+  createPotProgressBar
+} from './potProgressBar'
 import {
   GridPosition,
   gridPositions,
@@ -28,6 +28,7 @@ import { Pot, ClickPot, SoupState } from './pot'
 import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
 import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
 import { ThrowSmoke, SmokeHole } from './smokeHole';
+import { CustProgressBarUpdate } from './customerProgressBar';
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -95,6 +96,11 @@ redMaterial.albedoColor = Color3.Red()
 engine.addSystem(
   new ProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial)
 )
+
+engine.addSystem(
+  new CustProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial)
+)
+
 // ----------------------------
 let box = new Entity()
 box.add(new BoxShape())
@@ -148,7 +154,7 @@ engine.addEntity(environment)
 
 let smokeHole1 = new Entity()
 smokeHole1.add(new Transform({
-  position: new Vector3(11, -1, 4),
+  position: new Vector3(11, -1, 12),
 }))
 smokeHole1.add(new SmokeHole)
 engine.addEntity(smokeHole1)
@@ -281,7 +287,7 @@ potButton1.add(
       log('empty pot')
       return
     }
-    createProgressBar(pot1, 270, 0.3, 1)
+    createPotProgressBar(pot1, 270, 0.3, 1)
   })
 )
 
@@ -306,7 +312,7 @@ potButton2.add(
       log('empty pot')
       return
     }
-    createProgressBar(pot2, 270, 0.3, 1)
+    createPotProgressBar(pot2, 270, 0.3, 1)
   })
 )
 
