@@ -32,6 +32,7 @@ import { ThrowSmoke, SmokeHole } from './smokeHole'
 import { CustProgressBarUpdate } from './customerProgressBar'
 import { finishGame } from './finishedGameUI'
 import { Trash } from './trashCan'
+import { goodBubbleMaterial } from './speechBubble'
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -390,12 +391,81 @@ shelves.grid[0][6].add(plate4)
 export let customersSystem: CustomersSystem = new CustomersSystem()
 engine.addSystem(customersSystem)
 
-createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+// createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+export class GameStartSystem implements ISystem {
+  startedGame: boolean = false
+
+  update() {
+    if (this.startedGame) return
+
+    if (camera.position.x > 12.5) {
+      this.startedGame = true
+
+      createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+    }
+  }
+}
+engine.addSystem(new GameStartSystem())
 
 // passers by
-
-//createWalker('models/walkers/gnark.gltf', "walk", true, 0.5)
-
 createWalker('models/walkers/Creep.gltf', 'Armature_Walking', true, 0.25)
 
 createWalker('models/walkers/BlockDog.gltf', 'Walking', false, 0.25)
+
+// Dishes instructions
+// Noodles
+let noodlesIndicationsEntity = new Entity()
+let noodlesIndicationsText: TextShape = new TextShape(
+  'Noodles Ramen: NOODLES -> COOKING POT -> TIME'
+)
+noodlesIndicationsText.textWrapping = false
+noodlesIndicationsText.color = Color3.Black()
+noodlesIndicationsText.fontSize = 60
+noodlesIndicationsText.width = 10
+noodlesIndicationsEntity.set(noodlesIndicationsText)
+noodlesIndicationsEntity.set(
+  new Transform({
+    position: new Vector3(13.9, 3.2, 10.5),
+    rotation: Quaternion.Euler(0, 270, 0)
+  })
+)
+engine.addEntity(noodlesIndicationsEntity)
+let noodlesIndicationsBackground = new Entity()
+engine.addEntity(noodlesIndicationsBackground)
+noodlesIndicationsBackground.setParent(noodlesIndicationsEntity)
+let backgroundPlaneShape = new PlaneShape()
+noodlesIndicationsBackground.add(backgroundPlaneShape)
+noodlesIndicationsBackground.set(
+  new Transform({
+    position: new Vector3(0, 0, 0.02),
+    scale: new Vector3(3, 0.3, 0.1)
+  })
+)
+
+// sushi
+let sushiIndicationsEntity = new Entity()
+let sushiIndicationsText: TextShape = new TextShape(
+  'Sliced Sushi: SUSHI -> CUTTING TABLE -> 5 CUTS'
+)
+sushiIndicationsText.textWrapping = false
+sushiIndicationsText.color = Color3.Black()
+sushiIndicationsText.fontSize = 60
+sushiIndicationsText.width = 10
+sushiIndicationsEntity.set(sushiIndicationsText)
+sushiIndicationsEntity.set(
+  new Transform({
+    position: new Vector3(13.9, 2.8, 10.5),
+    rotation: Quaternion.Euler(0, 270, 0)
+  })
+)
+engine.addEntity(sushiIndicationsEntity)
+let sushiIndicationsBackground = new Entity()
+engine.addEntity(sushiIndicationsBackground)
+sushiIndicationsBackground.setParent(sushiIndicationsEntity)
+sushiIndicationsBackground.add(backgroundPlaneShape)
+sushiIndicationsBackground.set(
+  new Transform({
+    position: new Vector3(0, 0, 0.02),
+    scale: new Vector3(3, 0.3, 0.1)
+  })
+)
