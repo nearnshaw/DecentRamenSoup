@@ -380,12 +380,23 @@ shelves.grid[0][6].add(plate4)
 export let customersSystem: CustomersSystem = new CustomersSystem()
 engine.addSystem(customersSystem)
 
-createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+// createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+export class GameStartSystem implements ISystem {
+  startedGame: boolean = false
+
+  update() {
+    if (this.startedGame) return
+
+    if (camera.position.x > 12.5) {
+      this.startedGame = true
+
+      createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+    }
+  }
+}
+engine.addSystem(new GameStartSystem())
 
 // passers by
-
-//createWalker('models/walkers/gnark.gltf', "walk", true, 0.5)
-
 createWalker('models/walkers/Creep.gltf', 'Armature_Walking', true, 0.25)
 
 createWalker('models/walkers/BlockDog.gltf', 'Walking', false, 0.25)
