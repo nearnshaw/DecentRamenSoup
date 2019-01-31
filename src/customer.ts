@@ -253,6 +253,10 @@ function updateSpeechBubble(
     engine.removeEntity(customerData.speechBubble, true)
   }
 
+  if (customerData.progressBar) {
+    engine.removeEntity(customerData.progressBar, true)
+  }
+
   customerData.speechBubble = createSpeechBubble(
     customerData.message,
     2,
