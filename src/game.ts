@@ -100,42 +100,6 @@ engine.addSystem(
   new CustProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial)
 )
 
-// ----------------------------
-let box = new Entity()
-box.add(new BoxShape())
-box.get(BoxShape).withCollisions = true
-box.add(new GrabableObjectComponent(IngredientType.Noodles))
-box.add(greenMaterial)
-box.set(
-  new Transform({
-    position: new Vector3(10, 0.5, 7),
-    scale: new Vector3(0.5, 0.5, 0.5)
-  })
-)
-box.add(
-  new OnClick(e => {
-    objectGrabberSystem.grabObject(box)
-  })
-)
-engine.addEntity(box)
-
-let box2 = new Entity()
-box2.add(new BoxShape())
-box2.get(BoxShape).withCollisions = true
-box2.add(new GrabableObjectComponent(IngredientType.SushiRoll))
-box2.add(yellowMaterial)
-box2.set(
-  new Transform({
-    position: new Vector3(10, 0.5, 5),
-    scale: new Vector3(0.5, 0.5, 0.5)
-  })
-)
-box2.add(
-  new OnClick(e => {
-    objectGrabberSystem.grabObject(box2)
-  })
-)
-engine.addEntity(box2)
 
 // --------------------------------
 
@@ -159,6 +123,18 @@ smokeHole1.add(
 )
 smokeHole1.add(new SmokeHole())
 engine.addEntity(smokeHole1)
+
+
+let easterEgg = new Entity()
+easterEgg.add(new TextShape("You don't want to know what's behind the kitchen"))
+easterEgg.get(TextShape).textWrapping = true
+easterEgg.get(TextShape).height = 2
+easterEgg.add(new Transform({
+    position: new Vector3( 19, 2, 4),
+    rotation: Quaternion.Euler(0, 90, 0)
+}))
+engine.addEntity(easterEgg)
+
 
 // fixed pots
 
