@@ -51,8 +51,6 @@ let gridStartingPosition = new Vector3(13.5, 0.1, 6.5)
 let xMax = 6
 let zMax = 9
 
-//let shelves = instanceGrid(gridStartingPosition, xMax, zMax, shelvesHeight)
-
 let shelves = new gridObject(gridStartingPosition, xMax, zMax, shelvesHeight)
 
 // ----------------------------
@@ -99,43 +97,6 @@ engine.addSystem(
 engine.addSystem(
   new CustProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial)
 )
-
-// ----------------------------
-let box = new Entity()
-box.add(new BoxShape())
-box.get(BoxShape).withCollisions = true
-box.add(new GrabableObjectComponent(IngredientType.Noodles))
-box.add(greenMaterial)
-box.set(
-  new Transform({
-    position: new Vector3(10, 0.5, 7),
-    scale: new Vector3(0.5, 0.5, 0.5)
-  })
-)
-box.add(
-  new OnClick(e => {
-    objectGrabberSystem.grabObject(box)
-  })
-)
-engine.addEntity(box)
-
-let box2 = new Entity()
-box2.add(new BoxShape())
-box2.get(BoxShape).withCollisions = true
-box2.add(new GrabableObjectComponent(IngredientType.SushiRoll))
-box2.add(yellowMaterial)
-box2.set(
-  new Transform({
-    position: new Vector3(10, 0.5, 5),
-    scale: new Vector3(0.5, 0.5, 0.5)
-  })
-)
-box2.add(
-  new OnClick(e => {
-    objectGrabberSystem.grabObject(box2)
-  })
-)
-engine.addEntity(box2)
 
 // --------------------------------
 

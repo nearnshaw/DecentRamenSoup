@@ -2,15 +2,13 @@ import {
   GrabableObjectComponent,
   ObjectGrabberSystem,
   IngredientType
-} from "./grabableObjects"
-
+} from './grabableObjects'
 
 // reusable shape components
-const noodlesShape = new GLTFShape("models/CookingPot.glb")
-const rollShape = new GLTFShape("models/CookingPot.glb")
+const noodlesShape = new GLTFShape('models/NoodlesRaw.glb')
+const rollShape = new GLTFShape('models/SushiRoll.glb')
 
-
-@Component("ingredientExpendingMachineComponent")
+@Component('ingredientExpendingMachineComponent')
 export class IngredientExpendingMachineComponent {
   ingredientType: IngredientType
   lastCreatedIngredient: Entity
@@ -39,9 +37,7 @@ export class IngredientExpendingMachineComponent {
 
     let ent = new Entity()
 
-    ent.add(
-      new GrabableObjectComponent(this.ingredientType)
-    )
+    ent.add(new GrabableObjectComponent(this.ingredientType))
 
     ent.set(
       new Transform({
@@ -63,14 +59,10 @@ export class IngredientExpendingMachineComponent {
 
     ent.add(
       new OnClick(e => {
-        this.objectGrabberSystemReference.grabObject(
-          ent
-        )
+        this.objectGrabberSystemReference.grabObject(ent)
         this.lastCreatedIngredient = null
       })
     )
     this.lastCreatedIngredient = ent
   }
 }
-
-

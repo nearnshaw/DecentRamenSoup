@@ -43,8 +43,8 @@ export function AddNoodles(DroppedObject: Entity, pot: Pot) {
 }
 
 // reusable shape components
-const soupBowlShape = new ConeShape()
-const trashShape = new BoxShape()
+const soupBowlShape = new GLTFShape('models/PlateNoodles.glb')
+const trashShape = new GLTFShape('models/GarbageFood.glb')
 
 // Called in the OnClick component of the pot entity
 export function ClickPot(
