@@ -27,8 +27,6 @@ export class GrabableObjectComponent {
   origin: number = 0.4
   target: number = 0
   fraction: number = 0
-
-
   constructor(type: IngredientType, grabbed: boolean = false, falling: boolean = false, origin:number = 0) {
     this.type = type
     this.grabbed = grabbed
@@ -161,8 +159,11 @@ export class ObjectGrabberSystem implements ISystem {
       this.objectGrabberComponent.grabbedObject = null
 
       shelfComponent.object.setParent(shelf)
-      shelfComponent.object.get(Transform).position = Vector3.Zero()
+      shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
       shelfComponent.object.get(GrabableObjectComponent).grabbed = false
+      shelfComponent.object.get(GrabableObjectComponent).falling = true
+      shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
+      shelfComponent.object.get(GrabableObjectComponent).fraction = 0
 
       if (shelf.has(Pot)) {
         let potComponent = shelf.get(Pot)
