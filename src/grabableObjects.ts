@@ -93,7 +93,7 @@ export class ObjectGrabberSystem implements ISystem {
   dropObject() {
     if (finishedPlaying || !this.objectGrabberComponent.grabbedObject) return
 
-    let gridPosition = getClosestShelf(
+    let shelf = getClosestShelf(
       Camera.instance.position,
       this.calculateDirectionBasedOnYRotation(
         Camera.instance.rotation.eulerAngles.y
@@ -101,10 +101,12 @@ export class ObjectGrabberSystem implements ISystem {
       this.gridObject
     )
 
-    if (gridPosition) {
+    let shelfComponent = shelf.get(GridPosition)
+
+    if (shelf && !shelfComponent.object) {
       let plate: CustomerPlate = null
-      if (gridPosition.has(CustomerPlate)) {
-        plate = gridPosition.get(CustomerPlate)
+      if (shelf.has(CustomerPlate)) {
+        plate = shelf.get(CustomerPlate)
 
         if (
           !plate.ownerCustomer ||
@@ -116,52 +118,40 @@ export class ObjectGrabberSystem implements ISystem {
         }
       }
 
-      gridPosition.get(
-        GridPosition
-      ).object = this.objectGrabberComponent.grabbedObject
+      shelfComponent.object = this.objectGrabberComponent.grabbedObject
+      this.objectGrabberComponent.grabbedObject = null
 
-      this.objectGrabberComponent.grabbedObject.setParent(gridPosition)
+      shelfComponent.object.setParent(shelf)
+      shelfComponent.object.get(Transform).position = Vector3.Zero()
+      shelfComponent.object.get(GrabableObjectComponent).grabbed = false
 
-      this.objectGrabberComponent.grabbedObject.get(
-        Transform
-      ).position = Vector3.Zero()
+      if (shelf.has(Pot)) {
+        let potComponent = shelf.get(Pot)
+        if (potComponent.hasNoodles) {
+          log("that pot already has noodles. Can't drop object here")
+          return
+        }
 
-      this.objectGrabberComponent.grabbedObject.get(
-        GrabableObjectComponent
-      ).grabbed = false
-
-      if (gridPosition.has(Pot)) {
         log('dropped something in a pot')
 
-        AddNoodles(
-          this.objectGrabberComponent.grabbedObject,
-          gridPosition.get(Pot)
-        )
-
-        gridPosition.get(GridPosition).object = null
-      } else if (gridPosition.has(CuttingBoard)) {
+        AddNoodles(shelfComponent.object, potComponent)
+        shelfComponent.object = null
+      } else if (shelf.has(CuttingBoard)) {
         log('dropped something in a cutting board')
 
-        AddSushi(
-          this.objectGrabberComponent.grabbedObject,
-          gridPosition.get(CuttingBoard)
-        )
+        AddSushi(shelfComponent.object, shelf.get(CuttingBoard))
 
-        gridPosition.get(GridPosition).object = null
+        shelfComponent.object = null
       } else if (plate) {
         log('delivered order')
 
-        plate.dish = this.objectGrabberComponent.grabbedObject.get(
-          GrabableObjectComponent
-        ).type
+        plate.dish = shelfComponent.object.get(GrabableObjectComponent).type
 
         deliverOrder(plate)
-        engine.removeEntity(this.objectGrabberComponent.grabbedObject)
+        engine.removeEntity(shelfComponent.object)
 
-        gridPosition.get(GridPosition).object = null
+        shelfComponent.object = null
       }
-
-      this.objectGrabberComponent.grabbedObject = null
     } else {
       log('not possible to drop here')
     }

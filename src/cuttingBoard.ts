@@ -26,8 +26,8 @@ export class CuttingBoard {
 }
 
 // reusable shape components
-const sushiPlateShape = new ConeShape()
-const trashShape = new BoxShape()
+const sushiPlateShape = new GLTFShape('models/PlateSushi.glb')
+const trashShape = new GLTFShape('models/GarbageFood.glb')
 
 export function AddSushi(DroppedObject: Entity, cuttingBoadrd: CuttingBoard) {
   let grabbableObject = DroppedObject.get(GrabableObjectComponent)

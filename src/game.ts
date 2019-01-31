@@ -51,8 +51,6 @@ let gridStartingPosition = new Vector3(13.5, 0.1, 6.5)
 let xMax = 6
 let zMax = 9
 
-//let shelves = instanceGrid(gridStartingPosition, xMax, zMax, shelvesHeight)
-
 let shelves = new gridObject(gridStartingPosition, xMax, zMax, shelvesHeight)
 
 // ----------------------------
@@ -99,7 +97,6 @@ engine.addSystem(
 engine.addSystem(
   new CustProgressBarUpdate(redMaterial, yellowMaterial, greenMaterial)
 )
-
 
 // --------------------------------
 
@@ -263,7 +260,8 @@ potButton1.add(
       log('empty pot')
       return
     }
-    createPotProgressBar(pot1, 270, 0.3, 1)
+
+    pot1.get(Pot).progressBar = createPotProgressBar(pot1, 270, 0.3, 1)
   })
 )
 
@@ -288,7 +286,8 @@ potButton2.add(
       log('empty pot')
       return
     }
-    createPotProgressBar(pot2, 270, 0.3, 1)
+
+    pot2.get(Pot).progressBar = createPotProgressBar(pot2, 270, 0.3, 1)
   })
 )
 
