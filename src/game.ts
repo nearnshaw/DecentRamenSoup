@@ -219,11 +219,10 @@ trash.add(new Trash())
 //let cutterModel = new GLTFShape('models/placeholders/LeverRed.gltf')
 
 let cutter1 = shelves.grid[3][7]
-//cutter1.add(new GLTFShape('models/Cutter3.glb'))
-cutter1.add(new GLTFShape("models/GarbageFood.glb"))
+cutter1.add(new GLTFShape('models/Cutter-.gltf'))
 cutter1.add(new CuttingBoard())
-cutter1.get(Transform).rotation.setEuler(0, 90, 0)
-//cutter1.get(Transform).scale.setAll(0.01)
+cutter1.get(Transform).scale.set(0.01, 0.01, 0.01)
+cutter1.get(Transform).rotation.setEuler(0, 0, 0)
 cutter1.add(
   new OnClick(e => {
     ClickBoard(objectGrabber, cutter1, objectGrabberSystem)
@@ -253,16 +252,17 @@ cutterButton1.add(
 )
 engine.addEntity(cutterButton1)
 
-
-let cut1 = new AnimationClip("State1")
+let cut1 = new AnimationClip('State1')
 
 cutter1.get(GLTFShape).addClip(cut1)
-cutter1.get(GLTFShape).getClip("State1").play()
-
+cutter1
+  .get(GLTFShape)
+  .getClip('State1')
+  .play()
 
 let cutter2 = shelves.grid[1][7]
 //cutter2.add(new GLTFShape('models/Cutter3.glb'))
-cutter2.add(new GLTFShape("models/GarbageFood.glb"))
+cutter2.add(new GLTFShape('models/GarbageFood.glb'))
 cutter2.add(new CuttingBoard())
 cutter2.get(Transform).rotation.setEuler(0, 90, 0)
 //cutter2.get(Transform).scale.setAll(0.01)
