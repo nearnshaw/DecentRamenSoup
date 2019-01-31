@@ -5,6 +5,8 @@ neutralBubbleMaterial.hasAlpha = true
 neutralBubbleMaterial.disableLighting = true
 neutralBubbleMaterial.specularIntensity = 0
 neutralBubbleMaterial.directIntensity = 0
+neutralBubbleMaterial.metallic = 0
+neutralBubbleMaterial.roughness = 1
 
 export let goodBubbleMaterial = new Material()
 goodBubbleMaterial.albedoTexture = 'textures/bubble3.png'
@@ -13,6 +15,8 @@ goodBubbleMaterial.hasAlpha = true
 goodBubbleMaterial.disableLighting = true
 goodBubbleMaterial.specularIntensity = 0
 goodBubbleMaterial.directIntensity = 0
+goodBubbleMaterial.metallic = 0
+goodBubbleMaterial.roughness = 1
 
 export let badBubbleMaterial = new Material()
 badBubbleMaterial.albedoTexture = 'textures/bubble3.png'
@@ -21,6 +25,8 @@ badBubbleMaterial.hasAlpha = true
 badBubbleMaterial.disableLighting = true
 badBubbleMaterial.specularIntensity = 0
 badBubbleMaterial.directIntensity = 0
+badBubbleMaterial.metallic = 0
+badBubbleMaterial.roughness = 1
 
 let bubbleShape = new PlaneShape()
 

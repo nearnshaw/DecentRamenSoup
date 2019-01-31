@@ -7,7 +7,7 @@ export class FinishedGameUI implements ISystem {
   targetPosition: Vector3
   targetRotation: Quaternion
 
-  constructor(won = false) {
+  constructor(playerScore: number) {
     let parentEntity = new Entity()
     engine.addEntity(parentEntity)
     this.uiPanelTransform = new Transform({
@@ -18,7 +18,7 @@ export class FinishedGameUI implements ISystem {
 
     let background = new Entity()
     background.add(new PlaneShape())
-    background.add(won ? goodBubbleMaterial : badBubbleMaterial)
+    background.add(badBubbleMaterial)
     background.setParent(parentEntity)
     background.set(
       new Transform({
@@ -32,19 +32,18 @@ export class FinishedGameUI implements ISystem {
     let textEntity = new Entity()
     let gameTimeInMilliseconds = Date.now() - startedGameDate
     let gameTimeMinutes = gameTimeInMilliseconds / 1000 / 60
-    let gameTimeMilliseconds = (gameTimeInMilliseconds / 1000) % 60
+    let gameTimeSeconds = (gameTimeInMilliseconds / 1000) % 60
 
     textEntity.add(
       new TextShape(
-        won
-          ? 'YOU WIN!\n It took you ' +
-            Math.floor(gameTimeMinutes) +
-            ' minutes, ' +
-            Math.floor(gameTimeMilliseconds) +
-            ' seconds and ' +
-            gameTimeInMilliseconds +
-            ' milliseconds!'
-          : 'YOU LOSE'
+        'GAME OVER!' +
+          '\n You survived for ' +
+          Math.floor(gameTimeMinutes) +
+          ' minutes and ' +
+          Math.floor(gameTimeSeconds) +
+          ' seconds.' +
+          '\n SCORE: ' +
+          playerScore
       )
     )
     textEntity.get(TextShape).textWrapping = true
@@ -82,9 +81,9 @@ export class FinishedGameUI implements ISystem {
 }
 
 export let finishedPlaying: boolean = false
-export function finishGame(won = false) {
+export function finishGame(playerScore: number) {
   finishedPlaying = true
 
-  let finishedGameUISystem = new FinishedGameUI(won)
+  let finishedGameUISystem = new FinishedGameUI(playerScore)
   engine.addSystem(finishedGameUISystem)
 }

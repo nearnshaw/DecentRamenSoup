@@ -31,7 +31,7 @@ import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
 import { ThrowSmoke, SmokeHole } from './smokeHole'
 import { CustProgressBarUpdate } from './customerProgressBar'
 import { finishGame } from './finishedGameUI'
-import { Trash } from './trashCan';
+import { Trash } from './trashCan'
 
 // object to get buttonUp and buttonDown events
 const input = Input.instance
@@ -125,17 +125,17 @@ smokeHole1.add(
 smokeHole1.add(new SmokeHole())
 engine.addEntity(smokeHole1)
 
-
 let easterEgg = new Entity()
 easterEgg.add(new TextShape("You don't want to know what's behind the kitchen"))
 easterEgg.get(TextShape).textWrapping = true
 easterEgg.get(TextShape).height = 2
-easterEgg.add(new Transform({
-    position: new Vector3( 19, 2, 4),
+easterEgg.add(
+  new Transform({
+    position: new Vector3(19, 2, 4),
     rotation: Quaternion.Euler(0, 90, 0)
-}))
+  })
+)
 engine.addEntity(easterEgg)
-
 
 // pots
 let pot1 = shelves.grid[4][7]
@@ -210,7 +210,7 @@ let trash = shelves.grid[5][0]
 trash.add(new Trash())
 // trash.add(
 //   new OnClick(e => {
-    
+
 //   })
 // )
 
@@ -282,7 +282,6 @@ cutterButton2.add(
   })
 )
 engine.addEntity(cutterButton2)
-
 
 // expending machines
 let nooldlesExpendingMachineModel = new GLTFShape('models/ExpenderNoodles.glb')

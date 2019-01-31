@@ -62,7 +62,7 @@ const customerWrongDishMessages = [
   'NO! NO! NO!',
   "Guess who's a ramen shop critic?",
   "I'll never come back here",
-  "I'll talk so bad about this place",
+  "I'll talk SO bad about this place",
   'щ(ºДºщ)',
   '@#&*#$!',
   '୧༼ಠ益ಠ༽'
@@ -92,22 +92,42 @@ export class CustomerPlate {
 export const customers = engine.getComponentGroup(CustomerData)
 export const plates = engine.getComponentGroup(CustomerPlate)
 let playerScore: number = 0
+let playerMisses: number = 0
 
 // Player score display (has to be here where the playerScore var lives...)
 let scoreTextEntity = new Entity()
-let scoreTextShape: TextShape = new TextShape(playerScore.toString())
+let scoreTextShape: TextShape = new TextShape(
+  'SCORE: ' + playerScore.toString()
+)
 scoreTextShape.textWrapping = false
-scoreTextShape.color = Color3.Teal()
-scoreTextShape.fontSize = 400
+scoreTextShape.color = Color3.Green()
+scoreTextShape.fontSize = 150
 scoreTextShape.width = 10
 scoreTextEntity.set(scoreTextShape)
 scoreTextEntity.set(
   new Transform({
-    position: new Vector3(13.8, 0.5, 10.5),
+    position: new Vector3(13.8, 0.7, 10.5),
     rotation: Quaternion.Euler(0, 270, 0)
   })
 )
 engine.addEntity(scoreTextEntity)
+
+let missesTextEntity = new Entity()
+let missesTextShape: TextShape = new TextShape(
+  'MISSES: ' + playerMisses.toString() + '/5'
+)
+missesTextShape.textWrapping = false
+missesTextShape.color = Color3.Red()
+missesTextShape.fontSize = 150
+missesTextShape.width = 10
+missesTextEntity.set(missesTextShape)
+missesTextEntity.set(
+  new Transform({
+    position: new Vector3(13.8, 0.3, 10.5),
+    rotation: Quaternion.Euler(0, 270, 0)
+  })
+)
+engine.addEntity(missesTextEntity)
 
 export class CustomersSystem implements ISystem {
   lastInitializedCustomer: number = 0
@@ -294,7 +314,8 @@ export function deliverOrder(plate: CustomerPlate) {
       ]
   } else {
     log('WRONG!!!')
-    playerScore -= 50
+    // playerScore -= 50
+    playerMisses++
 
     bubbleMaterial = badBubbleMaterial
 
@@ -307,18 +328,14 @@ export function deliverOrder(plate: CustomerPlate) {
   updateSpeechBubble(plate.ownerCustomer, randomizedMessage, bubbleMaterial)
 
   log('score: ' + playerScore)
-  scoreTextShape.value = playerScore.toString()
+  scoreTextShape.value = 'SCORE: ' + playerScore.toString()
+  missesTextShape.value = 'MISSES: ' + playerMisses.toString() + '/5'
 
   plate.ownerCustomer.receivedDish = true
   plate.ownerCustomer.waitingTimer = plate.ownerCustomer.timeBeforeLeaving
 
-  if (playerScore <= -200) {
-    // "YOU LOSE. RESETTING GAME IN 5...4...3..."
-    finishGame(false)
-    return
-  } else if (playerScore >= 500) {
-    // "YOU WIN. RESETTING GAME IN 5...4...3..."
-    finishGame(true)
+  if (playerMisses == 5) {
+    finishGame(playerScore)
     return
   }
 
