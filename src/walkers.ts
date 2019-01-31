@@ -49,8 +49,8 @@ export class Walk {
   }
 
 
-let upL = new Vector3(19, 0, 18.5)
-let downL = new Vector3(2, 0, 18.5)
+let upL = new Vector3(19, 0, 18)
+let downL = new Vector3(2, 0, 18)
 
 let upR = new Vector3(19, 0, 17)
 let downR = new Vector3(2, 0, 17)

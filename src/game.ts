@@ -214,7 +214,7 @@ const noodlesButton = new Entity()
 noodlesButton.setParent(shelves.grid[5][3])
 noodlesButton.add(
   new Transform({
-    position: new Vector3(-0.3, -0.5, 0),
+    position: new Vector3(-0.3, -0.3, 0),
     rotation: Quaternion.Euler(90, 90, 0),
     scale: new Vector3(0.05, 0.2, 0.05)
   })
@@ -243,7 +243,7 @@ const sushiButton = new Entity()
 sushiButton.setParent(shelves.grid[5][1])
 sushiButton.add(
   new Transform({
-    position: new Vector3(-0.3, -0.5, 0),
+    position: new Vector3(-0.3, -0.3, 0),
     rotation: Quaternion.Euler(90, 90, 0),
     scale: new Vector3(0.05, 0.2, 0.05)
   })
@@ -272,7 +272,7 @@ const potButton1 = new Entity()
 potButton1.setParent(pot1)
 potButton1.add(
   new Transform({
-    position: new Vector3(0.3, -0.5, 0),
+    position: new Vector3(0.3, -0.3, 0),
     rotation: Quaternion.Euler(90, 270, 0),
     scale: new Vector3(0.05, 0.2, 0.05)
   })
@@ -297,7 +297,7 @@ const potButton2 = new Entity()
 potButton2.setParent(pot2)
 potButton2.add(
   new Transform({
-    position: new Vector3(0.3, -0.5, 0),
+    position: new Vector3(0.3, -0.3, 0),
     rotation: Quaternion.Euler(90, 270, 0),
     scale: new Vector3(0.05, 0.2, 0.05)
   })
@@ -322,7 +322,7 @@ const cutterButton1 = new Entity()
 cutterButton1.setParent(cutter1)
 cutterButton1.add(
   new Transform({
-    position: new Vector3(0.3, -0.5, 0),
+    position: new Vector3(0.3, -0.3, 0),
     rotation: Quaternion.Euler(90, 270, 0),
     scale: new Vector3(0.05, 0.2, 0.05)
   })
@@ -347,7 +347,7 @@ const cutterButton2 = new Entity()
 cutterButton2.setParent(cutter2)
 cutterButton2.add(
   new Transform({
-    position: new Vector3(0.3, -0.5, 0),
+    position: new Vector3(0.3, -0.3, 0),
     rotation: Quaternion.Euler(90, 270, 0),
     scale: new Vector3(0.05, 0.2, 0.05)
   })
