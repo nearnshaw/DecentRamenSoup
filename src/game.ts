@@ -219,7 +219,7 @@ trash.add(new Trash())
 //let cutterModel = new GLTFShape('models/placeholders/LeverRed.gltf')
 
 let cutter1 = shelves.grid[3][7]
-cutter1.add(new GLTFShape('models/Cutter-.gltf'))
+cutter1.add(new GLTFShape('models/Cutter.gltf'))
 cutter1.add(new CuttingBoard())
 cutter1.get(Transform).scale.set(0.01, 0.01, 0.01)
 cutter1.get(Transform).rotation.setEuler(0, 0, 0)
