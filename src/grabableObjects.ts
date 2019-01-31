@@ -82,7 +82,7 @@ export class ObjectGrabberSystem implements ISystem {
 
       grabbedObject.get(GrabableObjectComponent).grabbed = true
       grabbedObject.setParent(this.objectGrabber)
-      grabbedObject.get(Transform).position.set(0, 1, 1)
+      grabbedObject.get(Transform).position.set(0, 1.25, 1)
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
     } else {

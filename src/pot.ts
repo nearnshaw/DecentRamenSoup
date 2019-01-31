@@ -108,7 +108,7 @@ export function ClickPot(
       soupBowl.setParent(GrabberEntity)
       soupBowl.add(
         new Transform({
-          position: new Vector3(0, 1, 1)
+          position: new Vector3(0, 1.25, 1)
         })
       )
       soupBowl.add(
@@ -136,7 +136,7 @@ export function ClickPot(
       trash.setParent(GrabberEntity)
       trash.add(
         new Transform({
-          position: new Vector3(0, 1, 1)
+          position: new Vector3(0, 1.25, 1)
         })
       )
       trash.add(new GrabableObjectComponent(IngredientType.Trash, true))
