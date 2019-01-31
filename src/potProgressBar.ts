@@ -37,9 +37,11 @@ export class ProgressBarUpdate implements ISystem {
       if (!pot.hasNoodles && bar.getParent()) {
         engine.removeEntity(bar.getParent(), true)
       }
+
       if (data.ratio < 1) {
         data.ratio += (dt / 20) * data.speed
       }
+
       let width = Scalar.Lerp(0, data.fullLength, data.ratio)
       transform.scale.x = width
       transform.position.x = -data.fullLength / 2 + width / 2
@@ -60,12 +62,17 @@ export class ProgressBarUpdate implements ISystem {
 
         if (bar.getParent()) {
           engine.removeEntity(bar.getParent(), true)
+          data = null
         }
       }
-      data.nextSmoke -= dt
-      if (data.nextSmoke < 0) {
-        data.nextSmoke = data.smokeInterval
-        smokeSpawner.SpawnSmokePuff(data.parent)
+
+      if (data) {
+        data.nextSmoke -= dt
+
+        if (data.nextSmoke < 0) {
+          data.nextSmoke = data.smokeInterval
+          smokeSpawner.SpawnSmokePuff(data.parent)
+        }
       }
     }
   }
@@ -103,4 +110,6 @@ export function createPotProgressBar(
   )
   progressBar.add(new PotProgressBar(parent))
   engine.addEntity(progressBar)
+
+  return progressBar
 }

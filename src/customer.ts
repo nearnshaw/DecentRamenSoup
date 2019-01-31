@@ -175,9 +175,7 @@ export class CustomersSystem implements ISystem {
     customerData.timeBeforeLeaving = Scalar.RandomRange(3, 4)
     customerData.waitingTimer = customerData.timeBeforeEntering
 
-    // only-cooked or every-ingredient randomization (50%)
-    let randomValue = Math.floor(Scalar.RandomRange(0, 2))
-    if (randomValue == 0) {
+    if (customers.entities.length <= 2) {
       customerData.dish = Math.floor(Scalar.RandomRange(2, 4))
     } else {
       customerData.dish = Math.floor(

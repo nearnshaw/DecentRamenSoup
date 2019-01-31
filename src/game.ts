@@ -287,7 +287,8 @@ potButton1.add(
       log('empty pot')
       return
     }
-    createPotProgressBar(pot1, 270, 0.3, 1)
+
+    pot1.get(Pot).progressBar = createPotProgressBar(pot1, 270, 0.3, 1)
   })
 )
 
@@ -312,7 +313,8 @@ potButton2.add(
       log('empty pot')
       return
     }
-    createPotProgressBar(pot2, 270, 0.3, 1)
+
+    pot2.get(Pot).progressBar = createPotProgressBar(pot2, 270, 0.3, 1)
   })
 )
 
