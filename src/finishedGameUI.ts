@@ -17,12 +17,12 @@ export class FinishedGameUI implements ISystem {
     parentEntity.set(this.uiPanelTransform)
 
     let background = new Entity()
-    background.add(new PlaneShape())
-    background.add(badBubbleMaterial)
     background.setParent(parentEntity)
+    background.add(new PlaneShape())
+    background.add(goodBubbleMaterial)
     background.set(
       new Transform({
-        position: new Vector3(0, 1.3, 0.5),
+        position: new Vector3(0, 1.3, 1),
         // scale: new Vector3(0.8, 0.8, 1),
         rotation: Quaternion.Euler(0, 180, 0)
       })
@@ -34,30 +34,30 @@ export class FinishedGameUI implements ISystem {
     let gameTimeMinutes = gameTimeInMilliseconds / 1000 / 60
     let gameTimeSeconds = (gameTimeInMilliseconds / 1000) % 60
 
-    textEntity.add(
-      new TextShape(
-        'GAME OVER!' +
-          '\n You survived for ' +
-          Math.floor(gameTimeMinutes) +
-          ' minutes and ' +
-          Math.floor(gameTimeSeconds) +
-          ' seconds.' +
-          '\n SCORE: ' +
-          playerScore
-      )
+    textEntity.setParent(parentEntity)
+    let textShapeComponent: TextShape = new TextShape(
+      'GAME OVER!' +
+        '\n\n You survived for ' +
+        Math.floor(gameTimeMinutes) +
+        ' minutes and ' +
+        Math.floor(gameTimeSeconds) +
+        ' seconds.' +
+        '\n\n SCORE: ' +
+        playerScore
     )
-    textEntity.get(TextShape).textWrapping = true
-    textEntity.get(TextShape).fontSize = 60
-    textEntity.get(TextShape).hAlign = 'left'
+    textShapeComponent.textWrapping = true
+    textShapeComponent.fontSize = 50
+    textShapeComponent.hAlign = 'center'
+    textEntity.add(textShapeComponent)
+
     textEntity.set(
       new Transform({
-        position: new Vector3(0.03, 1.45, 0.45),
+        position: new Vector3(0.03, 1.45, 0.95),
         scale: new Vector3(0.7, 0.5, 1),
         rotation: Quaternion.Euler(0, 0, 0)
       })
     )
 
-    textEntity.setParent(parentEntity)
     engine.addEntity(textEntity)
   }
 
