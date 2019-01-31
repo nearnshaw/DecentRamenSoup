@@ -104,6 +104,7 @@ export class ObjectGrabberSystem implements ISystem {
         plate = gridPosition.get(CustomerPlate)
 
         if (
+          !plate.ownerCustomer ||
           plate.ownerCustomer.receivedDish ||
           !plate.ownerCustomer.shape.visible
         ) {

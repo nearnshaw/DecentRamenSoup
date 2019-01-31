@@ -44,6 +44,7 @@ export function createSpeechBubble(
   textEntity.get(TextShape).textWrapping = true
   textEntity.get(TextShape).width = 1.1
   textEntity.get(TextShape).height = 1.1
+  textEntity.get(TextShape).hAlign = 'left'
   textEntity.setParent(parentEntity)
   textEntity.set(
     new Transform({

@@ -135,8 +135,10 @@ export class CustomersSystem implements ISystem {
           deliverOrder(plate)
 
           customerProgressBar.speed = 0
-          engine.removeEntity(customerData.progressBar.getParent(), true)
+          let progressBarParent = customerData.progressBar.getParent()
+          engine.removeEntity(customerData.progressBar)
           customerData.progressBar = null
+          engine.removeEntity(progressBarParent, true)
 
           continue
         }
@@ -214,6 +216,7 @@ export class CustomersSystem implements ISystem {
     customerData.progressBar = createCustProgressBar(
       customer,
       Scalar.RandomRange(1, 1.25)
+      // 35
     )
   }
 }
