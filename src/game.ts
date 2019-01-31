@@ -122,31 +122,73 @@ smokeHole1.add(new SmokeHole())
 engine.addEntity(smokeHole1)
 
 // fixed pots
-
-let potModel = new GLTFShape('models/CookingPot.glb')
-
 let pot1 = shelves.grid[4][7]
-pot1.add(potModel)
-pot1.add(new Pot())
+pot1.add(new Pot(pot1))
 pot1.get(Transform).rotation.setEuler(0, 90, 0)
 pot1.add(
   new OnClick(e => {
     ClickPot(objectGrabber, pot1.get(Pot), objectGrabberSystem)
   })
 )
+const potButton1 = new Entity()
+potButton1.setParent(pot1)
+potButton1.add(
+  new Transform({
+    position: new Vector3(0.3, -0.3, 0),
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+potButton1.add(new CylinderShape())
+potButton1.set(redMaterial)
+potButton1.add(new ButtonData(0.3, 0.2))
+potButton1.add(
+  new OnClick(e => {
+    potButton1.get(ButtonData).pressed = true
+    if (!pot1.get(Pot).hasNoodles) {
+      log('empty pot')
+      return
+    }
+
+    pot1.get(Pot).progressBar = createPotProgressBar(pot1, 270, 0.3, 1)
+  })
+)
+engine.addEntity(potButton1)
 
 let pot2 = shelves.grid[2][7]
-pot2.add(potModel)
-pot2.add(new Pot())
+pot2.add(new Pot(pot2))
 pot2.get(Transform).rotation.setEuler(0, 90, 0)
 pot2.add(
   new OnClick(e => {
     ClickPot(objectGrabber, pot2.get(Pot), objectGrabberSystem)
   })
 )
+const potButton2 = new Entity()
+potButton2.setParent(pot2)
+potButton2.add(
+  new Transform({
+    position: new Vector3(0.3, -0.3, 0),
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+potButton2.add(new CylinderShape())
+potButton2.set(redMaterial)
+potButton2.add(new ButtonData(0.3, 0.2))
+potButton2.add(
+  new OnClick(e => {
+    potButton2.get(ButtonData).pressed = true
+    if (!pot2.get(Pot).hasNoodles) {
+      log('empty pot')
+      return
+    }
+
+    pot2.get(Pot).progressBar = createPotProgressBar(pot2, 270, 0.3, 1)
+  })
+)
+engine.addEntity(potButton2)
 
 // cutter machines
-
 let cutterModel = new GLTFShape('models/placeholders/LeverRed.gltf')
 
 let cutter1 = shelves.grid[3][7]
@@ -158,6 +200,29 @@ cutter1.add(
     ClickBoard(objectGrabber, cutter1.get(CuttingBoard), objectGrabberSystem)
   })
 )
+const cutterButton1 = new Entity()
+cutterButton1.setParent(cutter1)
+cutterButton1.add(
+  new Transform({
+    position: new Vector3(0.3, -0.3, 0),
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+cutterButton1.add(new CylinderShape())
+cutterButton1.set(redMaterial)
+cutterButton1.add(new ButtonData(0.3, 0.25, 0.3))
+cutterButton1.add(
+  new OnClick(e => {
+    cutterButton1.get(ButtonData).pressed = true
+    if (!cutter1.get(CuttingBoard).hasRoll) {
+      log('no roll to cut')
+      return
+    }
+    cutRoll(cutter1.get(CuttingBoard))
+  })
+)
+engine.addEntity(cutterButton1)
 
 let cutter2 = shelves.grid[1][7]
 cutter2.add(cutterModel)
@@ -168,9 +233,41 @@ cutter2.add(
     ClickBoard(objectGrabber, cutter2.get(CuttingBoard), objectGrabberSystem)
   })
 )
+const cutterButton2 = new Entity()
+cutterButton2.setParent(cutter2)
+cutterButton2.add(
+  new Transform({
+    position: new Vector3(0.3, -0.3, 0),
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.05, 0.2, 0.05)
+  })
+)
+cutterButton2.add(new CylinderShape())
+cutterButton2.set(redMaterial)
+cutterButton2.add(new ButtonData(0.3, 0.25, 0.3))
+cutterButton2.add(
+  new OnClick(e => {
+    cutterButton2.get(ButtonData).pressed = true
+    if (!cutter2.get(CuttingBoard).hasRoll) {
+      log('no roll to cut')
+      return
+    }
+    cutRoll(cutter2.get(CuttingBoard))
+  })
+)
+engine.addEntity(cutterButton2)
 
-// buttons
-
+// expending machines
+let nooldlesExpendingMachineModel = new GLTFShape('models/ExpenderNoodles.glb')
+let noodlesExpendingMachine = new Entity()
+noodlesExpendingMachine.add(nooldlesExpendingMachineModel)
+noodlesExpendingMachine.add(
+  new Transform({
+    position: shelves.grid[5][3].get(Transform).position,
+    rotation: Quaternion.Euler(0, 90, 0)
+  })
+)
+engine.addEntity(noodlesExpendingMachine)
 const noodlesButton = new Entity()
 noodlesButton.setParent(shelves.grid[5][3])
 noodlesButton.add(
@@ -197,9 +294,18 @@ noodlesButton.add(
     noodleExpendingComp.createIngredient()
   })
 )
-
 engine.addEntity(noodlesButton)
 
+let sushiExpendingMachineModel = new GLTFShape('models/ExpenderRolls.glb')
+let sushiExpendingMachine = new Entity()
+sushiExpendingMachine.add(sushiExpendingMachineModel)
+sushiExpendingMachine.add(
+  new Transform({
+    position: shelves.grid[5][1].get(Transform).position,
+    rotation: Quaternion.Euler(0, 90, 0)
+  })
+)
+engine.addEntity(sushiExpendingMachine)
 const sushiButton = new Entity()
 sushiButton.setParent(shelves.grid[5][1])
 sushiButton.add(
@@ -228,108 +334,6 @@ sushiButton.add(
 )
 
 engine.addEntity(sushiButton)
-
-const potButton1 = new Entity()
-potButton1.setParent(pot1)
-potButton1.add(
-  new Transform({
-    position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
-  })
-)
-potButton1.add(new CylinderShape())
-potButton1.set(redMaterial)
-potButton1.add(new ButtonData(0.3, 0.2))
-potButton1.add(
-  new OnClick(e => {
-    potButton1.get(ButtonData).pressed = true
-    if (!pot1.get(Pot).hasNoodles) {
-      log('empty pot')
-      return
-    }
-
-    pot1.get(Pot).progressBar = createPotProgressBar(pot1, 270, 0.3, 1)
-  })
-)
-
-engine.addEntity(potButton1)
-
-const potButton2 = new Entity()
-potButton2.setParent(pot2)
-potButton2.add(
-  new Transform({
-    position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
-  })
-)
-potButton2.add(new CylinderShape())
-potButton2.set(redMaterial)
-potButton2.add(new ButtonData(0.3, 0.2))
-potButton2.add(
-  new OnClick(e => {
-    potButton2.get(ButtonData).pressed = true
-    if (!pot2.get(Pot).hasNoodles) {
-      log('empty pot')
-      return
-    }
-
-    pot2.get(Pot).progressBar = createPotProgressBar(pot2, 270, 0.3, 1)
-  })
-)
-
-engine.addEntity(potButton2)
-
-const cutterButton1 = new Entity()
-cutterButton1.setParent(cutter1)
-cutterButton1.add(
-  new Transform({
-    position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
-  })
-)
-cutterButton1.add(new CylinderShape())
-cutterButton1.set(redMaterial)
-cutterButton1.add(new ButtonData(0.3, 0.25, 0.3))
-cutterButton1.add(
-  new OnClick(e => {
-    cutterButton1.get(ButtonData).pressed = true
-    if (!cutter1.get(CuttingBoard).hasRoll) {
-      log('no roll to cut')
-      return
-    }
-    cutRoll(cutter1.get(CuttingBoard))
-  })
-)
-
-engine.addEntity(cutterButton1)
-
-const cutterButton2 = new Entity()
-cutterButton2.setParent(cutter2)
-cutterButton2.add(
-  new Transform({
-    position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
-  })
-)
-cutterButton2.add(new CylinderShape())
-cutterButton2.set(redMaterial)
-cutterButton2.add(new ButtonData(0.3, 0.25, 0.3))
-cutterButton2.add(
-  new OnClick(e => {
-    cutterButton2.get(ButtonData).pressed = true
-    if (!cutter2.get(CuttingBoard).hasRoll) {
-      log('no roll to cut')
-      return
-    }
-    cutRoll(cutter2.get(CuttingBoard))
-  })
-)
-
-engine.addEntity(cutterButton2)
 
 // customer plates
 

@@ -13,12 +13,21 @@ export const enum SoupState {
 
 @Component('pot')
 export class Pot {
-  state: SoupState = SoupState.Raw
-  hasNoodles: boolean = false
+  state: SoupState
+  hasNoodles: boolean
   progressBar: Entity
+  attachedEntity: Entity
+
+  constructor(attachedEntity: Entity) {
+    this.attachedEntity = attachedEntity
+    this.reset()
+  }
 
   reset() {
     this.state = SoupState.Raw
+
+    updatePotMesh(this.attachedEntity, SoupState.Raw)
+
     this.hasNoodles = false
 
     if (this.progressBar) {
@@ -28,14 +37,41 @@ export class Pot {
   }
 }
 
+let emptyPotModel = new GLTFShape('models/CookingPotClean.glb')
+let noodlesPotModel = new GLTFShape('models/CookingPotNoodles.glb')
+let trashPotModel = new GLTFShape('models/CookingPotDirty.glb')
+
+export function updatePotMesh(potEntity: Entity, newMeshtype: SoupState) {
+  switch (newMeshtype) {
+    case SoupState.Raw:
+      if (potEntity.has(GLTFShape)) {
+        potEntity.remove(GLTFShape)
+      }
+      potEntity.add(emptyPotModel)
+      break
+    case SoupState.Cooked:
+      potEntity.remove(GLTFShape)
+
+      potEntity.add(noodlesPotModel)
+      break
+    case SoupState.Burned:
+      potEntity.remove(GLTFShape)
+
+      potEntity.add(trashPotModel)
+      break
+  }
+}
+
 // Called in the dropObject()
 export function AddNoodles(DroppedObject: Entity, pot: Pot) {
   let grabbableObject = DroppedObject.get(GrabableObjectComponent)
   if (grabbableObject.type == IngredientType.Noodles) {
     pot.hasNoodles = true
+    updatePotMesh(pot.attachedEntity, SoupState.Cooked)
     log('added noodles')
   } else {
     pot.state = SoupState.Burned
+    updatePotMesh(pot.attachedEntity, SoupState.Burned)
     log('ruined soup')
   }
 

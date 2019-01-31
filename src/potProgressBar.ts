@@ -1,4 +1,4 @@
-import { Pot, SoupState } from './pot'
+import { Pot, SoupState, updatePotMesh } from './pot'
 import { smokeSpawner } from './smoke'
 import { finishedPlaying } from './finishedGameUI'
 
@@ -51,7 +51,10 @@ export class ProgressBarUpdate implements ISystem {
       } else if (data.ratio < 0.7) {
         bar.remove(Material)
         bar.set(this.green)
+
         pot.state = SoupState.Cooked
+        updatePotMesh(pot.attachedEntity, SoupState.Cooked)
+
         data.smokeInterval *= 0.99
       } else if (data.ratio < 1) {
         bar.remove(Material)
@@ -59,6 +62,7 @@ export class ProgressBarUpdate implements ISystem {
         data.smokeInterval *= 0.98
       } else if (data.ratio > 1) {
         pot.state = SoupState.Burned
+        updatePotMesh(pot.attachedEntity, SoupState.Burned)
 
         if (bar.getParent()) {
           engine.removeEntity(bar.getParent(), true)
