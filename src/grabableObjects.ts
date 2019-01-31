@@ -23,17 +23,55 @@ export const enum IngredientType {
 export class GrabableObjectComponent {
   grabbed: boolean = false
   type: IngredientType = IngredientType.Noodles
+  falling: boolean = false
+  origin: number = 0.4
+  target: number = 0
+  fraction: number = 0
 
-  constructor(type: IngredientType, grabbed: boolean = false) {
+
+  constructor(type: IngredientType, grabbed: boolean = false, falling: boolean = false, origin:number = 0) {
     this.type = type
     this.grabbed = grabbed
+    this.falling = falling
+    if (falling){
+      this.origin = origin
+    }
   }
 }
+
+// component group for all grabbable objects
+export const grabbableObjects = engine.getComponentGroup(GrabableObjectComponent)
+
 
 @Component('objectGrabberComponent')
 export class ObjectGrabberComponent {
   grabbedObject: Entity = null
 }
+
+
+
+export class DropObjects implements ISystem {
+  update(dt: number) {
+    for (let object of grabbableObjects.entities) {
+      let ObjectComponent = object.get(GrabableObjectComponent)
+      let transform = object.get(Transform)
+      
+      if (ObjectComponent.falling){
+        ObjectComponent.fraction += dt * 3
+        if (ObjectComponent.fraction > 1){
+          ObjectComponent.falling = false
+        }
+        transform.position.y = Scalar.Lerp(
+          ObjectComponent.origin, 
+          ObjectComponent.target, 
+          ObjectComponent.fraction
+        )
+
+      }
+    }
+  }
+}
+
 
 export class ObjectGrabberSystem implements ISystem {
   transform: Transform

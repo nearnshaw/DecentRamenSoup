@@ -14,7 +14,8 @@ import {
   GrabableObjectComponent,
   ObjectGrabberComponent,
   ObjectGrabberSystem,
-  IngredientType
+  IngredientType,
+  DropObjects
 } from './grabableObjects'
 import { ButtonData, PushButton, buttons } from './button'
 import {
@@ -78,6 +79,8 @@ engine.addSystem(new Walk())
 engine.addSystem(new SmokeSystem())
 
 engine.addSystem(new ThrowSmoke())
+
+engine.addSystem(new DropObjects())
 
 // ----------------------------
 // colors for progress bars

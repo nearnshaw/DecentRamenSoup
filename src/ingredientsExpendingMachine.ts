@@ -37,7 +37,7 @@ export class IngredientExpendingMachineComponent {
 
     let ent = new Entity()
 
-    ent.add(new GrabableObjectComponent(this.ingredientType))
+    ent.add(new GrabableObjectComponent(this.ingredientType, false, true, 0.5))
 
     ent.set(
       new Transform({
