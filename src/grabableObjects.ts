@@ -177,10 +177,10 @@ export class ObjectGrabberSystem implements ISystem {
         AddNoodles(shelfComponent.object, potComponent)
         engine.removeEntity(shelfComponent.object)
         shelfComponent.object = null
-      } else if (shelf.has(CuttingBoard)) {
+      } else if (shelf.get(GridPosition).Cutter) {
         log('dropped something in a cutting board')
 
-        AddSushi(shelfComponent.object, shelf.get(CuttingBoard))
+        AddSushi(shelfComponent.object, shelf.get(GridPosition).Cutter.get(CuttingBoard))
         //engine.removeEntity(shelfComponent.object)
         //shelfComponent.object = null
       } else if (plate) {

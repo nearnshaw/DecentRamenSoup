@@ -1,6 +1,9 @@
+import { CuttingBoard } from "./cuttingBoard";
+
 @Component("gridPosition")
 export class GridPosition {
   object: Entity = null
+  Cutter: Entity | null = null
 }
 
 // component group grid positions
