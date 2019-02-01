@@ -288,19 +288,34 @@ cutter1.get(GLTFShape).addClip(cut5)
 //   .getClip('State2')
 //   .play()
 
-let cutter2 = shelves.grid[1][7]
+let cutter2 = new Entity()
+
+shelves.grid[1][7].get(Transform).rotation.setEuler(0, 90, 0)
+shelves.grid[1][7].get(GridPosition).Cutter = cutter2
+
+
+cutter2.setParent(shelves.grid[1][7])
 //cutter2.add(new GLTFShape('models/Cutter3.glb'))
-cutter2.add(new GLTFShape('models/GarbageFood.glb'))
+cutter2.add(new GLTFShape('models/Cutter.gltf'))
 cutter2.add(new CuttingBoard())
-cutter2.get(Transform).rotation.setEuler(0, 90, 0)
+cutter2.add(
+  new Transform({
+    scale: new Vector3(0.01, 0.01, 0.01),
+    rotation: Quaternion.Euler(0, -90, 0),
+    position: new Vector3(0, -0.1, 0)
+  })
+)
+
 //cutter2.get(Transform).scale.setAll(0.01)
 cutter2.add(
   new OnClick(e => {
     ClickBoard(objectGrabber, cutter2, objectGrabberSystem)
   })
 )
+engine.addEntity(cutter2)
+
 const cutterButton2 = new Entity()
-cutterButton2.setParent(cutter2)
+cutterButton2.setParent(shelves.grid[1][7])
 cutterButton2.add(
   new Transform({
     position: new Vector3(0.3, -0.3, 0),
@@ -321,6 +336,19 @@ cutterButton2.add(
   })
 )
 engine.addEntity(cutterButton2)
+
+
+let cut1b = new AnimationClip('State1')
+let cut2b = new AnimationClip('State2')
+let cut3b = new AnimationClip('State3')
+let cut4b = new AnimationClip('State4')
+let cut5b = new AnimationClip('State5')
+
+cutter2.get(GLTFShape).addClip(cut1b)
+cutter2.get(GLTFShape).addClip(cut2b)
+cutter2.get(GLTFShape).addClip(cut3b)
+cutter2.get(GLTFShape).addClip(cut4b)
+cutter2.get(GLTFShape).addClip(cut5b)
 
 // expending machines
 let nooldlesExpendingMachineModel = new GLTFShape('models/ExpenderNoodles.glb')

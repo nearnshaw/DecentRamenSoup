@@ -26,6 +26,9 @@ export class CuttingBoard {
     //this.state = RollState.full
     this.hasRoll = false
     this.cuts = 0
+    this.rollChild = null
+    this.cutting = false
+    this.cutTime = this.totalCutTime
   }
 }
 
@@ -71,13 +74,16 @@ export function AddSushi(DroppedObject: Entity, cuttingBoadrd: CuttingBoard) {
     cuttingBoadrd.hasRoll = true
     cuttingBoadrd.cuts = 0
     cuttingBoadrd.rollChild = DroppedObject
+    cuttingBoadrd.rollChild.remove(OnClick)
     log('added roll')
   } else if (grabbableObject.type == IngredientType.SlicedSushi) {
     cuttingBoadrd.hasRoll = true
     cuttingBoadrd.cuts = cutsNeeded
     cuttingBoadrd.rollChild = DroppedObject
+    cuttingBoadrd.rollChild.remove(OnClick)
     log('roll is already cut')
   }
+  DroppedObject.get(Transform).rotation.setEuler(0, 90, 0)
   //engine.removeEntity(DroppedObject)
 }
 

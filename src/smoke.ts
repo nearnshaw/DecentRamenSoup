@@ -10,7 +10,7 @@ export class SmokeVelocity extends Vector3 {
 const smokeMaterial = new Material()
 smokeMaterial.albedoTexture = 'textures/smoke-puff3.png'
 smokeMaterial.hasAlpha = true
-smokeMaterial.alpha = 0.8
+smokeMaterial.alpha = 1
 
 const smokeShape = new PlaneShape()
 smokeShape.billboard = BillboardMode.BILLBOARDMODE_ALL
