@@ -144,6 +144,7 @@ export class ObjectGrabberSystem implements ISystem {
 
     if (shelf && (shelfComponent.Cutter || !shelfComponent.object)) {
       let plate: CustomerPlate = null
+      let potComponent: Pot = null
       if (shelf.has(CustomerPlate)) {
         plate = shelf.get(CustomerPlate)
 
@@ -153,6 +154,12 @@ export class ObjectGrabberSystem implements ISystem {
           !plate.ownerCustomer.shape.visible
         ) {
           log('Not possible to drop here right now')
+          return
+        }
+      } else if (shelf.has(Pot)) {
+        potComponent = shelf.get(Pot)
+        if (potComponent.hasIngredient) {
+          log("that pot already has noodles. Can't drop object here")
           return
         }
       }
@@ -167,13 +174,7 @@ export class ObjectGrabberSystem implements ISystem {
       shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
       shelfComponent.object.get(GrabableObjectComponent).fraction = 0
 
-      if (shelf.has(Pot)) {
-        let potComponent = shelf.get(Pot)
-        if (potComponent.hasIngredient) {
-          log("that pot already has noodles. Can't drop object here")
-          return
-        }
-
+      if (potComponent) {
         log('dropped something in a pot')
 
         AddNoodles(shelfComponent.object, potComponent)
