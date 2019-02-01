@@ -226,11 +226,13 @@ shelves.grid[3][7].get(GridPosition).Cutter = cutter1
 cutter1.setParent(shelves.grid[3][7])
 cutter1.add(new GLTFShape('models/Cutter.gltf'))
 cutter1.add(new CuttingBoard())
-cutter1.add(new Transform({
-  scale : new Vector3(0.01, 0.01, 0.01),
-  rotation: Quaternion.Euler(0, -90, 0),
-  position: new Vector3(0, -0.1, 0)
-}))
+cutter1.add(
+  new Transform({
+    scale: new Vector3(0.01, 0.01, 0.01),
+    rotation: Quaternion.Euler(0, -90, 0),
+    position: new Vector3(0, -0.1, 0)
+  })
+)
 
 cutter1.add(
   new OnClick(e => {
@@ -244,12 +246,11 @@ cutterButton1.setParent(shelves.grid[3][7])
 cutterButton1.add(
   new Transform({
     position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
+    rotation: Quaternion.Euler(90, 90, 0),
+    scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-cutterButton1.add(new CylinderShape())
-cutterButton1.set(redMaterial)
+cutterButton1.add(buttonShape)
 cutterButton1.add(new ButtonData(0.3, 0.25, 0.3))
 cutterButton1.add(
   new OnClick(e => {
@@ -263,11 +264,11 @@ cutterButton1.add(
 )
 engine.addEntity(cutterButton1)
 
-let cut1 = new AnimationClip('State1', {loop: false})
-let cut2 = new AnimationClip('State2', {loop: false})
-let cut3 = new AnimationClip('State3', {loop: false})
-let cut4 = new AnimationClip('State4', {loop: false})
-let cut5 = new AnimationClip('State5', {loop: false})
+let cut1 = new AnimationClip('State1', { loop: false })
+let cut2 = new AnimationClip('State2', { loop: false })
+let cut3 = new AnimationClip('State3', { loop: false })
+let cut4 = new AnimationClip('State4', { loop: false })
+let cut5 = new AnimationClip('State5', { loop: false })
 
 cutter1.get(GLTFShape).addClip(cut1)
 cutter1.get(GLTFShape).addClip(cut2)
@@ -301,12 +302,11 @@ cutterButton2.setParent(cutter2)
 cutterButton2.add(
   new Transform({
     position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
+    rotation: Quaternion.Euler(90, 90, 0),
+    scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-cutterButton2.add(new CylinderShape())
-cutterButton2.set(redMaterial)
+cutterButton2.add(buttonShape)
 cutterButton2.add(new ButtonData(0.3, 0.25, 0.3))
 cutterButton2.add(
   new OnClick(e => {
