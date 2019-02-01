@@ -147,17 +147,18 @@ pot1.add(
     ClickPot(objectGrabber, pot1.get(Pot), objectGrabberSystem)
   })
 )
+
+const buttonShape = new GLTFShape('models/Button.glb')
 const potButton1 = new Entity()
 potButton1.setParent(pot1)
 potButton1.add(
   new Transform({
     position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
+    rotation: Quaternion.Euler(90, 90, 0),
+    scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-potButton1.add(new CylinderShape())
-potButton1.set(redMaterial)
+potButton1.add(buttonShape)
 potButton1.add(new ButtonData(0.3, 0.2))
 potButton1.add(
   new OnClick(e => {
@@ -185,12 +186,11 @@ potButton2.setParent(pot2)
 potButton2.add(
   new Transform({
     position: new Vector3(0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 270, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
+    rotation: Quaternion.Euler(90, 90, 0),
+    scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-potButton2.add(new CylinderShape())
-potButton2.set(redMaterial)
+potButton2.add(buttonShape)
 potButton2.add(new ButtonData(0.3, 0.2))
 potButton2.add(
   new OnClick(e => {
@@ -311,12 +311,11 @@ noodlesButton.setParent(shelves.grid[5][3])
 noodlesButton.add(
   new Transform({
     position: new Vector3(-0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 90, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-noodlesButton.add(new CylinderShape())
-noodlesButton.set(redMaterial)
+noodlesButton.add(buttonShape)
 noodlesButton.add(new ButtonData(-0.3, -0.2))
 let noodleExpendingComp = new IngredientExpendingMachineComponent(
   IngredientType.Noodles,
@@ -349,12 +348,11 @@ sushiButton.setParent(shelves.grid[5][1])
 sushiButton.add(
   new Transform({
     position: new Vector3(-0.3, -0.3, 0),
-    rotation: Quaternion.Euler(90, 90, 0),
-    scale: new Vector3(0.05, 0.2, 0.05)
+    rotation: Quaternion.Euler(90, 270, 0),
+    scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-sushiButton.add(new CylinderShape())
-sushiButton.set(redMaterial)
+sushiButton.add(buttonShape)
 sushiButton.add(new ButtonData(-0.3, -0.2))
 let sushiExpendingComp = new IngredientExpendingMachineComponent(
   IngredientType.SushiRoll,

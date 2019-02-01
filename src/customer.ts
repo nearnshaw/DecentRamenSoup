@@ -14,32 +14,40 @@ import { finishedPlaying, finishGame } from './finishedGameUI'
 
 const customerRawNoodleMessages = [
   "Me like some noodles! Me like'em RAW!",
-  'Raw noodles please, and hurry!',
-  'Noodles! A nice dry brick of raw ones! '
+  'RAW noodles please, and hurry!',
+  'Noodles! A nice dry brick of RAW ones!',
+  'Noodles! NO cooking for me',
+  'HARD RAW NOODLES'
 ]
 
 const customerRawSushiMessages = [
-  'They say you got the best rolls, gimme! No slicing!',
-  'One roll please. In one piece!',
-  'A full sushi roll I can swallow in one gulp!'
+  'They say you got the best rolls, gimme! NO slicing!',
+  'One roll please. In ONE piece!',
+  'A full sushi roll I can swallow in one gulp!',
+  'SUSHI. NO CUTTING.'
 ]
 
 const customerCookedNoodleMessages = [
   'I want cooked noodles, NOW!',
   'I... need... my... hot... noodles...',
-  'Ramen Noodles, they better be here soon.'
+  'Ramen Noodles, they better be here soon.',
+  "Decentraland's best ramen huh? I'll try some",
+  'A bowl of noodles, please'
 ]
 
 const customerSlicedSushiMessages = [
   'sliced sushi! onegai shimaaasu!',
   'Sushi. Tic Toc.',
-  'Sushi dammit! What rya waiting for?'
+  'Sushi dammit! What rya waiting for?',
+  'Been exploring decentraland all day, sushi please'
 ]
 
 const customerTrashMessages = [
   'Noodles! Gimme the stinky ones!',
   'Noodles, the burrrrrrrnt the better!',
-  'Well-cooked noodles. Burnt, as you people say.'
+  'Well-cooked noodles. Burnt, as you people say.',
+  "They say you sell garbage for food, I'd like some",
+  "Garbage, don't care what kind"
 ]
 
 const customerCorrectDishMessages = [
