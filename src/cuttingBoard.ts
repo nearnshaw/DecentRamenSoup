@@ -109,7 +109,36 @@ export function ClickBoard(
   }
 }
 
-export function cutRoll(cuttingBoard: CuttingBoard) {
-  cuttingBoard.cuts += 1
-  log('roll has ', cuttingBoard.cuts, ' cuts')
+export function cutRoll(cuttingBoard: Entity) {
+    let cutter = cuttingBoard.get(CuttingBoard)
+    cutter.cuts += 1
+    let gltf = cuttingBoard.get(GLTFShape)
+    switch (cutter.cuts) {
+        case 1:
+          gltf.getClip('State1').play()
+          break
+        case 2:
+          gltf.getClip('State2').play()
+          break
+        case 3:
+          gltf.getClip('State3').play()
+          break
+        case 4:
+          gltf.getClip('State4').play()
+          break
+        case 5:
+          gltf.getClip('State5').play()
+          break
+        case 6:
+            gltf.getClip('State1').play()
+            gltf.getClip('State2').play()
+            gltf.getClip('State3').play()
+            gltf.getClip('State4').play()
+            gltf.getClip('State5').play()
+            break
+    }
+
+
+  //cuttingBoard.rollChild
+  log('roll has ', cutter.cuts, ' cuts')
 }

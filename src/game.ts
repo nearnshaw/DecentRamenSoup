@@ -218,18 +218,29 @@ trash.add(new Trash())
 // cutter machines
 //let cutterModel = new GLTFShape('models/placeholders/LeverRed.gltf')
 
-let cutter1 = shelves.grid[3][7]
+let cutter1 = new Entity()
+
+shelves.grid[3][7].get(Transform).rotation.setEuler(0, 90, 0)
+shelves.grid[3][7].get(GridPosition).Cutter = cutter1
+
+cutter1.setParent(shelves.grid[3][7])
 cutter1.add(new GLTFShape('models/Cutter.gltf'))
 cutter1.add(new CuttingBoard())
-cutter1.get(Transform).scale.set(0.01, 0.01, 0.01)
-cutter1.get(Transform).rotation.setEuler(0, 0, 0)
+cutter1.add(new Transform({
+  scale : new Vector3(0.01, 0.01, 0.01),
+  rotation: Quaternion.Euler(0, -90, 0),
+  position: new Vector3(0, -0.1, 0)
+}))
+
 cutter1.add(
   new OnClick(e => {
     ClickBoard(objectGrabber, cutter1, objectGrabberSystem)
   })
 )
+engine.addEntity(cutter1)
+
 const cutterButton1 = new Entity()
-cutterButton1.setParent(cutter1)
+cutterButton1.setParent(shelves.grid[3][7])
 cutterButton1.add(
   new Transform({
     position: new Vector3(0.3, -0.3, 0),
@@ -247,18 +258,32 @@ cutterButton1.add(
       log('no roll to cut')
       return
     }
-    cutRoll(cutter1.get(CuttingBoard))
+    cutRoll(cutter1)
   })
 )
 engine.addEntity(cutterButton1)
 
-let cut1 = new AnimationClip('State1')
+let cut1 = new AnimationClip('State1', {loop: false})
+let cut2 = new AnimationClip('State2', {loop: false})
+let cut3 = new AnimationClip('State3', {loop: false})
+let cut4 = new AnimationClip('State4', {loop: false})
+let cut5 = new AnimationClip('State5', {loop: false})
 
 cutter1.get(GLTFShape).addClip(cut1)
-cutter1
-  .get(GLTFShape)
-  .getClip('State1')
-  .play()
+cutter1.get(GLTFShape).addClip(cut2)
+cutter1.get(GLTFShape).addClip(cut3)
+cutter1.get(GLTFShape).addClip(cut4)
+cutter1.get(GLTFShape).addClip(cut5)
+
+// cutter1
+//   .get(GLTFShape)
+//   .getClip('State1')
+//   .play()
+
+//   cutter1
+//   .get(GLTFShape)
+//   .getClip('State2')
+//   .play()
 
 let cutter2 = shelves.grid[1][7]
 //cutter2.add(new GLTFShape('models/Cutter3.glb'))
@@ -290,7 +315,7 @@ cutterButton2.add(
       log('no roll to cut')
       return
     }
-    cutRoll(cutter2.get(CuttingBoard))
+    cutRoll(cutter2)
   })
 )
 engine.addEntity(cutterButton2)
