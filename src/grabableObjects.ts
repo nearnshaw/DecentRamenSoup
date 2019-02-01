@@ -140,7 +140,7 @@ export class ObjectGrabberSystem implements ISystem {
 
     let shelfComponent = shelf.get(GridPosition)
 
-    if (shelf && !shelfComponent.object) {
+    if (shelf && ( shelfComponent.Cutter || !shelfComponent.object))  {
       let plate: CustomerPlate = null
       if (shelf.has(CustomerPlate)) {
         plate = shelf.get(CustomerPlate)
