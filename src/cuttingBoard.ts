@@ -17,6 +17,9 @@ export class CuttingBoard {
   hasRoll: boolean = false
   cuts: number = 0
   rollChild: Entity
+  cutting: boolean = false
+  cutTime: number = 0.7
+  totalCutTime: number = 0.7
   //state: RollState = RollState.full
 
   reset() {
@@ -25,6 +28,38 @@ export class CuttingBoard {
     this.cuts = 0
   }
 }
+
+// component group for all cutters
+export const cutters = engine.getComponentGroup(CuttingBoard)
+
+
+
+export class CutSystem implements ISystem {
+    update(dt: number) {
+    
+      for (let cutter of cutters.entities) {
+
+        const cuttingBoard = cutter.get(CuttingBoard)
+        if(cuttingBoard.cutting){
+            cuttingBoard.cutTime -= dt
+            if (cuttingBoard.cutTime < 0)
+            {
+                cuttingBoard.cutTime = cuttingBoard.totalCutTime
+                cuttingBoard.cutting = false
+                let gltf = cutter.get(GLTFShape)
+                gltf.getClip('State1').pause()
+                gltf.getClip('State2').pause()
+                gltf.getClip('State3').pause()
+                gltf.getClip('State4').pause()
+                gltf.getClip('State5').pause()
+            }
+        }
+        
+      }
+    }
+  }
+
+
 
 // reusable shape components
 const sushiPlateShape = new GLTFShape('models/PlateSushi.glb')
@@ -112,6 +147,7 @@ export function ClickBoard(
 export function cutRoll(cuttingBoard: Entity) {
     let cutter = cuttingBoard.get(CuttingBoard)
     cutter.cuts += 1
+    cutter.cutting = true
     let gltf = cuttingBoard.get(GLTFShape)
     switch (cutter.cuts) {
         case 1:

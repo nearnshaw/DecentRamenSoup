@@ -26,7 +26,7 @@ import {
 } from './customer'
 import { LerpData, createWalker, Walk } from './walkers'
 import { Pot, ClickPot, SoupState } from './pot'
-import { ClickBoard, CuttingBoard, cutRoll } from './cuttingBoard'
+import { ClickBoard, CuttingBoard, cutRoll, CutSystem } from './cuttingBoard'
 import { SmokeVelocity, SmokeSystem, smokeSpawner } from './smoke'
 import { ThrowSmoke, SmokeHole } from './smokeHole'
 import { CustProgressBarUpdate } from './customerProgressBar'
@@ -82,6 +82,8 @@ engine.addSystem(new SmokeSystem())
 engine.addSystem(new ThrowSmoke())
 
 engine.addSystem(new DropObjects())
+
+engine.addSystem(new CutSystem())
 
 // ----------------------------
 // colors for progress bars
@@ -264,11 +266,11 @@ cutterButton1.add(
 )
 engine.addEntity(cutterButton1)
 
-let cut1 = new AnimationClip('State1', { loop: false })
-let cut2 = new AnimationClip('State2', { loop: false })
-let cut3 = new AnimationClip('State3', { loop: false })
-let cut4 = new AnimationClip('State4', { loop: false })
-let cut5 = new AnimationClip('State5', { loop: false })
+let cut1 = new AnimationClip('State1')
+let cut2 = new AnimationClip('State2')
+let cut3 = new AnimationClip('State3')
+let cut4 = new AnimationClip('State4')
+let cut5 = new AnimationClip('State5')
 
 cutter1.get(GLTFShape).addClip(cut1)
 cutter1.get(GLTFShape).addClip(cut2)
