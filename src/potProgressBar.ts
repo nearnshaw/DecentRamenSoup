@@ -34,7 +34,7 @@ export class ProgressBarUpdate implements ISystem {
       let transform = bar.get(Transform)
       let data = bar.get(PotProgressBar)
       let pot = data.parent.get(Pot)
-      if (!pot.hasNoodles && bar.getParent()) {
+      if (!pot.hasIngredient && bar.getParent()) {
         engine.removeEntity(bar.getParent(), true)
       }
 

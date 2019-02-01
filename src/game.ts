@@ -165,12 +165,14 @@ potButton1.add(new ButtonData(0.3, 0.2))
 potButton1.add(
   new OnClick(e => {
     potButton1.get(ButtonData).pressed = true
-    if (!pot1.get(Pot).hasNoodles) {
-      log('empty pot')
+    let potComponent = pot1.get(Pot)
+
+    if (!potComponent.hasIngredient || potComponent.state == SoupState.Burned) {
+      log("can't turn on pot")
       return
     }
 
-    pot1.get(Pot).progressBar = createPotProgressBar(pot1, 270, 0.3, 1)
+    potComponent.progressBar = createPotProgressBar(pot1, 270, 0.3, 1)
   })
 )
 engine.addEntity(potButton1)
@@ -197,7 +199,7 @@ potButton2.add(new ButtonData(0.3, 0.2))
 potButton2.add(
   new OnClick(e => {
     potButton2.get(ButtonData).pressed = true
-    if (!pot2.get(Pot).hasNoodles) {
+    if (!pot2.get(Pot).hasIngredient) {
       log('empty pot')
       return
     }
@@ -293,7 +295,6 @@ let cutter2 = new Entity()
 shelves.grid[1][7].get(Transform).rotation.setEuler(0, 90, 0)
 shelves.grid[1][7].get(GridPosition).Cutter = cutter2
 
-
 cutter2.setParent(shelves.grid[1][7])
 //cutter2.add(new GLTFShape('models/Cutter3.glb'))
 cutter2.add(new GLTFShape('models/Cutter.gltf'))
@@ -336,7 +337,6 @@ cutterButton2.add(
   })
 )
 engine.addEntity(cutterButton2)
-
 
 let cut1b = new AnimationClip('State1')
 let cut2b = new AnimationClip('State2')

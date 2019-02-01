@@ -14,7 +14,7 @@ export const enum SoupState {
 @Component('pot')
 export class Pot {
   state: SoupState
-  hasNoodles: boolean
+  hasIngredient: boolean
   progressBar: Entity
   attachedEntity: Entity
 
@@ -28,7 +28,7 @@ export class Pot {
 
     updatePotMesh(this.attachedEntity, SoupState.Raw)
 
-    this.hasNoodles = false
+    this.hasIngredient = false
 
     if (this.progressBar) {
       engine.removeEntity(this.progressBar.getParent(), true)
@@ -65,8 +65,9 @@ export function updatePotMesh(potEntity: Entity, newMeshtype: SoupState) {
 // Called in the dropObject()
 export function AddNoodles(DroppedObject: Entity, pot: Pot) {
   let grabbableObject = DroppedObject.get(GrabableObjectComponent)
+
+  pot.hasIngredient = true
   if (grabbableObject.type == IngredientType.Noodles) {
-    pot.hasNoodles = true
     updatePotMesh(pot.attachedEntity, SoupState.Cooked)
     log('added noodles')
   } else {
@@ -90,7 +91,7 @@ export function ClickPot(
 ) {
   let grabberComponent = GrabberEntity.get(ObjectGrabberComponent)
 
-  if (!pot.hasNoodles) {
+  if (!pot.hasIngredient) {
     log('pot is empty')
     return
   }

@@ -8,7 +8,7 @@ import { Pot, AddNoodles } from './pot'
 import { CustomerPlate, deliverOrder } from './customer'
 import { CuttingBoard, AddSushi } from './cuttingBoard'
 import { finishedPlaying } from './finishedGameUI'
-import { Trash } from './trashCan';
+import { Trash } from './trashCan'
 
 export const enum IngredientType {
   Noodles,
@@ -27,49 +27,51 @@ export class GrabableObjectComponent {
   origin: number = 0.4
   target: number = 0
   fraction: number = 0
-  constructor(type: IngredientType, grabbed: boolean = false, falling: boolean = false, origin:number = 0) {
+  constructor(
+    type: IngredientType,
+    grabbed: boolean = false,
+    falling: boolean = false,
+    origin: number = 0
+  ) {
     this.type = type
     this.grabbed = grabbed
     this.falling = falling
-    if (falling){
+    if (falling) {
       this.origin = origin
     }
   }
 }
 
 // component group for all grabbable objects
-export const grabbableObjects = engine.getComponentGroup(GrabableObjectComponent)
-
+export const grabbableObjects = engine.getComponentGroup(
+  GrabableObjectComponent
+)
 
 @Component('objectGrabberComponent')
 export class ObjectGrabberComponent {
   grabbedObject: Entity = null
 }
 
-
-
 export class DropObjects implements ISystem {
   update(dt: number) {
     for (let object of grabbableObjects.entities) {
       let ObjectComponent = object.get(GrabableObjectComponent)
       let transform = object.get(Transform)
-      
-      if (ObjectComponent.falling){
+
+      if (ObjectComponent.falling) {
         ObjectComponent.fraction += dt * 3
-        if (ObjectComponent.fraction > 1){
+        if (ObjectComponent.fraction > 1) {
           ObjectComponent.falling = false
         }
         transform.position.y = Scalar.Lerp(
-          ObjectComponent.origin, 
-          ObjectComponent.target, 
+          ObjectComponent.origin,
+          ObjectComponent.target,
           ObjectComponent.fraction
         )
-
       }
     }
   }
 }
-
 
 export class ObjectGrabberSystem implements ISystem {
   transform: Transform
@@ -140,7 +142,7 @@ export class ObjectGrabberSystem implements ISystem {
 
     let shelfComponent = shelf.get(GridPosition)
 
-    if (shelf && ( shelfComponent.Cutter || !shelfComponent.object))  {
+    if (shelf && (shelfComponent.Cutter || !shelfComponent.object)) {
       let plate: CustomerPlate = null
       if (shelf.has(CustomerPlate)) {
         plate = shelf.get(CustomerPlate)
@@ -167,7 +169,7 @@ export class ObjectGrabberSystem implements ISystem {
 
       if (shelf.has(Pot)) {
         let potComponent = shelf.get(Pot)
-        if (potComponent.hasNoodles) {
+        if (potComponent.hasIngredient) {
           log("that pot already has noodles. Can't drop object here")
           return
         }
@@ -180,7 +182,10 @@ export class ObjectGrabberSystem implements ISystem {
       } else if (shelf.get(GridPosition).Cutter) {
         log('dropped something in a cutting board')
 
-        AddSushi(shelfComponent.object, shelf.get(GridPosition).Cutter.get(CuttingBoard))
+        AddSushi(
+          shelfComponent.object,
+          shelf.get(GridPosition).Cutter.get(CuttingBoard)
+        )
         //engine.removeEntity(shelfComponent.object)
         //shelfComponent.object = null
       } else if (plate) {
@@ -192,12 +197,10 @@ export class ObjectGrabberSystem implements ISystem {
         engine.removeEntity(shelfComponent.object)
 
         shelfComponent.object = null
-      } else if (shelf.has(Trash)){
-        
-        log("throwing trash")
+      } else if (shelf.has(Trash)) {
+        log('throwing trash')
         engine.removeEntity(shelfComponent.object)
         shelfComponent.object = null
-
       }
     } else {
       log('not possible to drop here')

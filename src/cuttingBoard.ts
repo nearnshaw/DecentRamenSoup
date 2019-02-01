@@ -35,34 +35,26 @@ export class CuttingBoard {
 // component group for all cutters
 export const cutters = engine.getComponentGroup(CuttingBoard)
 
-
-
 export class CutSystem implements ISystem {
-    update(dt: number) {
-    
-      for (let cutter of cutters.entities) {
-
-        const cuttingBoard = cutter.get(CuttingBoard)
-        if(cuttingBoard.cutting){
-            cuttingBoard.cutTime -= dt
-            if (cuttingBoard.cutTime < 0)
-            {
-                cuttingBoard.cutTime = cuttingBoard.totalCutTime
-                cuttingBoard.cutting = false
-                let gltf = cutter.get(GLTFShape)
-                gltf.getClip('State1').pause()
-                gltf.getClip('State2').pause()
-                gltf.getClip('State3').pause()
-                gltf.getClip('State4').pause()
-                gltf.getClip('State5').pause()
-            }
+  update(dt: number) {
+    for (let cutter of cutters.entities) {
+      const cuttingBoard = cutter.get(CuttingBoard)
+      if (cuttingBoard.cutting) {
+        cuttingBoard.cutTime -= dt
+        if (cuttingBoard.cutTime < 0) {
+          cuttingBoard.cutTime = cuttingBoard.totalCutTime
+          cuttingBoard.cutting = false
+          let gltf = cutter.get(GLTFShape)
+          gltf.getClip('State1').pause()
+          gltf.getClip('State2').pause()
+          gltf.getClip('State3').pause()
+          gltf.getClip('State4').pause()
+          gltf.getClip('State5').pause()
         }
-        
       }
     }
   }
-
-
+}
 
 // reusable shape components
 const sushiPlateShape = new GLTFShape('models/PlateSushi.glb')
@@ -151,35 +143,34 @@ export function ClickBoard(
 }
 
 export function cutRoll(cuttingBoard: Entity) {
-    let cutter = cuttingBoard.get(CuttingBoard)
-    cutter.cuts += 1
-    cutter.cutting = true
-    let gltf = cuttingBoard.get(GLTFShape)
-    switch (cutter.cuts) {
-        case 1:
-          gltf.getClip('State1').play()
-          break
-        case 2:
-          gltf.getClip('State2').play()
-          break
-        case 3:
-          gltf.getClip('State3').play()
-          break
-        case 4:
-          gltf.getClip('State4').play()
-          break
-        case 5:
-          gltf.getClip('State5').play()
-          break
-        case 6:
-            gltf.getClip('State1').play()
-            gltf.getClip('State2').play()
-            gltf.getClip('State3').play()
-            gltf.getClip('State4').play()
-            gltf.getClip('State5').play()
-            break
-    }
-
+  let cutter = cuttingBoard.get(CuttingBoard)
+  cutter.cuts += 1
+  cutter.cutting = true
+  let gltf = cuttingBoard.get(GLTFShape)
+  switch (cutter.cuts) {
+    case 1:
+      gltf.getClip('State1').play()
+      break
+    case 2:
+      gltf.getClip('State2').play()
+      break
+    case 3:
+      gltf.getClip('State3').play()
+      break
+    case 4:
+      gltf.getClip('State4').play()
+      break
+    case 5:
+      gltf.getClip('State5').play()
+      break
+    case 6:
+      gltf.getClip('State1').play()
+      gltf.getClip('State2').play()
+      gltf.getClip('State3').play()
+      gltf.getClip('State4').play()
+      gltf.getClip('State5').play()
+      break
+  }
 
   //cuttingBoard.rollChild
   log('roll has ', cutter.cuts, ' cuts')
