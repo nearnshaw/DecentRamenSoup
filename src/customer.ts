@@ -296,7 +296,11 @@ export function createCustomer(position: Vector3, plate: CustomerPlate) {
   customer.add(shape)
   customerData.shape = shape
 
-  customer.get(GLTFShape).addClip(sittingAnimation)
+  let anim = new Animator()
+
+  customer.add(anim)
+
+  anim.addClip(sittingAnimation)
 
   engine.addEntity(customer)
 

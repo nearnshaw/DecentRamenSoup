@@ -4,6 +4,7 @@ import {
   ObjectGrabberComponent,
   ObjectGrabberSystem
 } from './grabableObjects'
+import { GridPosition } from './grid';
 
 // export const enum RollState {
 //     full,
@@ -112,6 +113,9 @@ export function ClickBoard(
     )
     engine.addEntity(trash)
     grabberComponent.grabbedObject = trash
+    cutter.getParent().get(GridPosition).object = null
+    // let firstChildIndex = Object.keys(cutter.children)[0]
+    // engine.removeEntity(cutter.children[firstChildIndex])
     engine.removeEntity(cuttingBoadrd.rollChild)
     cuttingBoadrd.reset()
     return
@@ -138,6 +142,9 @@ export function ClickBoard(
     engine.addEntity(sushiPlate)
     grabberComponent.grabbedObject = sushiPlate
     engine.removeEntity(cuttingBoadrd.rollChild)
+    cutter.getParent().get(GridPosition).object = null
+    // let firstChildIndex = Object.keys(cutter.children)[0]
+    // engine.removeEntity(cutter.children[firstChildIndex])
     cuttingBoadrd.reset()
   }
 }

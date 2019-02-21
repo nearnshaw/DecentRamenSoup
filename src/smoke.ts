@@ -13,7 +13,8 @@ smokeMaterial.hasAlpha = true
 smokeMaterial.alpha = 1
 
 const smokeShape = new PlaneShape()
-smokeShape.billboard = BillboardMode.BILLBOARDMODE_ALL
+
+const billboard = new Billboard(true, true, true)
 
 export const smokeSpawner = {
   MAX_POOL_SIZE: 50,
@@ -51,6 +52,8 @@ export const smokeSpawner = {
     ent.set(smokeShape)
     ent.set(smokeMaterial)
 
+    ent.add(billboard)
+    
     ent.setParent(parent)
 
     if (!ent.getOrNull(Transform)) {

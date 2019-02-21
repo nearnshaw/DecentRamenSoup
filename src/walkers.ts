@@ -90,6 +90,9 @@ export function createWalker(
 
   engine.addEntity(walker)
   const walkClip = new AnimationClip(clipName)
-  walker.get(GLTFShape).addClip(walkClip)
+  
+  let anim = new Animator()
+  walker.add(anim)
+  anim.addClip(walkClip)
   walkClip.play()
 }

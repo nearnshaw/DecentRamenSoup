@@ -1,9 +1,20 @@
 import { CuttingBoard } from "./cuttingBoard";
 
+
+export const enum tileType {
+  Floor,
+  Shelf,
+  Expender,
+  Trash,
+  Pot,
+  Cutter,
+  Plate
+}
+
 @Component("gridPosition")
 export class GridPosition {
   object: Entity = null
-  Cutter: Entity | null = null
+  type: tileType = tileType.Floor
 }
 
 // component group grid positions
@@ -81,7 +92,7 @@ export function getClosestShelf(position: Vector3, direction: Vector3, gridObjec
   // log("grid position: " + gridPosition)
 
   if (gridObject.grid[gridPosition.x][gridPosition.y].get(GridPosition).object &&
-  !gridObject.grid[gridPosition.x][gridPosition.y].get(GridPosition).Cutter){
+  gridObject.grid[gridPosition.x][gridPosition.y].get(GridPosition).type !== tileType.Cutter){
     log("position already occupied")
     return null
   }

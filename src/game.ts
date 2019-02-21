@@ -7,7 +7,8 @@ import {
   GridPosition,
   gridPositions,
   getClosestShelf,
-  gridObject
+  gridObject,
+  tileType
 } from './grid'
 import { IngredientExpendingMachineComponent } from './ingredientsExpendingMachine'
 import {
@@ -149,6 +150,7 @@ pot1.add(
     ClickPot(objectGrabber, pot1.get(Pot), objectGrabberSystem)
   })
 )
+pot1.get(GridPosition).type = tileType.Pot
 
 const buttonShape = new GLTFShape('models/Button.glb')
 const potButton1 = new Entity()
@@ -185,6 +187,8 @@ pot2.add(
     ClickPot(objectGrabber, pot2.get(Pot), objectGrabberSystem)
   })
 )
+pot2.get(GridPosition).type = tileType.Pot
+
 const potButton2 = new Entity()
 potButton2.setParent(pot2)
 potButton2.add(
@@ -212,6 +216,7 @@ engine.addEntity(potButton2)
 // trash can
 
 let trash = shelves.grid[5][0]
+trash.get(GridPosition).type = tileType.Trash
 trash.add(new Trash())
 // trash.add(
 //   new OnClick(e => {
@@ -225,7 +230,7 @@ trash.add(new Trash())
 let cutter1 = new Entity()
 
 shelves.grid[3][7].get(Transform).rotation.setEuler(0, 90, 0)
-shelves.grid[3][7].get(GridPosition).Cutter = cutter1
+shelves.grid[3][7].get(GridPosition).type = tileType.Cutter
 
 cutter1.setParent(shelves.grid[3][7])
 cutter1.add(new GLTFShape('models/Cutter.gltf'))
@@ -274,11 +279,13 @@ let cut3 = new AnimationClip('State3')
 let cut4 = new AnimationClip('State4')
 let cut5 = new AnimationClip('State5')
 
-cutter1.get(GLTFShape).addClip(cut1)
-cutter1.get(GLTFShape).addClip(cut2)
-cutter1.get(GLTFShape).addClip(cut3)
-cutter1.get(GLTFShape).addClip(cut4)
-cutter1.get(GLTFShape).addClip(cut5)
+let cutter1Anim = new Animator()
+
+cutter1Anim.addClip(cut1)
+cutter1Anim.addClip(cut2)
+cutter1Anim.addClip(cut3)
+cutter1Anim.addClip(cut4)
+cutter1Anim.addClip(cut5)
 
 // cutter1
 //   .get(GLTFShape)
@@ -293,7 +300,7 @@ cutter1.get(GLTFShape).addClip(cut5)
 let cutter2 = new Entity()
 
 shelves.grid[1][7].get(Transform).rotation.setEuler(0, 90, 0)
-shelves.grid[1][7].get(GridPosition).Cutter = cutter2
+shelves.grid[1][7].get(GridPosition).type = tileType.Cutter
 
 cutter2.setParent(shelves.grid[1][7])
 //cutter2.add(new GLTFShape('models/Cutter3.glb'))
@@ -344,11 +351,13 @@ let cut3b = new AnimationClip('State3')
 let cut4b = new AnimationClip('State4')
 let cut5b = new AnimationClip('State5')
 
-cutter2.get(GLTFShape).addClip(cut1b)
-cutter2.get(GLTFShape).addClip(cut2b)
-cutter2.get(GLTFShape).addClip(cut3b)
-cutter2.get(GLTFShape).addClip(cut4b)
-cutter2.get(GLTFShape).addClip(cut5b)
+let cutter2Anim = new Animator()
+
+cutter2Anim.addClip(cut1)
+cutter2Anim.addClip(cut2)
+cutter2Anim.addClip(cut3)
+cutter2Anim.addClip(cut4)
+cutter2Anim.addClip(cut5)
 
 // expending machines
 let nooldlesExpendingMachineModel = new GLTFShape('models/ExpenderNoodles.glb')
@@ -360,6 +369,7 @@ noodlesExpendingMachine.add(
     rotation: Quaternion.Euler(0, 90, 0)
   })
 )
+shelves.grid[5][3].get(GridPosition).type = tileType.Expender
 engine.addEntity(noodlesExpendingMachine)
 const noodlesButton = new Entity()
 noodlesButton.setParent(shelves.grid[5][3])
@@ -397,6 +407,7 @@ sushiExpendingMachine.add(
     rotation: Quaternion.Euler(0, 90, 0)
   })
 )
+shelves.grid[5][1].get(GridPosition).type = tileType.Expender
 engine.addEntity(sushiExpendingMachine)
 const sushiButton = new Entity()
 sushiButton.setParent(shelves.grid[5][1])
@@ -428,17 +439,21 @@ engine.addEntity(sushiButton)
 
 // customer plates
 
-let plate1 = new CustomerPlate()
-shelves.grid[0][3].add(plate1)
+let plate1 = shelves.grid[0][3]
+plate1.add(new CustomerPlate())
+plate1.get(GridPosition).type = tileType.Plate
 
-let plate2 = new CustomerPlate()
-shelves.grid[0][4].add(plate2)
+let plate2 = shelves.grid[0][4]
+plate2.add(new CustomerPlate())
+plate2.get(GridPosition).type = tileType.Plate
 
-let plate3 = new CustomerPlate()
-shelves.grid[0][5].add(plate3)
+let plate3 = shelves.grid[0][5]
+plate3.add(new CustomerPlate())
+plate3.get(GridPosition).type = tileType.Plate
 
-let plate4 = new CustomerPlate()
-shelves.grid[0][6].add(plate4)
+let plate4 = shelves.grid[0][6]
+plate4.add(new CustomerPlate())
+plate4.get(GridPosition).type = tileType.Plate
 
 // customers
 export let customersSystem: CustomersSystem = new CustomersSystem()
@@ -454,7 +469,7 @@ export class GameStartSystem implements ISystem {
     if (camera.position.x > 12.5) {
       this.startedGame = true
 
-      createCustomer(new Vector3(12.5, 0.75, 9.5), plate1)
+      createCustomer(new Vector3(12.5, 0.75, 9.5), plate1.get(CustomerPlate))
     }
   }
 }
@@ -522,3 +537,12 @@ sushiIndicationsBackground.set(
     scale: new Vector3(3, 0.3, 0.1)
   })
 )
+
+
+shelves.grid[0][2].get(GridPosition).type = tileType.Shelf
+shelves.grid[0][7].get(GridPosition).type = tileType.Shelf
+shelves.grid[5][7].get(GridPosition).type = tileType.Shelf
+shelves.grid[5][6].get(GridPosition).type = tileType.Shelf
+shelves.grid[5][5].get(GridPosition).type = tileType.Shelf
+shelves.grid[5][4].get(GridPosition).type = tileType.Shelf
+shelves.grid[5][2].get(GridPosition).type = tileType.Shelf

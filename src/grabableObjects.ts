@@ -2,7 +2,8 @@ import {
   GridPosition,
   gridPositions,
   getClosestShelf,
-  gridObject
+  gridObject,
+  tileType
 } from './grid'
 import { Pot, AddNoodles } from './pot'
 import { CustomerPlate, deliverOrder } from './customer'
@@ -141,69 +142,96 @@ export class ObjectGrabberSystem implements ISystem {
     )
 
     let shelfComponent = shelf.get(GridPosition)
+    let grabbedObject = this.objectGrabberComponent.grabbedObject
 
-    if (shelf && (shelfComponent.Cutter || !shelfComponent.object)) {
+    if (shelf && !shelfComponent.object) {
+      let type = shelf.get(GridPosition).type
       let plate: CustomerPlate = null
       let potComponent: Pot = null
-      if (shelf.has(CustomerPlate)) {
-        plate = shelf.get(CustomerPlate)
+      switch (type){
+        case tileType.Plate:
+          plate = shelf.get(CustomerPlate)
+          if (
+            !plate.ownerCustomer ||
+            plate.ownerCustomer.receivedDish ||
+            !plate.ownerCustomer.shape.visible
+          ) {
+            log('Not possible to drop here right now')
+            return
+          } else {
+            log('delivered order')
 
-        if (
-          !plate.ownerCustomer ||
-          plate.ownerCustomer.receivedDish ||
-          !plate.ownerCustomer.shape.visible
-        ) {
-          log('Not possible to drop here right now')
-          return
+            plate.dish = grabbedObject.get(GrabableObjectComponent).type
+  
+            deliverOrder(plate)
+            engine.removeEntity(grabbedObject)
+  
+            //shelfComponent.object = null
+          }
+          break
+        case tileType.Pot:
+          potComponent = shelf.get(Pot)
+          if (potComponent.hasIngredient) {
+            log("that pot already has noodles. Can't drop object here")
+            return
+          } else {
+            log('dropped something in a pot')
+            AddNoodles(grabbedObject, potComponent)
+            engine.removeEntity(grabbedObject)
+            //shelfComponent.object = null
+          }    
+          break
+        case tileType.Cutter:
+          log("put something on a cutter")
+          // get the key for the first child (the cutter enttiy)
+          let firstChildIndex = Object.keys(shelf.children)[0]
+          let board = shelf.children[firstChildIndex].get(CuttingBoard)
+          AddSushi(
+            grabbedObject,
+            board
+          )
+          shelfComponent.object = grabbedObject
+          board.rollChild = shelfComponent.object
+          this.objectGrabberComponent.grabbedObject = null
+          shelfComponent.object.setParent(shelf)
+          shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
+          shelfComponent.object.get(GrabableObjectComponent).grabbed = false
+          shelfComponent.object.get(GrabableObjectComponent).falling = true
+          shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
+          shelfComponent.object.get(GrabableObjectComponent).fraction = 0
+          
+          
+          //engine.removeEntity(shelfComponent.object)
+          //shelfComponent.object = null
+          break
+        case tileType.Trash: 
+          log('throwing trash')
+          engine.removeEntity(grabbedObject)
+          shelfComponent.object = null
+          break
+        case tileType.Shelf:
+          shelfComponent.object = grabbedObject
+          this.objectGrabberComponent.grabbedObject = null
+          shelfComponent.object.setParent(shelf)
+          shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
+          shelfComponent.object.get(GrabableObjectComponent).grabbed = false
+          shelfComponent.object.get(GrabableObjectComponent).falling = true
+          shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
+          shelfComponent.object.get(GrabableObjectComponent).fraction = 0
+          break
+        case tileType.Floor:
+          shelfComponent.object = grabbedObject
+          this.objectGrabberComponent.grabbedObject = null
+          shelfComponent.object.setParent(shelf)
+          shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
+          shelfComponent.object.get(GrabableObjectComponent).grabbed = false
+          shelfComponent.object.get(GrabableObjectComponent).falling = true
+          shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
+          shelfComponent.object.get(GrabableObjectComponent).fraction = 0
+          break
         }
-      } else if (shelf.has(Pot)) {
-        potComponent = shelf.get(Pot)
-        if (potComponent.hasIngredient) {
-          log("that pot already has noodles. Can't drop object here")
-          return
-        }
-      }
 
-      shelfComponent.object = this.objectGrabberComponent.grabbedObject
-      this.objectGrabberComponent.grabbedObject = null
-
-      shelfComponent.object.setParent(shelf)
-      shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
-      shelfComponent.object.get(GrabableObjectComponent).grabbed = false
-      shelfComponent.object.get(GrabableObjectComponent).falling = true
-      shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
-      shelfComponent.object.get(GrabableObjectComponent).fraction = 0
-
-      if (potComponent) {
-        log('dropped something in a pot')
-
-        AddNoodles(shelfComponent.object, potComponent)
-        engine.removeEntity(shelfComponent.object)
-        shelfComponent.object = null
-      } else if (shelf.get(GridPosition).Cutter) {
-        log('dropped something in a cutting board')
-
-        AddSushi(
-          shelfComponent.object,
-          shelf.get(GridPosition).Cutter.get(CuttingBoard)
-        )
-        //engine.removeEntity(shelfComponent.object)
-        //shelfComponent.object = null
-      } else if (plate) {
-        log('delivered order')
-
-        plate.dish = shelfComponent.object.get(GrabableObjectComponent).type
-
-        deliverOrder(plate)
-        engine.removeEntity(shelfComponent.object)
-
-        shelfComponent.object = null
-      } else if (shelf.has(Trash)) {
-        log('throwing trash')
-        engine.removeEntity(shelfComponent.object)
-        shelfComponent.object = null
-      }
-    } else {
+      } else {
       log('not possible to drop here')
     }
   }
