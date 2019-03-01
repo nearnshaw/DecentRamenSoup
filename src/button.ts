@@ -25,8 +25,8 @@ export class PushButton implements ISystem {
     if (finishedPlaying) return
 
     for (let button of buttons.entities) {
-      let transform = button.get(Transform)
-      let state = button.get(ButtonData)
+      let transform = button.getComponent(Transform)
+      let state = button.getComponent(ButtonData)
       if (state.pressed == true) {
         if (state.fraction < 1) {
           transform.position.x = Scalar.Lerp(

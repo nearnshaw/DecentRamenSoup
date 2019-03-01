@@ -42,10 +42,10 @@ export function createSpeechBubble(
     bubbleMaterial = neutralBubbleMaterial
   }
   let background = new Entity()
-  background.add(bubbleShape)
-  background.add(bubbleMaterial)
+  background.addComponent(bubbleShape)
+  background.addComponent(bubbleMaterial)
   background.setParent(parentEntity)
-  background.set(
+  background.addComponent(
     new Transform({
       position: new Vector3(-0.6, height - 0.35, 0),
       scale: new Vector3(1.4, 1.6, 1),
@@ -55,13 +55,13 @@ export function createSpeechBubble(
   engine.addEntity(background)
 
   let textEntity = new Entity()
-  textEntity.add(new TextShape(text))
-  textEntity.get(TextShape).textWrapping = true
-  textEntity.get(TextShape).width = 1.1
-  textEntity.get(TextShape).height = 1.1
-  textEntity.get(TextShape).hAlign = 'left'
+  textEntity.addComponent(new TextShape(text))
+  textEntity.getComponent(TextShape).textWrapping = true
+  textEntity.getComponent(TextShape).width = 1.1
+  textEntity.getComponent(TextShape).height = 1.1
+  textEntity.getComponent(TextShape).hAlign = 'left'
   textEntity.setParent(parentEntity)
-  textEntity.set(
+  textEntity.addComponent(
     new Transform({
       position: new Vector3(-0.6, height - 0.1, 0.07),
       scale: new Vector3(0.85, 0.85, 1),

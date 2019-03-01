@@ -111,8 +111,8 @@ scoreTextShape.textWrapping = false
 scoreTextShape.color = Color3.Green()
 scoreTextShape.fontSize = 150
 scoreTextShape.width = 10
-scoreTextEntity.set(scoreTextShape)
-scoreTextEntity.set(
+scoreTextEntity.addComponent(scoreTextShape)
+scoreTextEntity.addComponent(
   new Transform({
     position: new Vector3(13.8, 0.7, 10.5),
     rotation: Quaternion.Euler(0, 270, 0)
@@ -128,8 +128,8 @@ missesTextShape.textWrapping = false
 missesTextShape.color = Color3.Red()
 missesTextShape.fontSize = 150
 missesTextShape.width = 10
-missesTextEntity.set(missesTextShape)
-missesTextEntity.set(
+missesTextEntity.addComponent(missesTextShape)
+missesTextEntity.addComponent(
   new Transform({
     position: new Vector3(13.8, 0.3, 10.5),
     rotation: Quaternion.Euler(0, 270, 0)
@@ -145,16 +145,16 @@ export class CustomersSystem implements ISystem {
 
     for (let index = 0; index < customers.entities.length; index++) {
       let customerEntity = customers.entities[index]
-      let customerData = customerEntity.get(CustomerData)
+      let customerData = customerEntity.getComponent(CustomerData)
 
       if (customerData.progressBar) {
-        let customerProgressBar = customerData.progressBar.get(
+        let customerProgressBar = customerData.progressBar.getComponent(
           CustomerProgressBar
         )
 
         if (customerProgressBar.speed > 0 && customerProgressBar.ratio <= 0) {
           // Time's up for this order so we feed a wrong dish on purpose
-          let plate: CustomerPlate = plates.entities[index].get(CustomerPlate)
+          let plate: CustomerPlate = plates.entities[index].getComponent(CustomerPlate)
 
           let wrongDish = customerData.dish + 1
           if (wrongDish == IngredientType.COUNT) {
@@ -280,10 +280,10 @@ export function createCustomer(position: Vector3, plate: CustomerPlate) {
   customerData.plate = plate
   plate.ownerCustomer = customerData
 
-  customer.add(customerData)
+  customer.addComponent(customerData)
   customerData.customerEntity = customer
 
-  customer.add(
+  customer.addComponent(
     new Transform({
       position: position,
       scale: new Vector3(0.75, 0.75, 0.75),
@@ -293,12 +293,12 @@ export function createCustomer(position: Vector3, plate: CustomerPlate) {
 
   // TODO: Add shape randomization
   let shape = new GLTFShape('models/walkers/BlockDog.gltf')
-  customer.add(shape)
+  customer.addComponent(shape)
   customerData.shape = shape
 
   let anim = new Animator()
 
-  customer.add(anim)
+  customer.addComponent(anim)
 
   anim.addClip(sittingAnimation)
 
@@ -361,27 +361,28 @@ export function deliverOrder(plate: CustomerPlate) {
       if (customers.entities.length < 4) {
         createCustomer(
           new Vector3(12.5, 0.75, 12.5),
-          plates.entities[3].get(CustomerPlate)
+          plates.entities[3].getComponent(CustomerPlate)
         )
       }
     } else if (playerScore >= 250) {
       if (customers.entities.length < 3) {
         createCustomer(
           new Vector3(12.5, 0.75, 11.5),
-          plates.entities[2].get(CustomerPlate)
+          plates.entities[2].getComponent(CustomerPlate)
         )
       }
     } else if (playerScore >= 100) {
       if (customers.entities.length < 2) {
         createCustomer(
           new Vector3(12.5, 0.75, 10.5),
-          plates.entities[1].get(CustomerPlate)
+          plates.entities[1].getComponent(CustomerPlate)
         )
       }
     }
   }
 }
 
-const sittingAnimation = new AnimationClip('Sitting', { loop: false })
+const sittingAnimation = new AnimationClip('Sitting')
+sittingAnimation.looping = false
 // const eatingAnimation = new AnimationClip('Drinking', { loop: false })
 sittingAnimation.play()

@@ -44,27 +44,27 @@ let trashPotModel = new GLTFShape('models/CookingPotDirty.glb')
 export function updatePotMesh(potEntity: Entity, newMeshtype: SoupState) {
   switch (newMeshtype) {
     case SoupState.Raw:
-      if (potEntity.has(GLTFShape)) {
-        potEntity.remove(GLTFShape)
+      if (potEntity.hasComponent(GLTFShape)) {
+        potEntity.removeComponent(GLTFShape)
       }
-      potEntity.add(emptyPotModel)
+      potEntity.addComponent(emptyPotModel)
       break
     case SoupState.Cooked:
-      potEntity.remove(GLTFShape)
+      potEntity.removeComponent(GLTFShape)
 
-      potEntity.add(noodlesPotModel)
+      potEntity.addComponent(noodlesPotModel)
       break
     case SoupState.Burned:
-      potEntity.remove(GLTFShape)
+      potEntity.removeComponent(GLTFShape)
 
-      potEntity.add(trashPotModel)
+      potEntity.addComponent(trashPotModel)
       break
   }
 }
 
 // Called in the dropObject()
 export function AddNoodles(DroppedObject: Entity, pot: Pot) {
-  let grabbableObject = DroppedObject.get(GrabableObjectComponent)
+  let grabbableObject = DroppedObject.getComponent(GrabableObjectComponent)
 
   pot.hasIngredient = true
   if (grabbableObject.type == IngredientType.Noodles) {
@@ -83,13 +83,13 @@ export function AddNoodles(DroppedObject: Entity, pot: Pot) {
 const soupBowlShape = new GLTFShape('models/PlateNoodles.glb')
 const trashShape = new GLTFShape('models/GarbageFood.glb')
 
-// Called in the OnClick component of the pot entity
+// Called in the OnPointerDown component of the pot entity
 export function ClickPot(
   GrabberEntity: Entity,
   pot: Pot,
   objectGrabberSystem: ObjectGrabberSystem
 ) {
-  let grabberComponent = GrabberEntity.get(ObjectGrabberComponent)
+  let grabberComponent = GrabberEntity.getComponent(ObjectGrabberComponent)
 
   if (!pot.hasIngredient) {
     log('pot is empty')
@@ -105,18 +105,18 @@ export function ClickPot(
 
       let soupBowl = new Entity()
       log('created soup bowl')
-      soupBowl.add(soupBowlShape)
+      soupBowl.addComponent(soupBowlShape)
       soupBowl.setParent(GrabberEntity)
-      soupBowl.add(
+      soupBowl.addComponent(
         new Transform({
           position: new Vector3(0, 1.25, 1)
         })
       )
-      soupBowl.add(
+      soupBowl.addComponent(
         new GrabableObjectComponent(IngredientType.CookedNoodles, true)
       )
-      soupBowl.add(
-        new OnClick(e => {
+      soupBowl.addComponent(
+        new OnPointerDown(e => {
           objectGrabberSystem.grabObject(soupBowl)
         })
       )
@@ -132,17 +132,17 @@ export function ClickPot(
       }
 
       let trash = new Entity()
-      trash.add(trashShape)
+      trash.addComponent(trashShape)
       log('created trash bag')
       trash.setParent(GrabberEntity)
-      trash.add(
+      trash.addComponent(
         new Transform({
           position: new Vector3(0, 1.25, 1)
         })
       )
-      trash.add(new GrabableObjectComponent(IngredientType.Trash, true))
-      trash.add(
-        new OnClick(e => {
+      trash.addComponent(new GrabableObjectComponent(IngredientType.Trash, true))
+      trash.addComponent(
+        new OnPointerDown(e => {
           objectGrabberSystem.grabObject(trash)
         })
       )

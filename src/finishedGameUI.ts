@@ -14,13 +14,13 @@ export class FinishedGameUI implements ISystem {
       position: Camera.instance.position,
       rotation: Camera.instance.rotation
     })
-    parentEntity.set(this.uiPanelTransform)
+    parentEntity.addComponent(this.uiPanelTransform)
 
     let background = new Entity()
     background.setParent(parentEntity)
-    background.add(new PlaneShape())
-    background.add(goodBubbleMaterial)
-    background.set(
+    background.addComponent(new PlaneShape())
+    background.addComponent(goodBubbleMaterial)
+    background.addComponent(
       new Transform({
         position: new Vector3(0, 1.3, 1),
         // scale: new Vector3(0.8, 0.8, 1),
@@ -48,9 +48,9 @@ export class FinishedGameUI implements ISystem {
     textShapeComponent.textWrapping = true
     textShapeComponent.fontSize = 50
     textShapeComponent.hAlign = 'center'
-    textEntity.add(textShapeComponent)
+    textEntity.addComponent(textShapeComponent)
 
-    textEntity.set(
+    textEntity.addComponent(
       new Transform({
         position: new Vector3(0.03, 1.45, 0.95),
         scale: new Vector3(0.7, 0.5, 1),

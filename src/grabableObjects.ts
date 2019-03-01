@@ -56,8 +56,8 @@ export class ObjectGrabberComponent {
 export class DropObjects implements ISystem {
   update(dt: number) {
     for (let object of grabbableObjects.entities) {
-      let ObjectComponent = object.get(GrabableObjectComponent)
-      let transform = object.get(Transform)
+      let ObjectComponent = object.getComponent(GrabableObjectComponent)
+      let transform = object.getComponent(Transform)
 
       if (ObjectComponent.falling) {
         ObjectComponent.fraction += dt * 3
@@ -82,10 +82,10 @@ export class ObjectGrabberSystem implements ISystem {
   targetPosition: Vector3
   targetRotation: Quaternion
   constructor(objectGrabber: Entity, gridObject: gridObject) {
-    this.transform = objectGrabber.get(Transform)
+    this.transform = objectGrabber.getComponent(Transform)
     this.gridObject = gridObject
     this.objectGrabber = objectGrabber
-    this.objectGrabberComponent = objectGrabber.get(ObjectGrabberComponent)
+    this.objectGrabberComponent = objectGrabber.getComponent(ObjectGrabberComponent)
 
     Input.instance.subscribe('BUTTON_A_DOWN', e => {
       this.dropObject()
@@ -115,14 +115,14 @@ export class ObjectGrabberSystem implements ISystem {
 
     if (!this.objectGrabberComponent.grabbedObject) {
       log('grabbed object')
-      if (grabbedObject.getParent().has(GridPosition)) {
+      if (grabbedObject.getParent().hasComponent(GridPosition)) {
         let gridPosition = grabbedObject.getParent()
-        gridPosition.get(GridPosition).object = null
+        gridPosition.getComponent(GridPosition).object = null
       }
 
-      grabbedObject.get(GrabableObjectComponent).grabbed = true
+      grabbedObject.getComponent(GrabableObjectComponent).grabbed = true
       grabbedObject.setParent(this.objectGrabber)
-      grabbedObject.get(Transform).position.set(0, 1.25, 1)
+      grabbedObject.getComponent(Transform).position.set(0, 1.25, 1)
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
     } else {
@@ -141,16 +141,16 @@ export class ObjectGrabberSystem implements ISystem {
       this.gridObject
     )
 
-    let shelfComponent = shelf.get(GridPosition)
+    let shelfComponent = shelf.getComponent(GridPosition)
     let grabbedObject = this.objectGrabberComponent.grabbedObject
 
     if (shelf && !shelfComponent.object) {
-      let type = shelf.get(GridPosition).type
+      let type = shelf.getComponent(GridPosition).type
       let plate: CustomerPlate = null
       let potComponent: Pot = null
       switch (type){
         case tileType.Plate:
-          plate = shelf.get(CustomerPlate)
+          plate = shelf.getComponent(CustomerPlate)
           if (
             !plate.ownerCustomer ||
             plate.ownerCustomer.receivedDish ||
@@ -161,7 +161,7 @@ export class ObjectGrabberSystem implements ISystem {
           } else {
             log('delivered order')
 
-            plate.dish = grabbedObject.get(GrabableObjectComponent).type
+            plate.dish = grabbedObject.getComponent(GrabableObjectComponent).type
   
             deliverOrder(plate)
             engine.removeEntity(grabbedObject)
@@ -170,7 +170,7 @@ export class ObjectGrabberSystem implements ISystem {
           }
           break
         case tileType.Pot:
-          potComponent = shelf.get(Pot)
+          potComponent = shelf.getComponent(Pot)
           if (potComponent.hasIngredient) {
             log("that pot already has noodles. Can't drop object here")
             return
@@ -185,7 +185,7 @@ export class ObjectGrabberSystem implements ISystem {
           log("put something on a cutter")
           // get the key for the first child (the cutter enttiy)
           let firstChildIndex = Object.keys(shelf.children)[0]
-          let board = shelf.children[firstChildIndex].get(CuttingBoard)
+          let board = shelf.children[firstChildIndex].getComponent(CuttingBoard)
           AddSushi(
             grabbedObject,
             board
@@ -194,11 +194,11 @@ export class ObjectGrabberSystem implements ISystem {
           board.rollChild = shelfComponent.object
           this.objectGrabberComponent.grabbedObject = null
           shelfComponent.object.setParent(shelf)
-          shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
-          shelfComponent.object.get(GrabableObjectComponent).grabbed = false
-          shelfComponent.object.get(GrabableObjectComponent).falling = true
-          shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
-          shelfComponent.object.get(GrabableObjectComponent).fraction = 0
+          shelfComponent.object.getComponent(Transform).position = new Vector3(0, 0.3, 0)
+          shelfComponent.object.getComponent(GrabableObjectComponent).grabbed = false
+          shelfComponent.object.getComponent(GrabableObjectComponent).falling = true
+          shelfComponent.object.getComponent(GrabableObjectComponent).origin = 0.3
+          shelfComponent.object.getComponent(GrabableObjectComponent).fraction = 0
           
           
           //engine.removeEntity(shelfComponent.object)
@@ -213,21 +213,21 @@ export class ObjectGrabberSystem implements ISystem {
           shelfComponent.object = grabbedObject
           this.objectGrabberComponent.grabbedObject = null
           shelfComponent.object.setParent(shelf)
-          shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
-          shelfComponent.object.get(GrabableObjectComponent).grabbed = false
-          shelfComponent.object.get(GrabableObjectComponent).falling = true
-          shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
-          shelfComponent.object.get(GrabableObjectComponent).fraction = 0
+          shelfComponent.object.getComponent(Transform).position = new Vector3(0, 0.3, 0)
+          shelfComponent.object.getComponent(GrabableObjectComponent).grabbed = false
+          shelfComponent.object.getComponent(GrabableObjectComponent).falling = true
+          shelfComponent.object.getComponent(GrabableObjectComponent).origin = 0.3
+          shelfComponent.object.getComponent(GrabableObjectComponent).fraction = 0
           break
         case tileType.Floor:
           shelfComponent.object = grabbedObject
           this.objectGrabberComponent.grabbedObject = null
           shelfComponent.object.setParent(shelf)
-          shelfComponent.object.get(Transform).position = new Vector3(0, 0.3, 0)
-          shelfComponent.object.get(GrabableObjectComponent).grabbed = false
-          shelfComponent.object.get(GrabableObjectComponent).falling = true
-          shelfComponent.object.get(GrabableObjectComponent).origin = 0.3
-          shelfComponent.object.get(GrabableObjectComponent).fraction = 0
+          shelfComponent.object.getComponent(Transform).position = new Vector3(0, 0.3, 0)
+          shelfComponent.object.getComponent(GrabableObjectComponent).grabbed = false
+          shelfComponent.object.getComponent(GrabableObjectComponent).falling = true
+          shelfComponent.object.getComponent(GrabableObjectComponent).origin = 0.3
+          shelfComponent.object.getComponent(GrabableObjectComponent).fraction = 0
           break
         }
 

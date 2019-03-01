@@ -31,9 +31,9 @@ export class ProgressBarUpdate implements ISystem {
     if (finishedPlaying) return
 
     for (let bar of progressBars.entities) {
-      let transform = bar.get(Transform)
-      let data = bar.get(PotProgressBar)
-      let pot = data.parent.get(Pot)
+      let transform = bar.getComponent(Transform)
+      let data = bar.getComponent(PotProgressBar)
+      let pot = data.parent.getComponent(Pot)
       if (!pot.hasIngredient && bar.getParent()) {
         engine.removeEntity(bar.getParent(), true)
       }
@@ -46,19 +46,19 @@ export class ProgressBarUpdate implements ISystem {
       transform.scale.x = width
       transform.position.x = -data.fullLength / 2 + width / 2
       if (data.ratio < 0.5) {
-        bar.remove(Material)
-        bar.set(this.yellow)
+        bar.removeComponent(Material)
+        bar.addComponentOrReplace(this.yellow)
       } else if (data.ratio < 0.7) {
-        bar.remove(Material)
-        bar.set(this.green)
+        bar.removeComponent(Material)
+        bar.addComponentOrReplace(this.green)
 
         pot.state = SoupState.Cooked
         updatePotMesh(pot.attachedEntity, SoupState.Cooked)
 
         data.smokeInterval *= 0.99
       } else if (data.ratio < 1) {
-        bar.remove(Material)
-        bar.set(this.red)
+        bar.removeComponent(Material)
+        bar.addComponentOrReplace(this.red)
         data.smokeInterval *= 0.98
       } else if (data.ratio > 1) {
         pot.state = SoupState.Burned
@@ -92,9 +92,9 @@ export function createPotProgressBar(
   height: number = 1
 ) {
   let background = new Entity()
-  background.add(new PlaneShape())
+  background.addComponent(new PlaneShape())
   background.setParent(parent)
-  background.set(
+  background.addComponent(
     new Transform({
       position: new Vector3(0, height, 0),
       scale: new Vector3(0.82, 0.15, 1),
@@ -104,15 +104,15 @@ export function createPotProgressBar(
   engine.addEntity(background)
 
   let progressBar = new Entity()
-  progressBar.add(new PlaneShape())
+  progressBar.addComponent(new PlaneShape())
   progressBar.setParent(background)
-  progressBar.set(
+  progressBar.addComponent(
     new Transform({
       position: new Vector3(0, 0, -0.05),
       scale: new Vector3(0.95, 0.8, 1)
     })
   )
-  progressBar.add(new PotProgressBar(parent))
+  progressBar.addComponent(new PotProgressBar(parent))
   engine.addEntity(progressBar)
 
   return progressBar

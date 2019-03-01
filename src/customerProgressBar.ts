@@ -29,9 +29,9 @@ export class CustProgressBarUpdate implements ISystem {
     if (finishedPlaying) return
 
     for (let bar of custProgressBars.entities) {
-      let transform = bar.get(Transform)
-      let data = bar.get(CustomerProgressBar)
-      let customer = data.parent.get(CustomerData)
+      let transform = bar.getComponent(Transform)
+      let data = bar.getComponent(CustomerProgressBar)
+      let customer = data.parent.getComponent(CustomerData)
 
       if (data.speed == 0) {
         continue
@@ -45,14 +45,14 @@ export class CustProgressBarUpdate implements ISystem {
       transform.scale.x = width
       transform.position.x = -data.fullLength / 2 + width / 2
       if (data.ratio > 0.5) {
-        bar.remove(Material)
-        bar.set(this.green)
+        bar.removeComponent(Material)
+        bar.addComponentOrReplace(this.green)
       } else if (data.ratio > 0.2) {
-        bar.remove(Material)
-        bar.set(this.yellow)
+        bar.removeComponent(Material)
+        bar.addComponentOrReplace(this.yellow)
       } else if (data.ratio > 0) {
-        bar.remove(Material)
-        bar.set(this.red)
+        bar.removeComponent(Material)
+        bar.addComponentOrReplace(this.red)
       } else if (data.ratio < 0) {
         //Customer leaves
         /* if (bar.getParent()) {
@@ -68,9 +68,9 @@ export class CustProgressBarUpdate implements ISystem {
 
 export function createCustProgressBar(parent: Entity, speed: number = 1) {
   let background = new Entity()
-  background.add(new PlaneShape())
+  background.addComponent(new PlaneShape())
   background.setParent(parent)
-  background.set(
+  background.addComponent(
     new Transform({
       position: new Vector3(0.11, 1.9, 0),
       scale: new Vector3(0.82, 0.12, 1),
@@ -80,15 +80,15 @@ export function createCustProgressBar(parent: Entity, speed: number = 1) {
   engine.addEntity(background)
 
   let progressBar = new Entity()
-  progressBar.add(new PlaneShape())
+  progressBar.addComponent(new PlaneShape())
   progressBar.setParent(background)
-  progressBar.set(
+  progressBar.addComponent(
     new Transform({
       position: new Vector3(0, 0, -0.01),
       scale: new Vector3(1, 0.8, 1)
     })
   )
-  progressBar.add(new CustomerProgressBar(parent, speed))
+  progressBar.addComponent(new CustomerProgressBar(parent, speed))
   engine.addEntity(progressBar)
 
   return progressBar
