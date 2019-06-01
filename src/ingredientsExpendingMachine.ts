@@ -11,18 +11,18 @@ const rollShape = new GLTFShape('models/SushiRoll.glb')
 @Component('ingredientExpendingMachineComponent')
 export class IngredientExpendingMachineComponent {
   ingredientType: IngredientType
-  lastCreatedIngredient: Entity
+  lastCreatedIngredient: IEntity
   spawningPosition: Vector3
   objectGrabberSystemReference: ObjectGrabberSystem
-  objectGrabberEntityReference: Entity
-  parentEntity: Entity
+  objectGrabberEntityReference: IEntity
+  parentEntity: IEntity
 
   constructor(
     type: IngredientType,
     expendingPosition: Vector3,
     objectGrabberSystem: ObjectGrabberSystem,
-    objectGrabberEntity: Entity,
-    parentEntity: Entity
+    objectGrabberEntity: IEntity,
+    parentEntity: IEntity
   ) {
     this.ingredientType = type
     this.spawningPosition = expendingPosition
@@ -37,9 +37,9 @@ export class IngredientExpendingMachineComponent {
 
     let ent = new Entity()
 
-    ent.add(new GrabableObjectComponent(this.ingredientType, false, true, 0.5))
+    ent.addComponent(new GrabableObjectComponent(this.ingredientType, false, true, 0.5))
 
-    ent.set(
+    ent.addComponent(
       new Transform({
         position: new Vector3().copyFrom(this.spawningPosition)
         //,scale: new Vector3(0.5, 0.5, 0.5)
@@ -47,17 +47,17 @@ export class IngredientExpendingMachineComponent {
     )
     switch (this.ingredientType) {
       case IngredientType.Noodles:
-        ent.add(noodlesShape)
+        ent.addComponent(noodlesShape)
         break
       case IngredientType.SushiRoll:
-        ent.add(rollShape)
+        ent.addComponent(rollShape)
         break
     }
     ent.setParent(this.parentEntity)
 
     engine.addEntity(ent)
 
-    ent.add(
+    ent.addComponent(
       new OnClick(e => {
         this.objectGrabberSystemReference.grabObject(ent)
         this.lastCreatedIngredient = null

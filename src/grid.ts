@@ -1,9 +1,20 @@
 import { CuttingBoard } from "./cuttingBoard";
 
+
+export const enum tileType {
+  Floor,
+  Shelf,
+  Expender,
+  Trash,
+  Pot,
+  Cutter,
+  Plate
+}
+
 @Component("gridPosition")
 export class GridPosition {
-  object: Entity = null
-  Cutter: Entity | null = null
+  object: IEntity = null
+  type: tileType = tileType.Floor
 }
 
 // component group grid positions
@@ -12,7 +23,7 @@ export const gridPositions = engine.getComponentGroup(GridPosition)
 
 
 export class gridObject{
-  grid: Entity[][]
+  grid: IEntity[][]
   gridStartingPosition : Vector3
   xMax: number
   zMax: number
@@ -31,7 +42,7 @@ export class gridObject{
       for (let z = 0; z < this.zMax; z++) {
         let shelf = new Entity()
         let y = this.shelvesHeight[x][z]
-        shelf.add(
+        shelf.addComponent(
           new Transform({
             position: new Vector3(
               gridStartingPosition.x + x,
@@ -40,14 +51,14 @@ export class gridObject{
             )
           })
         )
-        shelf.add(new GridPosition())
+        shelf.addComponent(new GridPosition())
         engine.addEntity(shelf)
         this.grid[x][z] = shelf
     
         // let testEnt = new Entity()
         // testEnt.setParent(shelf)
-        // testEnt.add(new BoxShape())
-        // testEnt.add(
+        // testEnt.addComponent(new BoxShape())
+        // testEnt.addComponent(
         //   new Transform({
         //     scale: new Vector3(0.05, 0.05, 0.05)
         //   })
@@ -80,8 +91,8 @@ export function getClosestShelf(position: Vector3, direction: Vector3, gridObjec
   let gridPosition: Vector2 = GetGridPosition(finalPositionToCheck, gridObject)
   // log("grid position: " + gridPosition)
 
-  if (gridObject.grid[gridPosition.x][gridPosition.y].get(GridPosition).object &&
-  !gridObject.grid[gridPosition.x][gridPosition.y].get(GridPosition).Cutter){
+  if (gridObject.grid[gridPosition.x][gridPosition.y].getComponent(GridPosition).object &&
+  gridObject.grid[gridPosition.x][gridPosition.y].getComponent(GridPosition).type !== tileType.Cutter){
     log("position already occupied")
     return null
   }

@@ -7,19 +7,23 @@ export class SmokeVelocity extends Vector3 {
   }
 }
 
+const smokeTexture = new Texture('textures/smoke-puff3.png', {hasAlpha: true})
+
+
 const smokeMaterial = new Material()
-smokeMaterial.albedoTexture = 'textures/smoke-puff3.png'
+smokeMaterial.albedoTexture = smokeTexture
 smokeMaterial.hasAlpha = true
 smokeMaterial.alpha = 1
 
 const smokeShape = new PlaneShape()
-smokeShape.billboard = BillboardMode.BILLBOARDMODE_ALL
+
+const billboard = new Billboard(true, true, true)
 
 export const smokeSpawner = {
   MAX_POOL_SIZE: 50,
   pool: [] as Entity[],
 
-  getEntityFromPool(): Entity | null {
+  getEntityFromPool(): IEntity | null {
     for (let i = 0; i < smokeSpawner.pool.length; i++) {
       if (!smokeSpawner.pool[i].alive) {
         return smokeSpawner.pool[i]
@@ -35,7 +39,7 @@ export const smokeSpawner = {
     return null
   },
 
-  SpawnSmokePuff(parent: Entity) {
+  SpawnSmokePuff(parent: IEntity) {
     const ent = smokeSpawner.getEntityFromPool()
 
     if (!ent) return
@@ -48,25 +52,27 @@ export const smokeSpawner = {
 
     const size = Math.random() / 2 + 0.2
 
-    ent.set(smokeShape)
-    ent.set(smokeMaterial)
+    ent.addComponentOrReplace(smokeShape)
+    ent.addComponentOrReplace(smokeMaterial)
 
+    ent.addComponentOrReplace(billboard)
+    
     ent.setParent(parent)
 
-    if (!ent.getOrNull(Transform)) {
+    if (!ent.getComponentOrNull(Transform)) {
       const t = new Transform()
-      ent.set(t)
+      ent.addComponent(t)
       t.scale.set(size, size, size)
       t.position.set(0, 0, 0)
     } else {
-      const t = ent.get(Transform)
+      const t = ent.getComponent(Transform)
       t.position.set(0, 0, 0)
     }
 
-    if (!ent.getOrNull(SmokeVelocity)) {
-      ent.set(new SmokeVelocity(newVel.x, newVel.y, newVel.z))
+    if (!ent.getComponentOrNull(SmokeVelocity)) {
+      ent.addComponent(new SmokeVelocity(newVel.x, newVel.y, newVel.z))
     } else {
-      const vel = ent.get(SmokeVelocity)
+      const vel = ent.getComponent(SmokeVelocity)
       vel.set(newVel.x, newVel.y, newVel.z)
     }
 
@@ -95,8 +101,8 @@ export class SmokeSystem implements ISystem {
     if (finishedPlaying) return
 
     for (let entity of smokePuffs.entities) {
-      const transform = entity.get(Transform)
-      const velocity = entity.get(SmokeVelocity)
+      const transform = entity.getComponent(Transform)
+      const velocity = entity.getComponent(SmokeVelocity)
 
       transform.position.x += velocity.x * dt
       transform.position.y += velocity.y * dt

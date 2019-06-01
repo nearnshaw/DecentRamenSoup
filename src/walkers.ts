@@ -31,8 +31,8 @@ export class Walk {
     if (finishedPlaying) return
 
     for (let walker of passersBy.entities) {
-      let transform = walker.get(Transform)
-      let lerp = walker.get(LerpData)
+      let transform = walker.getComponent(Transform)
+      let lerp = walker.getComponent(LerpData)
       if (lerp.downStreet) {
         if (lerp.fraction < 1) {
           lerp.fraction += (dt / 6) * lerp.speed
@@ -67,29 +67,32 @@ export function createWalker(
   speed: number
 ) {
   let walker = new Entity()
-  walker.add(new GLTFShape(path))
+  walker.addComponent(new GLTFShape(path))
   if (up) {
-    walker.add(
+    walker.addComponent(
       new Transform({
         position: upL,
         scale: new Vector3(0.75, 0.75, 0.75),
         rotation: Quaternion.Euler(0, 270, 0)
       })
     )
-    walker.add(new LerpData(upL, downL, true, speed))
+    walker.addComponent(new LerpData(upL, downL, true, speed))
   } else {
-    walker.add(
+    walker.addComponent(
       new Transform({
         position: downL,
         scale: new Vector3(0.75, 0.75, 0.75),
         rotation: Quaternion.Euler(0, 90, 0)
       })
     )
-    walker.add(new LerpData(downR, upR, true, speed))
+    walker.addComponent(new LerpData(downR, upR, true, speed))
   }
 
   engine.addEntity(walker)
-  const walkClip = new AnimationClip(clipName)
-  walker.get(GLTFShape).addClip(walkClip)
+  const walkClip = new AnimationState(clipName)
+  
+  let anim = new Animator()
+  walker.addComponent(anim)
+  anim.addClip(walkClip)
   walkClip.play()
 }
