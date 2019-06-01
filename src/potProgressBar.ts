@@ -9,11 +9,11 @@ export class PotProgressBar {
   movesUp: boolean = true
   color: Material
   speed: number = 1
-  parent: Entity
+  parent: IEntity
   smokeInterval = 3
   nextSmoke = this.smokeInterval
   // parent type (pot / customer)
-  constructor(parent: Entity, speed: number = 1, movesUp: boolean = true) {
+  constructor(parent: IEntity, speed: number = 1, movesUp: boolean = true) {
     this.parent = parent
     this.speed = speed
     this.movesUp = movesUp
@@ -35,7 +35,7 @@ export class ProgressBarUpdate implements ISystem {
       let data = bar.getComponent(PotProgressBar)
       let pot = data.parent.getComponent(Pot)
       if (!pot.hasIngredient && bar.getParent()) {
-        engine.removeEntity(bar.getParent(), true)
+        engine.removeEntity(bar.getParent())
       }
 
       if (data.ratio < 1) {
@@ -65,7 +65,7 @@ export class ProgressBarUpdate implements ISystem {
         updatePotMesh(pot.attachedEntity, SoupState.Burned)
 
         if (bar.getParent()) {
-          engine.removeEntity(bar.getParent(), true)
+          engine.removeEntity(bar.getParent())
           data = null
         }
       }
@@ -86,7 +86,7 @@ export class ProgressBarUpdate implements ISystem {
 }
 
 export function createPotProgressBar(
-  parent: Entity,
+  parent: IEntity,
   yRotation: number = 0,
   speed: number = 1,
   height: number = 1

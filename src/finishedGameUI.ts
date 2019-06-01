@@ -46,8 +46,8 @@ export class FinishedGameUI implements ISystem {
         playerScore
     )
     textShapeComponent.textWrapping = true
-    textShapeComponent.fontSize = 50
-    textShapeComponent.hAlign = 'center'
+    textShapeComponent.fontSize = 5
+    textShapeComponent.hTextAlign = 'center'
     textEntity.addComponent(textShapeComponent)
 
     textEntity.addComponent(

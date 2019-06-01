@@ -13,7 +13,7 @@ export const enum tileType {
 
 @Component("gridPosition")
 export class GridPosition {
-  object: Entity = null
+  object: IEntity = null
   type: tileType = tileType.Floor
 }
 
@@ -23,7 +23,7 @@ export const gridPositions = engine.getComponentGroup(GridPosition)
 
 
 export class gridObject{
-  grid: Entity[][]
+  grid: IEntity[][]
   gridStartingPosition : Vector3
   xMax: number
   zMax: number

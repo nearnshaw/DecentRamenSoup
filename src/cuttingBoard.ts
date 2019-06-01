@@ -17,7 +17,7 @@ export const cutsNeeded: number = 5
 export class CuttingBoard {
   hasRoll: boolean = false
   cuts: number = 0
-  rollChild: Entity
+  rollChild: IEntity
   cutting: boolean = false
   cutTime: number = 0.7
   totalCutTime: number = 0.7
@@ -61,19 +61,19 @@ export class CutSystem implements ISystem {
 const sushiPlateShape = new GLTFShape('models/PlateSushi.glb')
 const trashShape = new GLTFShape('models/GarbageFood.glb')
 
-export function AddSushi(DroppedObject: Entity, cuttingBoadrd: CuttingBoard) {
+export function AddSushi(DroppedObject: IEntity, cuttingBoadrd: CuttingBoard) {
   let grabbableObject = DroppedObject.getComponent(GrabableObjectComponent)
   if (grabbableObject.type == IngredientType.SushiRoll) {
     cuttingBoadrd.hasRoll = true
     cuttingBoadrd.cuts = 0
     cuttingBoadrd.rollChild = DroppedObject
-    cuttingBoadrd.rollChild.removeComponent(OnPointerDown)
+    cuttingBoadrd.rollChild.removeComponent(OnClick)
     log('added roll')
   } else if (grabbableObject.type == IngredientType.SlicedSushi) {
     cuttingBoadrd.hasRoll = true
     cuttingBoadrd.cuts = cutsNeeded
     cuttingBoadrd.rollChild = DroppedObject
-    cuttingBoadrd.rollChild.removeComponent(OnPointerDown)
+    cuttingBoadrd.rollChild.removeComponent(OnClick)
     log('roll is already cut')
   }
   DroppedObject.getComponent(Transform).rotation.setEuler(0, 90, 0)
@@ -81,8 +81,8 @@ export function AddSushi(DroppedObject: Entity, cuttingBoadrd: CuttingBoard) {
 }
 
 export function ClickBoard(
-  GrabberEntity: Entity,
-  cutter: Entity,
+  GrabberEntity: IEntity,
+  cutter: IEntity,
   objectGrabberSystem: ObjectGrabberSystem
 ) {
   let cuttingBoadrd = cutter.getComponent(CuttingBoard)
@@ -107,7 +107,7 @@ export function ClickBoard(
     )
     trash.addComponent(new GrabableObjectComponent(IngredientType.Trash, true))
     trash.addComponent(
-      new OnPointerDown(e => {
+      new OnClick(e => {
         objectGrabberSystem.grabObject(trash)
       })
     )
@@ -135,7 +135,7 @@ export function ClickBoard(
       new GrabableObjectComponent(IngredientType.SlicedSushi, true)
     )
     sushiPlate.addComponent(
-      new OnPointerDown(e => {
+      new OnClick(e => {
         objectGrabberSystem.grabObject(sushiPlate)
       })
     )
@@ -149,7 +149,7 @@ export function ClickBoard(
   }
 }
 
-export function cutRoll(cuttingBoard: Entity) {
+export function cutRoll(cuttingBoard: IEntity) {
   let cutter = cuttingBoard.getComponent(CuttingBoard)
   cutter.cuts += 1
   cutter.cutting = true

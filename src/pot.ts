@@ -15,10 +15,10 @@ export const enum SoupState {
 export class Pot {
   state: SoupState
   hasIngredient: boolean
-  progressBar: Entity
-  attachedEntity: Entity
+  progressBar: IEntity
+  attachedEntity: IEntity
 
-  constructor(attachedEntity: Entity) {
+  constructor(attachedEntity: IEntity) {
     this.attachedEntity = attachedEntity
     this.reset()
   }
@@ -31,7 +31,7 @@ export class Pot {
     this.hasIngredient = false
 
     if (this.progressBar) {
-      engine.removeEntity(this.progressBar.getParent(), true)
+      engine.removeEntity(this.progressBar.getParent())
       this.progressBar = null
     }
   }
@@ -41,7 +41,7 @@ let emptyPotModel = new GLTFShape('models/CookingPotClean.glb')
 let noodlesPotModel = new GLTFShape('models/CookingPotNoodles.glb')
 let trashPotModel = new GLTFShape('models/CookingPotDirty.glb')
 
-export function updatePotMesh(potEntity: Entity, newMeshtype: SoupState) {
+export function updatePotMesh(potEntity: IEntity, newMeshtype: SoupState) {
   switch (newMeshtype) {
     case SoupState.Raw:
       if (potEntity.hasComponent(GLTFShape)) {
@@ -63,7 +63,7 @@ export function updatePotMesh(potEntity: Entity, newMeshtype: SoupState) {
 }
 
 // Called in the dropObject()
-export function AddNoodles(DroppedObject: Entity, pot: Pot) {
+export function AddNoodles(DroppedObject: IEntity, pot: Pot) {
   let grabbableObject = DroppedObject.getComponent(GrabableObjectComponent)
 
   pot.hasIngredient = true
@@ -83,9 +83,9 @@ export function AddNoodles(DroppedObject: Entity, pot: Pot) {
 const soupBowlShape = new GLTFShape('models/PlateNoodles.glb')
 const trashShape = new GLTFShape('models/GarbageFood.glb')
 
-// Called in the OnPointerDown component of the pot entity
+// Called in the OnClick component of the pot entity
 export function ClickPot(
-  GrabberEntity: Entity,
+  GrabberEntity: IEntity,
   pot: Pot,
   objectGrabberSystem: ObjectGrabberSystem
 ) {
@@ -116,7 +116,7 @@ export function ClickPot(
         new GrabableObjectComponent(IngredientType.CookedNoodles, true)
       )
       soupBowl.addComponent(
-        new OnPointerDown(e => {
+        new OnClick(e => {
           objectGrabberSystem.grabObject(soupBowl)
         })
       )
@@ -142,7 +142,7 @@ export function ClickPot(
       )
       trash.addComponent(new GrabableObjectComponent(IngredientType.Trash, true))
       trash.addComponent(
-        new OnPointerDown(e => {
+        new OnClick(e => {
           objectGrabberSystem.grabObject(trash)
         })
       )

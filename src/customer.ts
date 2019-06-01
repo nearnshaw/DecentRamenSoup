@@ -80,15 +80,15 @@ const customerWrongDishMessages = [
 export class CustomerData {
   dish: IngredientType
   message: string
-  speechBubble: Entity
+  speechBubble: IEntity
   receivedDish: boolean = true // to force the 1st initialization
   plate: CustomerPlate
   shape: GLTFShape
   timeBeforeLeaving: number
   timeBeforeEntering: number
   waitingTimer: number
-  customerEntity: Entity
-  progressBar: Entity
+  customerEntity: IEntity
+  progressBar: IEntity
 }
 
 @Component('customerPlate')
@@ -109,7 +109,7 @@ let scoreTextShape: TextShape = new TextShape(
 )
 scoreTextShape.textWrapping = false
 scoreTextShape.color = Color3.Green()
-scoreTextShape.fontSize = 150
+scoreTextShape.fontSize = 2
 scoreTextShape.width = 10
 scoreTextEntity.addComponent(scoreTextShape)
 scoreTextEntity.addComponent(
@@ -126,7 +126,7 @@ let missesTextShape: TextShape = new TextShape(
 )
 missesTextShape.textWrapping = false
 missesTextShape.color = Color3.Red()
-missesTextShape.fontSize = 150
+missesTextShape.fontSize = 2
 missesTextShape.width = 10
 missesTextEntity.addComponent(missesTextShape)
 missesTextEntity.addComponent(
@@ -169,7 +169,7 @@ export class CustomersSystem implements ISystem {
           let progressBarParent = customerData.progressBar.getParent()
           engine.removeEntity(customerData.progressBar)
           customerData.progressBar = null
-          engine.removeEntity(progressBarParent, true)
+          engine.removeEntity(progressBarParent)
 
           continue
         }
@@ -181,7 +181,7 @@ export class CustomersSystem implements ISystem {
         if (customerData.waitingTimer <= 0) {
           if (customerData.receivedDish) {
             if (customerData.speechBubble) {
-              engine.removeEntity(customerData.speechBubble, true)
+              engine.removeEntity(customerData.speechBubble)
             }
 
             customerData.shape.visible = false
@@ -197,7 +197,7 @@ export class CustomersSystem implements ISystem {
     }
   }
 
-  initializeCustomer(customer: Entity, customerData: CustomerData) {
+  initializeCustomer(customer: IEntity, customerData: CustomerData) {
     customerData.receivedDish = false
     customerData.timeBeforeEntering = Scalar.RandomRange(3, 6)
     customerData.timeBeforeLeaving = Scalar.RandomRange(3, 4)
@@ -258,11 +258,11 @@ function updateSpeechBubble(
   customerData.message = newMessage
 
   if (customerData.speechBubble) {
-    engine.removeEntity(customerData.speechBubble, true)
+    engine.removeEntity(customerData.speechBubble)
   }
 
   if (customerData.progressBar) {
-    engine.removeEntity(customerData.progressBar, true)
+    engine.removeEntity(customerData.progressBar)
   }
 
   customerData.speechBubble = createSpeechBubble(
@@ -292,7 +292,7 @@ export function createCustomer(position: Vector3, plate: CustomerPlate) {
   )
 
   // TODO: Add shape randomization
-  let shape = new GLTFShape('models/walkers/BlockDog.gltf')
+  let shape = new GLTFShape('models/walkers/BlockDog.glb')
   customer.addComponent(shape)
   customerData.shape = shape
 
@@ -382,7 +382,7 @@ export function deliverOrder(plate: CustomerPlate) {
   }
 }
 
-const sittingAnimation = new AnimationClip('Sitting')
+const sittingAnimation = new AnimationState('Sitting')
 sittingAnimation.looping = false
 // const eatingAnimation = new AnimationClip('Drinking', { loop: false })
 sittingAnimation.play()

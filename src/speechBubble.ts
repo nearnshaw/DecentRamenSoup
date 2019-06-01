@@ -1,5 +1,12 @@
+
+let bubble1Texture = new Texture('textures/bubble3.png')
+let bubble2Texture = new Texture('textures/bubble3.png')
+let bubble3Texture = new Texture('textures/bubble3.png')
+
+
+
 export let neutralBubbleMaterial = new Material()
-neutralBubbleMaterial.albedoTexture = 'textures/bubble3.png'
+neutralBubbleMaterial.albedoTexture = bubble1Texture
 neutralBubbleMaterial.albedoColor = Color3.Gray()
 neutralBubbleMaterial.hasAlpha = true
 neutralBubbleMaterial.disableLighting = true
@@ -9,7 +16,7 @@ neutralBubbleMaterial.metallic = 0
 neutralBubbleMaterial.roughness = 1
 
 export let goodBubbleMaterial = new Material()
-goodBubbleMaterial.albedoTexture = 'textures/bubble3.png'
+goodBubbleMaterial.albedoTexture = bubble2Texture
 goodBubbleMaterial.albedoColor = Color3.Green()
 goodBubbleMaterial.hasAlpha = true
 goodBubbleMaterial.disableLighting = true
@@ -19,7 +26,7 @@ goodBubbleMaterial.metallic = 0
 goodBubbleMaterial.roughness = 1
 
 export let badBubbleMaterial = new Material()
-badBubbleMaterial.albedoTexture = 'textures/bubble3.png'
+badBubbleMaterial.albedoTexture = bubble3Texture
 badBubbleMaterial.albedoColor = Color3.Red()
 badBubbleMaterial.hasAlpha = true
 badBubbleMaterial.disableLighting = true
@@ -59,7 +66,8 @@ export function createSpeechBubble(
   textEntity.getComponent(TextShape).textWrapping = true
   textEntity.getComponent(TextShape).width = 1.1
   textEntity.getComponent(TextShape).height = 1.1
-  textEntity.getComponent(TextShape).hAlign = 'left'
+  textEntity.getComponent(TextShape).hTextAlign = 'left'
+  textEntity.getComponent(TextShape).fontSize = 1
   textEntity.setParent(parentEntity)
   textEntity.addComponent(
     new Transform({

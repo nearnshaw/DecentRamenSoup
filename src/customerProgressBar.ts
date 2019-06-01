@@ -10,8 +10,8 @@ export class CustomerProgressBar {
   movesUp: boolean = true
   color: Material
   speed: number = 1
-  parent: Entity
-  constructor(parent: Entity, speed: number = 1, movesUp: boolean = true) {
+  parent: IEntity
+  constructor(parent: IEntity, speed: number = 1, movesUp: boolean = true) {
     this.parent = parent
     this.speed = speed
     this.movesUp = movesUp
@@ -66,7 +66,7 @@ export class CustProgressBarUpdate implements ISystem {
   }
 }
 
-export function createCustProgressBar(parent: Entity, speed: number = 1) {
+export function createCustProgressBar(parent: IEntity, speed: number = 1) {
   let background = new Entity()
   background.addComponent(new PlaneShape())
   background.setParent(parent)

@@ -50,7 +50,7 @@ export const grabbableObjects = engine.getComponentGroup(
 
 @Component('objectGrabberComponent')
 export class ObjectGrabberComponent {
-  grabbedObject: Entity = null
+  grabbedObject: IEntity = null
 }
 
 export class DropObjects implements ISystem {
@@ -78,16 +78,16 @@ export class ObjectGrabberSystem implements ISystem {
   transform: Transform
   objectGrabberComponent: ObjectGrabberComponent
   gridObject: gridObject
-  objectGrabber: Entity
+  objectGrabber: IEntity
   targetPosition: Vector3
   targetRotation: Quaternion
-  constructor(objectGrabber: Entity, gridObject: gridObject) {
+  constructor(objectGrabber: IEntity, gridObject: gridObject) {
     this.transform = objectGrabber.getComponent(Transform)
     this.gridObject = gridObject
     this.objectGrabber = objectGrabber
     this.objectGrabberComponent = objectGrabber.getComponent(ObjectGrabberComponent)
 
-    Input.instance.subscribe('BUTTON_A_DOWN', e => {
+    Input.instance.subscribe('BUTTON_DOWN', e => {
       this.dropObject()
     })
   }
@@ -110,7 +110,7 @@ export class ObjectGrabberSystem implements ISystem {
     )
   }
 
-  public grabObject(grabbedObject: Entity) {
+  public grabObject(grabbedObject: IEntity) {
     if (finishedPlaying) return
 
     if (!this.objectGrabberComponent.grabbedObject) {

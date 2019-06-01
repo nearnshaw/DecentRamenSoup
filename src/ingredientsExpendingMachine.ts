@@ -11,18 +11,18 @@ const rollShape = new GLTFShape('models/SushiRoll.glb')
 @Component('ingredientExpendingMachineComponent')
 export class IngredientExpendingMachineComponent {
   ingredientType: IngredientType
-  lastCreatedIngredient: Entity
+  lastCreatedIngredient: IEntity
   spawningPosition: Vector3
   objectGrabberSystemReference: ObjectGrabberSystem
-  objectGrabberEntityReference: Entity
-  parentEntity: Entity
+  objectGrabberEntityReference: IEntity
+  parentEntity: IEntity
 
   constructor(
     type: IngredientType,
     expendingPosition: Vector3,
     objectGrabberSystem: ObjectGrabberSystem,
-    objectGrabberEntity: Entity,
-    parentEntity: Entity
+    objectGrabberEntity: IEntity,
+    parentEntity: IEntity
   ) {
     this.ingredientType = type
     this.spawningPosition = expendingPosition
@@ -58,7 +58,7 @@ export class IngredientExpendingMachineComponent {
     engine.addEntity(ent)
 
     ent.addComponent(
-      new OnPointerDown(e => {
+      new OnClick(e => {
         this.objectGrabberSystemReference.grabObject(ent)
         this.lastCreatedIngredient = null
       })

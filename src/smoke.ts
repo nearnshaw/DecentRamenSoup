@@ -7,8 +7,11 @@ export class SmokeVelocity extends Vector3 {
   }
 }
 
+const smokeTexture = new Texture('textures/smoke-puff3.png', {hasAlpha: true})
+
+
 const smokeMaterial = new Material()
-smokeMaterial.albedoTexture = 'textures/smoke-puff3.png'
+smokeMaterial.albedoTexture = smokeTexture
 smokeMaterial.hasAlpha = true
 smokeMaterial.alpha = 1
 
@@ -20,7 +23,7 @@ export const smokeSpawner = {
   MAX_POOL_SIZE: 50,
   pool: [] as Entity[],
 
-  getEntityFromPool(): Entity | null {
+  getEntityFromPool(): IEntity | null {
     for (let i = 0; i < smokeSpawner.pool.length; i++) {
       if (!smokeSpawner.pool[i].alive) {
         return smokeSpawner.pool[i]
@@ -36,7 +39,7 @@ export const smokeSpawner = {
     return null
   },
 
-  SpawnSmokePuff(parent: Entity) {
+  SpawnSmokePuff(parent: IEntity) {
     const ent = smokeSpawner.getEntityFromPool()
 
     if (!ent) return

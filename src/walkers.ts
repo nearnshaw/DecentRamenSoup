@@ -89,7 +89,7 @@ export function createWalker(
   }
 
   engine.addEntity(walker)
-  const walkClip = new AnimationClip(clipName)
+  const walkClip = new AnimationState(clipName)
   
   let anim = new Animator()
   walker.addComponent(anim)
