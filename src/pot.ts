@@ -115,11 +115,11 @@ export function ClickPot(
       soupBowl.addComponent(
         new GrabableObjectComponent(IngredientType.CookedNoodles, true)
       )
-      soupBowl.addComponent(
-        new OnClick(e => {
-          objectGrabberSystem.grabObject(soupBowl)
-        })
-      )
+    //   soupBowl.addComponent(
+    //     new OnClick(e => {
+    //       objectGrabberSystem.grabObject(soupBowl)
+    //     })
+    //   )
       engine.addEntity(soupBowl)
       grabberComponent.grabbedObject = soupBowl
 
@@ -141,11 +141,11 @@ export function ClickPot(
         })
       )
       trash.addComponent(new GrabableObjectComponent(IngredientType.Trash, true))
-      trash.addComponent(
-        new OnClick(e => {
-          objectGrabberSystem.grabObject(trash)
-        })
-      )
+    //   trash.addComponent(
+    //     new OnClick(e => {
+    //       objectGrabberSystem.grabObject(trash)
+    //     })
+    //   )
       engine.addEntity(trash)
       grabberComponent.grabbedObject = trash
 
