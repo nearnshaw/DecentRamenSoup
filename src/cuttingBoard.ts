@@ -134,11 +134,11 @@ export function ClickBoard(
     sushiPlate.addComponent(
       new GrabableObjectComponent(IngredientType.SlicedSushi, true)
     )
-    sushiPlate.addComponent(
-      new OnClick(e => {
-        objectGrabberSystem.grabObject(sushiPlate)
-      })
-    )
+    // sushiPlate.addComponent(
+    //   new OnClick(e => {
+    //     objectGrabberSystem.grabObject(sushiPlate)
+    //   })
+    // )
     engine.addEntity(sushiPlate)
     grabberComponent.grabbedObject = sushiPlate
     engine.removeEntity(cuttingBoadrd.rollChild)

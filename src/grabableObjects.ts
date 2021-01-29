@@ -20,6 +20,8 @@ export const enum IngredientType {
   COUNT
 }
 
+let grabbedPosition = new Vector3(0, -0.25, 1)
+
 @Component('grabableObjectComponent')
 export class GrabableObjectComponent {
   grabbed: boolean = false
@@ -87,9 +89,20 @@ export class ObjectGrabberSystem implements ISystem {
     this.objectGrabber = objectGrabber
     this.objectGrabberComponent = objectGrabber.getComponent(ObjectGrabberComponent)
 
-    Input.instance.subscribe('BUTTON_DOWN', e => {
-      this.dropObject()
-    })
+    Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, true, e => {
+
+		if (e.hit) {
+			let ent = engine.entities[e.hit.entityId]
+		  	if (ent.hasComponent(GrabableObjectComponent)){
+				this.grabObject(ent)
+			}
+		}
+	})
+	
+	Input.instance.subscribe("BUTTON_UP", ActionButton.PRIMARY, false, e => {
+		log("pointer Up", e)
+		this.dropObject()
+	  })
   }
 
   update(deltaTime: number) {
@@ -122,7 +135,7 @@ export class ObjectGrabberSystem implements ISystem {
 
       grabbedObject.getComponent(GrabableObjectComponent).grabbed = true
       grabbedObject.setParent(this.objectGrabber)
-      grabbedObject.getComponent(Transform).position.set(0, 1.25, 1)
+      grabbedObject.getComponent(Transform).position = grabbedPosition
 
       this.objectGrabberComponent.grabbedObject = grabbedObject
     } else {

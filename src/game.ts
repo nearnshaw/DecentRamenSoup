@@ -113,7 +113,7 @@ let environment = new Entity()
 environment.addComponent(new GLTFShape('models/Environment.glb'))
 environment.addComponent(
   new Transform({
-    position: new Vector3(10, 0, 10)
+    position: new Vector3(11, 0, 11)
     ,rotation: Quaternion.Euler(0,180,0)
   })
 )
@@ -555,3 +555,4 @@ shelves.grid[5][6].getComponent(GridPosition).type = tileType.Shelf
 shelves.grid[5][5].getComponent(GridPosition).type = tileType.Shelf
 shelves.grid[5][4].getComponent(GridPosition).type = tileType.Shelf
 shelves.grid[5][2].getComponent(GridPosition).type = tileType.Shelf
+
